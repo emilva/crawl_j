@@ -32,6 +32,8 @@
   <modules>
     <module>j_versioneye_persistence</module>
     <module>j_versioneye_service</module>
+    <module>jcrawler</module>
+    <module>versioneye_maven_crawler</module>
   </modules>
 
   <dependencyManagement>

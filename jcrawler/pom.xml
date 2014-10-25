@@ -1,19 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.versioneye</groupId>
-  <artifactId>crawler</artifactId>
+
+  <parent>
+    <groupId>versioneye</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>jcrawler</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
+
   <name>crawler</name>
+
   <url>http://maven.apache.org</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <encoding>UTF-8</encoding>
-    <surefireVersion>2.5</surefireVersion>
-    <javaVersion>1.6</javaVersion>
-    <spring.version>4.0.6.RELEASE</spring.version>
     <wagonVersion>2.4</wagonVersion>
     <aetherVersion>0.9.0.M2</aetherVersion>
   </properties>
@@ -152,8 +155,6 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.8.8</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -164,7 +165,7 @@
     <dependency>
       <groupId>versioneye</groupId>
       <artifactId>j-versioneye-service</artifactId>
-      <version>3.0.9</version>
+      <version>3.1.0</version>
     </dependency>
 
     <!-- *** HTML Cleaner *** -->
@@ -204,13 +205,10 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
       <exclusions>
         <exclusion>
             <groupId>org.springframework</groupId>

@@ -2,54 +2,50 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>versioneye</groupId>
+  <parent>
+    <groupId>versioneye</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
   <artifactId>versioneye-maven-crawler</artifactId>
   <version>1.2.0</version>
+
   <packaging>maven-plugin</packaging>
 
   <name>versioneye-maven-crawler</name>
+
   <url>https://github.com/versioneye/versioneye_maven_crawler</url>
+
   <description>
       This maven plugin is responsible for crawling the maven central repository.
       You can find a complete documentation of this project on GitHub:
       https://github.com/versioneye/versioneye_maven_crawler.
   </description>
 
-  <developers>
-    <developer>
-      <name>Robert Reiz</name>
-      <id>reiz</id>
-      <organization>VersionEye</organization>
-      <organizationUrl>http://www.versioneye.com</organizationUrl>
-    </developer>
-  </developers>
-
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <wagonVersion>2.6</wagonVersion>
     <aetherVersion>1.13.1</aetherVersion>
-    <spring.version>4.0.6.RELEASE</spring.version>
   </properties>
 
-
-    <repositories>
-        <!--<repository>-->
-            <!--<id>Roberts-MacBook-Pro.local</id>-->
-            <!--<name>Roberts-MacBook-Pro.local-releases</name>-->
-            <!--<url>http://localhost:8081/artifactory/jcenter</url>-->
-        <!--</repository>-->
-        <repository>
-            <id>fuin.org</id>
-            <name>Repository at fuin.org</name>
-            <url>http://www.fuin.org/maven-repository</url>
-            <releases>
-              <enabled>true</enabled>
-            </releases>
-            <snapshots>
-              <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+  <repositories>
+    <!--<repository>-->
+        <!--<id>Roberts-MacBook-Pro.local</id>-->
+        <!--<name>Roberts-MacBook-Pro.local-releases</name>-->
+        <!--<url>http://localhost:8081/artifactory/jcenter</url>-->
+    <!--</repository>-->
+    <repository>
+        <id>fuin.org</id>
+        <name>Repository at fuin.org</name>
+        <url>http://www.fuin.org/maven-repository</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
 
@@ -57,8 +53,6 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>6.8.8</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -176,13 +170,10 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
       <exclusions>
           <exclusion>
               <groupId>org.springframework</groupId>
