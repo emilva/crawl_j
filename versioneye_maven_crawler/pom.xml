@@ -24,7 +24,7 @@
   </description>
 
   <properties>
-    <wagonVersion>2.6</wagonVersion>
+    <wagonVersion>2.7</wagonVersion>
     <aetherVersion>1.13.1</aetherVersion>
   </properties>
 
@@ -48,12 +48,6 @@
   </repositories>
 
   <dependencies>
-
-    <!-- *** Testing *** -->
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>versioneye</groupId>
@@ -85,7 +79,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.0.17</version>
+      <version>3.0.20</version>
     </dependency>
     <dependency>
       <groupId>org.fuin</groupId>
