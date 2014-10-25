@@ -1,0 +1,9 @@
+*.iml
+*.ipr
+*.iws
+.idea/
+.classpath
+.project
+target/
+test-output/
+versioneye.properties

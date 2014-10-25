@@ -1,0 +1,236 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>versioneye</groupId>
+  <artifactId>versioneye-maven-crawler</artifactId>
+  <version>1.2.0</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>versioneye-maven-crawler</name>
+  <url>https://github.com/versioneye/versioneye_maven_crawler</url>
+  <description>
+      This maven plugin is responsible for crawling the maven central repository.
+      You can find a complete documentation of this project on GitHub:
+      https://github.com/versioneye/versioneye_maven_crawler.
+  </description>
+
+  <developers>
+    <developer>
+      <name>Robert Reiz</name>
+      <id>reiz</id>
+      <organization>VersionEye</organization>
+      <organizationUrl>http://www.versioneye.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <wagonVersion>2.6</wagonVersion>
+    <aetherVersion>1.13.1</aetherVersion>
+    <spring.version>4.0.6.RELEASE</spring.version>
+  </properties>
+
+
+    <repositories>
+        <!--<repository>-->
+            <!--<id>Roberts-MacBook-Pro.local</id>-->
+            <!--<name>Roberts-MacBook-Pro.local-releases</name>-->
+            <!--<url>http://localhost:8081/artifactory/jcenter</url>-->
+        <!--</repository>-->
+        <repository>
+            <id>fuin.org</id>
+            <name>Repository at fuin.org</name>
+            <url>http://www.fuin.org/maven-repository</url>
+            <releases>
+              <enabled>true</enabled>
+            </releases>
+            <snapshots>
+              <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+  <dependencies>
+
+    <!-- *** Testing *** -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>6.8.8</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>versioneye</groupId>
+      <artifactId>j-versioneye-persistence</artifactId>
+      <version>2.0.11</version>
+    </dependency>
+    <dependency>
+      <groupId>versioneye</groupId>
+      <artifactId>j-versioneye-service</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>3.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>3.0.17</version>
+    </dependency>
+    <dependency>
+      <groupId>org.fuin</groupId>
+      <artifactId>utils4j</artifactId>
+      <version>0.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.sonatype.aether</groupId>
+      <artifactId>aether-api</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.aether</groupId>
+      <artifactId>aether-spi</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.aether</groupId>
+      <artifactId>aether-impl</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.aether</groupId>
+      <artifactId>aether-util</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.aether</groupId>
+      <artifactId>aether-connector-wagon</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.3.5</version>
+    </dependency>
+
+    <!-- Required for Maven Indexer -->
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <version>${wagonVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-file</artifactId>
+      <version>${wagonVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http</artifactId>
+      <version>${wagonVersion}</version>
+      <classifier>shaded</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-ssh</artifactId>
+      <version>${wagonVersion}</version>
+    </dependency>
+
+    <!-- For accessing the Maven Indexer -->
+    <dependency>
+      <groupId>org.apache.maven.indexer</groupId>
+      <artifactId>indexer-core</artifactId>
+      <version>5.1.1</version>
+      <exclusions>
+          <exclusion>
+              <groupId>jakarta-regexp</groupId>
+              <artifactId>jakarta-regexp</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- *** Spring Framework *** -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+      <exclusions>
+          <exclusion>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-aop</artifactId>
+          </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>versioneye</groupId>
+        <artifactId>versioneye-maven-crawler</artifactId>
+        <version>1.2.0</version>
+        <configuration>
+            <groupid>org.apache.maven.indexer</groupid>
+            <artifactid>indexer-core</artifactid>
+            <version>5.1.1</version>
+            <repoName>central</repoName>
+            <indexDirectory>central</indexDirectory>
+            <skipKnownVersions>false</skipKnownVersions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <goalPrefix>crawl</goalPrefix>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>help-goal</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

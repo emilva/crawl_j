@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="VEye">
+
+	<bannerLeft>
+		<name>Crawler</name>
+	</bannerLeft>
+
+	<publishDate position="navigation-bottom" format="dd.MM.yyyy"/>
+	<body>
+
+		<links>
+			<item name="VersionEye GmbH" href="http://www.versioneye.de/" />
+		</links>
+
+		<menu name="VEye">
+			<item name="Introduction" href="index.html"/>
+		</menu>
+
+		<menu ref="reports"/>
+
+	</body>
+
+</project>
