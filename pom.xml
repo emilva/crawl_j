@@ -25,7 +25,7 @@
     <encoding>UTF-8</encoding>
     <surefireVersion>2.5</surefireVersion>
     <javaVersion>1.6</javaVersion>
-    <spring.version>4.0.6.RELEASE</spring.version>
+    <spring.version>4.1.1.RELEASE</spring.version>
     <testngVersion>6.8.8</testngVersion>
   </properties>
 
@@ -36,15 +36,17 @@
     <module>versioneye_maven_crawler</module>
   </modules>
 
+  <dependencies>
+      <dependency>
+          <groupId>org.testng</groupId>
+          <artifactId>testng</artifactId>
+          <version>${testngVersion}</version>
+          <scope>test</scope>
+      </dependency>
+  </dependencies>
+
   <dependencyManagement>
     <dependencies>
-
-      <dependency>
-        <groupId>org.testng</groupId>
-        <artifactId>testng</artifactId>
-        <version>${testngVersion}</version>
-        <scope>test</scope>
-      </dependency>
 
       <dependency>
         <groupId>org.springframework</groupId>
@@ -61,5 +63,21 @@
 
     </dependencies>
   </dependencyManagement>
+
+  <build>
+      <pluginManagement>
+          <plugins>
+              <plugin>
+                  <groupId>com.versioneye</groupId>
+                  <artifactId>versioneye-maven-plugin</artifactId>
+                  <version>3.1.0-SNAPSHOT</version>
+                  <!--<configuration>-->
+                      <!--<baseUrl>http://localhost:3000</baseUrl>-->
+                      <!--<apiKey></apiKey>-->
+                  <!--</configuration>-->
+              </plugin>
+          </plugins>
+      </pluginManagement>
+  </build>
 
 </project>
