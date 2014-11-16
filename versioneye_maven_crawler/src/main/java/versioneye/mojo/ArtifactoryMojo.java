@@ -44,7 +44,7 @@ public class ArtifactoryMojo extends SuperMojo {
             ArtifactoryRepoDescription[] repositories = fetchRepoList();
             addCustomRepos(repositories);
             collectPoms(repositories);
-//            processPoms();
+            processPoms();
 
             getLog().info("The End");
         } catch( Exception exception ){
