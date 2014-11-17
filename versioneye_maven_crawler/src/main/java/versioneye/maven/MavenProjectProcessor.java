@@ -79,17 +79,21 @@ public class MavenProjectProcessor {
     }
 
     private void createLinks(Product product, MavenProject project, String urlToProduct){
+        urlToProduct = checkEndingSlash( urlToProduct );
+        String projectUrl = checkEndingSlash( project.getUrl() );
         versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), null, "Link to Repository", urlToProduct);
-        versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), product.getVersion(), "URL", project.getUrl());
+        versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), product.getVersion(), "URL", projectUrl );
         if (project.getOrganization() != null){
             Organization organization = project.getOrganization();
             String organisationName = organization.getName();
-            String organisationUrl  = organization.getUrl();
+            String organisationUrl  = checkEndingSlash( organization.getUrl() );
             versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), null, organisationName, organisationUrl);
         }
-        if (project.getScm() != null && project.getScm().getUrl() != null)
+        if (project.getScm() != null && project.getScm().getUrl() != null){
+            String scmUrl = checkEndingSlash( project.getScm().getUrl() );
             versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(),
-                    product.getVersion(), "SCM", project.getScm().getUrl());
+                    product.getVersion(), "SCM", scmUrl );
+        }
     }
 
 
@@ -177,6 +181,16 @@ public class MavenProjectProcessor {
         return product;
     }
 
+    private String checkEndingSlash(String url){
+        if (url == null){
+            return null;
+        }
+        if (url.endsWith("/")){
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
+    }
+
     public void setProductService(ProductService productService) {
         this.productService = productService;
     }
@@ -212,4 +226,5 @@ public class MavenProjectProcessor {
     public void setRepository(Repository repository) {
         this.repository = repository;
     }
+
 }
