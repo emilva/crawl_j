@@ -98,7 +98,7 @@ public class HtmlMojo extends SuperMojo {
             String versionNumber = mavenUrlProcessor.getVersion(pom, properties);
             String packaging     = mavenUrlProcessor.getPackaging(pom, properties);
 
-            String prodKey = groupId + "/" + artifactId;
+            String prodKey = groupId.toLowerCase() + "/" + artifactId.toLowerCase();
             boolean existAlready = productDao.doesVersionExistAlready( "Java", prodKey, versionNumber );
             if (existAlready){
                 getLog().info(" --- Skip package " + groupId + ":" + artifactId + ":" + versionNumber + " because already in DB.");
