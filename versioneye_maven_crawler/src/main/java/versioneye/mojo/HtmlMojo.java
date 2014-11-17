@@ -94,11 +94,17 @@ public class HtmlMojo extends SuperMojo {
             getLog().info("process file " + urlToPom);
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
             HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
-            String versionNumber = mavenUrlProcessor.getVersion(pom, properties);
             String groupId       = mavenUrlProcessor.getGroupId(pom, properties);
             String artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
+            String versionNumber = mavenUrlProcessor.getVersion(pom, properties);
             String packaging     = mavenUrlProcessor.getPackaging(pom, properties);
-            getLog().info("process pom -- " + groupId + ":" + artifactId + ":" + versionNumber + " packaging: " + packaging);
+
+            String prodKey = groupId + "/" + artifactId;
+            boolean existAlready = productDao.doesVersionExistAlready( "Java", prodKey, versionNumber );
+            if (existAlready){
+                getLog().info("package " + groupId + ":" + artifactId + ":" + versionNumber + " exists already in DB.");
+                return ;
+            }
 
             if (packaging != null && packaging.equalsIgnoreCase("pom")){
                 getLog().info(" --- Skipp parent pom --- " + urlToPom);
@@ -110,7 +116,7 @@ public class HtmlMojo extends SuperMojo {
             artifactInfo.artifactId = artifactId;
             artifactInfo.version    = versionNumber;
 
-            getLog().info(" process pom " + urlToPom);
+            getLog().info("process pom -- " + groupId + ":" + artifactId + ":" + versionNumber + " packaging: " + packaging);
 
             resolveDependencies(artifactInfo);
             parseArtifact(artifactInfo);
