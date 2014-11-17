@@ -98,7 +98,7 @@ public class HtmlMojo extends SuperMojo {
             String groupId       = mavenUrlProcessor.getGroupId(pom, properties);
             String artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
             String packaging     = mavenUrlProcessor.getPackaging(pom, properties);
-            getLog().info(" -- " + groupId + ":" + artifactId + ":" + versionNumber + " - " + packaging);
+            getLog().info("process pom -- " + groupId + ":" + artifactId + ":" + versionNumber + " packaging: " + packaging);
 
             if (packaging != null && packaging.equalsIgnoreCase("pom")){
                 getLog().info(" --- Skipp parent pom --- " + urlToPom);
