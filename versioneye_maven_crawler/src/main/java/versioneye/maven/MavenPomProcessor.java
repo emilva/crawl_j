@@ -38,10 +38,14 @@ public class MavenPomProcessor {
 
     public boolean updateNode(String groupId, String artifactId, String version, Date lastModfied) {
         try{
-            String urlToProduct = mavenUrlUtils.getProductUrl( groupId, artifactId          );
-            String urlToVersion = mavenUrlUtils.getVersionUrl( groupId, artifactId, version );
-            String urlToPom     = mavenUrlUtils.getPomUrl(     groupId, artifactId, version );
-            if (!repository.getName().equals("central")){
+            String urlToProduct = null;
+            String urlToVersion = null;
+            String urlToPom     = null;
+            if (repository.getName().equals("central")){
+                urlToProduct = mavenUrlUtils.getProductUrl( groupId, artifactId          );
+                urlToVersion = mavenUrlUtils.getVersionUrl( groupId, artifactId, version );
+                urlToPom     = mavenUrlUtils.getPomUrl(     groupId, artifactId, version );
+            } else {
                 urlToProduct = mavenUrlUtils.getProductUrl(repository.getSrc(),  groupId, artifactId          );
                 urlToVersion = mavenUrlUtils.getVersionUrl(repository.getSrc(),  groupId, artifactId, version );
                 urlToPom     = mavenUrlUtils.getPomUrl(    repository.getSrc(),  groupId, artifactId, version );

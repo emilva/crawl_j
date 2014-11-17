@@ -90,7 +90,10 @@ public abstract class SuperMojo extends AbstractMojo {
     }
 
     protected void parseArtifact(ArtifactInfo artifactInfo) throws Exception {
-        Date releasedAt = new Date(artifactInfo.lastModified);
+        Date releasedAt = null;
+        if (artifactInfo.lastModified > 0){
+            releasedAt = new Date(artifactInfo.lastModified);
+        }
         MavenProject projectModel = buildProjectModel( artifactInfo );
         if (projectModel != null){
             if (projectModel.getVersion().startsWith("${")){
