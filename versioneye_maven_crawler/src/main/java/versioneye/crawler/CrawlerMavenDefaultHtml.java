@@ -83,7 +83,7 @@ public class CrawlerMavenDefaultHtml implements ICrawl {
                 follow(newUrl, currentUrl);
             } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
                 String newUrl = currentUrl + href;
-                mavenUrlProcessor.updateNode(newUrl, currentUrl, prevUrl, getRepository(), crawle);
+//                mavenUrlProcessor.updateNode(newUrl, currentUrl, prevUrl, getRepository(), crawle);
                 return ;
             }
         }
@@ -100,6 +100,9 @@ public class CrawlerMavenDefaultHtml implements ICrawl {
                     link = link.replaceFirst(getRepository().getSrc(), "");
                 else
                     link = link.replaceFirst(src, "");
+                if (link.startsWith("#")){
+                    link = link.replaceFirst("#", "");
+                }
                 links.add(link);
             }
         } catch (Exception ex) {
