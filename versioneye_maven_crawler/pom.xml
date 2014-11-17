@@ -28,7 +28,29 @@
     <aetherVersion>1.13.1</aetherVersion>
   </properties>
 
-  <!--<repositories>-->
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>http://jcenter.bintray.com/</url>
+      <releases>
+          <enabled>true</enabled>
+      </releases>
+      <snapshots>
+          <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>typesafe</id>
+      <name>typesafe</name>
+      <url>http://repo.typesafe.com/typesafe/releases/</url>
+      <releases>
+          <enabled>true</enabled>
+      </releases>
+      <snapshots>
+          <enabled>false</enabled>
+      </snapshots>
+    </repository>
     <!--<repository>-->
         <!--<id>fuin.org</id>-->
         <!--<name>Repository at fuin.org</name>-->
@@ -40,7 +62,7 @@
           <!--<enabled>false</enabled>-->
         <!--</snapshots>-->
     <!--</repository>-->
-  <!--</repositories>-->
+  </repositories>
 
   <dependencies>
 
