@@ -30,28 +30,6 @@
 
   <repositories>
     <repository>
-      <id>jcenter</id>
-      <name>JCenter</name>
-      <url>http://jcenter.bintray.com/</url>
-      <releases>
-          <enabled>true</enabled>
-      </releases>
-      <snapshots>
-          <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>typesafe</id>
-      <name>typesafe</name>
-      <url>http://repo.typesafe.com/typesafe/releases/</url>
-      <releases>
-          <enabled>true</enabled>
-      </releases>
-      <snapshots>
-          <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
         <id>fuin.org</id>
         <name>Repository at fuin.org</name>
         <url>http://www.fuin.org/maven-repository</url>
