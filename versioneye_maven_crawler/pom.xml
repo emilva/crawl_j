@@ -28,24 +28,19 @@
     <aetherVersion>1.13.1</aetherVersion>
   </properties>
 
-  <repositories>
+  <!--<repositories>-->
     <!--<repository>-->
-        <!--<id>Roberts-MacBook-Pro.local</id>-->
-        <!--<name>Roberts-MacBook-Pro.local-releases</name>-->
-        <!--<url>http://localhost:8081/artifactory/jcenter</url>-->
+        <!--<id>fuin.org</id>-->
+        <!--<name>Repository at fuin.org</name>-->
+        <!--<url>http://www.fuin.org/maven-repository</url>-->
+        <!--<releases>-->
+          <!--<enabled>true</enabled>-->
+        <!--</releases>-->
+        <!--<snapshots>-->
+          <!--<enabled>false</enabled>-->
+        <!--</snapshots>-->
     <!--</repository>-->
-    <repository>
-        <id>fuin.org</id>
-        <name>Repository at fuin.org</name>
-        <url>http://www.fuin.org/maven-repository</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-    </repository>
-  </repositories>
+  <!--</repositories>-->
 
   <dependencies>
 
