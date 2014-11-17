@@ -318,6 +318,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="jcenter" class="versioneye.domain.Repository" >
+        <property name="name"     value="jcenter" />
+        <property name="src"      value="http://jcenter.bintray.com/" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <bean id="jfrog" class="versioneye.domain.Repository" >
         <property name="name"     value="jfrog" />
         <property name="src"      value="http://repo.jfrog.org/artifactory/libs-releases/" />
@@ -354,39 +360,38 @@
                 <ref bean="activity" />
                 <ref bean="activity_designer" />
                 <ref bean="abl" />
-                <ref bean="fuin" />
-                <ref bean="devzendo" />
-                <ref bean="primeFaces" />
-                <ref bean="iceFaces" />
-                <ref bean="appFuse" />
-                <ref bean="fuse" />
-                <ref bean="servicemix" />
-                <ref bean="dojo" />
-                <ref bean="ejb3unit" />
-                <ref bean="akka" />
-                <ref bean="freehep" />
-                <ref bean="guiceyFruit" />
-                <ref bean="jasig" />
-                <ref bean="objectweb" />
-                <ref bean="restlet" />
-                <ref bean="scalatools" />
-                <ref bean="jbossPublic" />
-                <ref bean="slick" />
-                <ref bean="smartclient" />
-                <ref bean="carbonfive" />
-                <ref bean="glassfish" />
-                <ref bean="selenium" />
-                <ref bean="seleniumThirdParty" />
-                <ref bean="googleCode" />
-                <ref bean="atlassian" />
-                <ref bean="atlassianContrib" />
-                <ref bean="springMilestone" />
-                <ref bean="springRelease" />
-                <ref bean="seasar" />
-                <ref bean="geotools" />
-                <ref bean="javanet" />
-                <ref bean="jfrog" />
-                <ref bean="codeHaus" />
+                <!--<ref bean="fuin" />-->
+                <!--<ref bean="devzendo" />-->
+                <!--<ref bean="iceFaces" />-->
+                <!--<ref bean="appFuse" />-->
+                <!--<ref bean="fuse" />-->
+                <!--<ref bean="servicemix" />-->
+                <!--<ref bean="dojo" />-->
+                <!--<ref bean="ejb3unit" />-->
+                <!--<ref bean="akka" />-->
+                <!--<ref bean="freehep" />-->
+                <!--<ref bean="guiceyFruit" />-->
+                <!--<ref bean="jasig" />-->
+                <!--<ref bean="objectweb" />-->
+                <!--<ref bean="restlet" />-->
+                <!--<ref bean="scalatools" />-->
+                <!--<ref bean="jbossPublic" />-->
+                <!--<ref bean="slick" />-->
+                <!--<ref bean="smartclient" />-->
+                <!--<ref bean="carbonfive" />-->
+                <!--<ref bean="glassfish" />-->
+                <!--<ref bean="selenium" />-->
+                <!--<ref bean="seleniumThirdParty" />-->
+                <!--<ref bean="googleCode" />-->
+                <!--<ref bean="atlassian" />-->
+                <!--<ref bean="atlassianContrib" />-->
+                <!--<ref bean="springMilestone" />-->
+                <!--<ref bean="springRelease" />-->
+                <!--<ref bean="seasar" />-->
+                <!--<ref bean="geotools" />-->
+                <!--<ref bean="javanet" />-->
+                <!--<ref bean="jfrog" />-->
+                <!--<ref bean="codeHaus" />-->
             </list>
         </property>
     </bean>

@@ -1,34 +1,27 @@
 package versioneye.mojo;
 
 
-import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.htmlcleaner.TagNode;
 import org.sonatype.aether.repository.Authentication;
 import org.sonatype.aether.repository.RemoteRepository;
-import versioneye.domain.MavenRepository;
 import versioneye.domain.Repository;
 import versioneye.dto.ArtifactoryFile;
 import versioneye.dto.ArtifactoryRepoDescription;
 import versioneye.dto.ArtifactoryRepoFileList;
 
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 @Mojo( name = "artifactory", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
-public class ArtifactoryMojo extends SuperMojo {
+public class ArtifactoryMojo extends HtmlMojo {
 
-    private MavenRepository mavenRepository;
     private String baseUrl;
     private Set<String> poms = new HashSet<String>();
-    private String username = "admin";
-    private String password = "admin";
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -147,34 +140,6 @@ public class ArtifactoryMojo extends SuperMojo {
             }
         } catch (Exception ex) {
             getLog().error(ex);
-        }
-    }
-
-    private void processPom(String urlToPom) {
-        try{
-            getLog().info("process file " + urlToPom);
-            TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
-            HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
-            String versionNumber = mavenUrlProcessor.getVersion(pom, properties);
-            String groupId = mavenUrlProcessor.getGroupId(pom, properties);
-            String artifactId = mavenUrlProcessor.getArtifactId(pom, properties);
-            String packaging = mavenUrlProcessor.getPackaging(pom, properties);
-            getLog().info(" -- " + groupId + ":" + artifactId + ":" + versionNumber + " - " + packaging);
-
-            if (packaging != null && packaging.equalsIgnoreCase("pom")){
-                getLog().info(" --- Skipp parent pom --- " + urlToPom);
-                return ;
-            }
-
-            ArtifactInfo artifactInfo = new ArtifactInfo();
-            artifactInfo.groupId = groupId;
-            artifactInfo.artifactId = artifactId;
-            artifactInfo.version = versionNumber;
-
-            resolveDependencies(artifactInfo);
-            parseArtifact(artifactInfo);
-        } catch (Exception exception) {
-            getLog().error(exception);
         }
     }
 

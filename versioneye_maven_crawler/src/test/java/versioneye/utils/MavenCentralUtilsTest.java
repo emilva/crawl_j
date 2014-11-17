@@ -14,6 +14,12 @@ public class MavenCentralUtilsTest {
 
     @Test
     public void doTest(){
+
+        String url = "my_rep/";
+        String nu = url.substring(0, url.length() - 1);
+        System.out.println(nu);
+
+
         String groupId = "org.at.my.place";
         groupId = groupId.replaceAll("\\.", "/");
         assertEquals(groupId, "org/at/my/place");

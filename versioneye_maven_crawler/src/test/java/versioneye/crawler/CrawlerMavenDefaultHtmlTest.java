@@ -5,6 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
 import versioneye.domain.Repository;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: robertreiz
@@ -22,13 +24,50 @@ public class CrawlerMavenDefaultHtmlTest {
         crawler = (ICrawl) context.getBean("crawlerMavenDefaultHtml");
     }
 
-    @Test
-    public void test(){
+    @Test(dependsOnMethods = {"init"})
+    public void getLinksFromPage(){
         Repository repository = (Repository) context.getBean("gradle");
         crawler.setRepository(repository);
-//        String current = "http://gradle.artifactoryonline.com/gradle/libs/org/apache/aries/blueprint/";
-        String current = "http://gradle.artifactoryonline.com/gradle/libs/org/apache/aries/blueprint/org.apache.aries.blueprint.api/";
-        crawler.crawlePackage(current);
+
+        CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
+        List<String> links = htmlCrawler.getLinksFromPage("http://jcenter.bintray.com/");
+
+        assert !links.isEmpty();
+        assert links.get(0).equals("ColumnPack/");
+
+        for (String link: links){
+            System.out.println( link );
+        }
+
+        System.out.println("THIS IS THE END");
+    }
+
+    @Test(dependsOnMethods = {"init"})
+    public void getFirstLevelList(){
+        Repository repository = (Repository) context.getBean("jcenter");
+        crawler.setRepository(repository);
+
+        CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
+        List<String> links = htmlCrawler.getFirstLevelList();
+
+        assert !links.isEmpty();
+        assert links.get(0).equals("http://jcenter.bintray.com/ColumnPack/");
+
+        for (String link: links){
+            System.out.println( link );
+        }
+
+        System.out.println("THIS IS THE END");
+    }
+
+    @Test(dependsOnMethods = {"init"})
+    public void follow(){
+        Repository repository = (Repository) context.getBean("jcenter");
+        crawler.setRepository(repository);
+
+        CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
+        htmlCrawler.follow("http://jcenter.bintray.com/ColumnPack/", "");
+
         System.out.println("THIS IS THE END");
     }
 
