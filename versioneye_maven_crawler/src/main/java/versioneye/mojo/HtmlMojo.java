@@ -102,12 +102,12 @@ public class HtmlMojo extends SuperMojo {
             String prodKey = groupId + "/" + artifactId;
             boolean existAlready = productDao.doesVersionExistAlready( "Java", prodKey, versionNumber );
             if (existAlready){
-                getLog().info("package " + groupId + ":" + artifactId + ":" + versionNumber + " exists already in DB.");
+                getLog().info(" --- Skip package " + groupId + ":" + artifactId + ":" + versionNumber + " because already in DB.");
                 return ;
             }
 
             if (packaging != null && packaging.equalsIgnoreCase("pom")){
-                getLog().info(" --- Skipp parent pom --- " + urlToPom);
+                getLog().info(" --- Skipp parent pom " + urlToPom);
                 return ;
             }
 
