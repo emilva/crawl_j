@@ -91,7 +91,6 @@ public class HtmlMojo extends SuperMojo {
 
     protected void processPom(String urlToPom) {
         try{
-            getLog().info("process file " + urlToPom);
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
             HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
             String groupId       = mavenUrlProcessor.getGroupId(pom, properties);
