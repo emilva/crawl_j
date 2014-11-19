@@ -120,6 +120,7 @@ public class HtmlMojo extends SuperMojo {
             resolveDependencies(artifactInfo);
             parseArtifact(artifactInfo);
         } catch (Exception exception) {
+            getLog().error("urlToPom: " + urlToPom);
             getLog().error(exception);
         }
     }
