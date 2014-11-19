@@ -154,16 +154,19 @@ public class MavenUrlProcessor {
     private String getParentPom(TagNode pom, HashMap<String, String> properties) throws Exception {
         if (pom == null)
             return null;
+
         TagNode parent = httpUtils.getSingleNode(pom.evaluateXPath("//project/parent")) ;
         if (parent == null)
             return null;
-        String group = httpUtils.getSingleValue(parent.evaluateXPath("/groupId"), properties);
+
+        String group    = httpUtils.getSingleValue(parent.evaluateXPath("/groupId"), properties);
         String artifact = httpUtils.getSingleValue(parent.evaluateXPath("/artifactId"), properties);
-        String version = httpUtils.getSingleValue(parent.evaluateXPath("/version"), properties);
+        String version  = httpUtils.getSingleValue(parent.evaluateXPath("/version"), properties);
         String parentKey = group + SLASH + artifact;
         Product product = productDao.getByKey("Java", parentKey);
         if (product == null)
             return null;
+
         if (version == null)
             version = product.getVersion();
         Version versionObj = product.getVersion(version);
