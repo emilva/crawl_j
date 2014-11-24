@@ -32,18 +32,21 @@
         <property name="name"     value="RubyGems" />
         <property name="src"      value="https://rubygems.org/" />
         <property name="repoType" value="RubyGem" />
+        <property name="language" value="Ruby" />
     </bean>
 
     <bean id="pip" class="versioneye.domain.Repository" >
         <property name="name"     value="PIP" />
         <property name="src"      value="http://pypi.python.org/pypi?%3Aaction=index" />
         <property name="repoType" value="PIP" />
+        <property name="language" value="Python" />
     </bean>
 
     <bean id="npm" class="versioneye.domain.Repository" >
         <property name="name"     value="npm" />
         <property name="src"      value="http://search.npmjs.org" />
         <property name="repoType" value="npm" />
+        <property name="language" value="Node.JS" />
     </bean>
 
     <bean id="github" class="versioneye.domain.Repository" >
@@ -56,6 +59,7 @@
         <property name="name"     value="R" />
         <property name="src"      value="http://cran.r-project.org/web/packages/available_packages_by_date.html" />
         <property name="repoType" value="R" />
+        <property name="language" value="R" />
     </bean>
 
     <bean id="productTransferService" class="com.versioneye.crawler.service.ProductTransferService" />
