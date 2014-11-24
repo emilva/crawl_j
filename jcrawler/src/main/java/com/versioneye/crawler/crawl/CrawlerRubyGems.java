@@ -45,7 +45,7 @@ public class CrawlerRubyGems implements ICrawl {
     private Crawle crawle;
     private String execGroup;
     private String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-//    private String[] alphabet = {"B"};
+//    private String[] alphabet = {"Z"};
     private boolean threadable = false;
 
     private IVersionlinkDao versionlinkDao;
@@ -75,7 +75,7 @@ public class CrawlerRubyGems implements ICrawl {
             for (String letter: alphabet){
                 Integer count = getPageCountForLetter(letter);
                 for (int z = 1; z <= count; z++){
-                    System.out.println("collect names from page: " + z + " for " + letter);
+                    System.out.println(gemNames.size() + " names. Collect names from page: " + z + " for letter " + letter);
                     getGemNamesFromPage(letter, String.valueOf(z), gemNames);
                 }
             }
@@ -136,7 +136,7 @@ public class CrawlerRubyGems implements ICrawl {
     private void getGemNamesFromPage(String letter, String pageCount, Set<String> gemNames) throws Exception{
         String resource = "http://rubygems.org/gems?letter="+letter+"&page=" + pageCount;
         TagNode page = httpUtils.getPageForResource(resource);
-        Object[] objects = page.evaluateXPath("//div[@class=\"gems border\"]/ol/li/a");
+        Object[] objects = page.evaluateXPath("//a[@class=\"gems__gem\"]");
         for (Object obj : objects){
             TagNode node = (TagNode) obj;
             String href = node.getAttributeByName("href");
