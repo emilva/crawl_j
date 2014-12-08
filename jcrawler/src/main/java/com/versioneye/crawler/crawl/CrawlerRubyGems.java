@@ -196,20 +196,19 @@ public class CrawlerRubyGems implements ICrawl {
         }
     }
 
-    private void checkLicense(RubyGemProduct gem, Product product){
+    private void checkLicense(RubyGemProduct gem, Product product) {
         if (gem.getLicense() != null && !gem.getLicense().isEmpty()) {
             licenseService.createLicenseIfNotExist(product, gem.getLicense(), null, null, null);
         }
-
-        if (gem.getLicenses() == null || gem.getLicenses().length == 0)
-            checkLicenseTheHardWay(gem, product);
-        else
-            for (String license : gem.getLicenses())
+        if (gem.getLicenses() != null || gem.getLicenses().length > 0){
+            for (String license : gem.getLicenses()){
                 licenseService.createLicenseIfNotExist(product, license, null, null, null);
+            }
+        }
     }
 
     private void checkLicenseTheHardWay(RubyGemProduct gem, Product product){
-        System.out.println("check license for " + product.getProd_key());
+        System.out.println("check license the hard way for " + product.getProd_key());
         String license = licenseChecker.checkLicenseOnGitHub(gem.getSource_code_uri());
         if (license == null || license.isEmpty()){
             license = licenseChecker.checkLicenseOnGitHub(gem.getHomepage_uri());
