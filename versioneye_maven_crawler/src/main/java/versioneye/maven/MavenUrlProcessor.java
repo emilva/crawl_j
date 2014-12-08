@@ -64,7 +64,6 @@ public class MavenUrlProcessor {
                 return;
 
             if (productDao.doesVersionExistAlreadyByGA(groupId, artifactId, versionNumber)){
-                System.out.println("Version exist already: " + key + " : " + versionNumber);
                 return ;
             }
 

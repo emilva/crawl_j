@@ -112,7 +112,6 @@ public class CentralUpdateKnown extends CentralMojo {
                 String versionNumber = document.getV();
 
                 if (productDao.doesVersionExistAlreadyByGA(groupId, artifactId, versionNumber)){
-                    getLog().info(" --- exist already " + groupId + ":" + artifactId + ":" + versionNumber);
                     return ;
                 } else {
                     getLog().info(" --- check new version" + groupId + ":"+ artifactId + ": " + versionNumber);

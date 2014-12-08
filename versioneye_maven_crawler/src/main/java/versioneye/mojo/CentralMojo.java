@@ -89,7 +89,6 @@ public class CentralMojo extends SuperMojo {
             }
 
             if (productDao.doesVersionExistAlreadyByGA(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version)){
-                getLog().info(" - " + artifactInfo.groupId + ":"+ artifactInfo.artifactId + ":" + artifactInfo.version + " exist already! ");
                 return ;
             }
 
