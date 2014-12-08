@@ -133,7 +133,7 @@ public class CrawlerRubyGems implements ICrawl {
         return Integer.parseInt(countString);
     }
 
-    private void getGemNamesFromPage(String letter, String pageCount, Set<String> gemNames) throws Exception{
+    private void getGemNamesFromPage(String letter, String pageCount, Set<String> gemNames) throws Exception {
         String resource = "http://rubygems.org/gems?letter="+letter+"&page=" + pageCount;
         TagNode page = httpUtils.getPageForResource(resource);
         Object[] objects = page.evaluateXPath("//a[@class=\"gems__gem\"]");
@@ -195,6 +195,10 @@ public class CrawlerRubyGems implements ICrawl {
     }
 
     private void checkLicense(RubyGemProduct gem, Product product){
+        if (gem.getLicense() != null && !gem.getLicense().isEmpty()) {
+            licenseService.createLicenseIfNotExist(product, gem.getLicense(), null, null, null);
+        }
+
         if (gem.getLicenses() == null || gem.getLicenses().length == 0)
             checkLicenseTheHardWay(gem, product);
         else

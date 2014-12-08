@@ -25,6 +25,7 @@ public class RubyGemProduct {
     private String info;
 
     private String[] licenses;
+    private String license;
 
     // Links
     private String project_uri;
@@ -85,6 +86,14 @@ public class RubyGemProduct {
 
     public String getName() {
         return name;
+    }
+
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public void setLicenses(String[] licenses) {
