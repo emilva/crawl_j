@@ -78,14 +78,7 @@ public class ProductService {
     public int writeNotifications(Product product, Version version) {
         int count = 0 ;
         try{
-            Product prod = null;
-            if (product.getGroupId() != null && !product.getGroupId().isEmpty() &&
-                    product.getArtifactId() != null && !product.getArtifactId().isEmpty()){
-                prod = productDao.getByGA( product.getGroupId(), product.getArtifactId() );
-            } else {
-                prod = productDao.getByKey( product.getLanguage(), product.getProd_key());
-            }
-
+            Product prod = refetchProduct(product);
             if (prod == null){
                 String errMsg = "no product found for: " + product.getLanguage() + ":" + product.getProd_key();
                 System.out.println(errMsg);
@@ -112,6 +105,20 @@ public class ProductService {
             logUtils.addError("error in CrawlerUtils.writeNotifications", ex.toString(), null);
         }
         return count;
+    }
+
+    public Product refetchProduct(Product product) throws Exception {
+        Product prod = null;
+        if (product.getGroupId() != null && !product.getGroupId().isEmpty() &&
+                product.getArtifactId() != null && !product.getArtifactId().isEmpty()){
+            prod = productDao.getByGA( product.getGroupId(), product.getArtifactId() );
+            if (prod == null){
+                prod = productDao.getByKey( product.getLanguage(), product.getProd_key());
+            }
+        } else {
+            prod = productDao.getByKey( product.getLanguage(), product.getProd_key());
+        }
+        return prod;
     }
 
     public void publishToNewest(Product product, Version version){
