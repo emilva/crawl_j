@@ -63,7 +63,7 @@ public class MavenUrlProcessor {
             if (groupId == null || artifactId == null ||  versionNumber == null || versionNumber.startsWith("$"))
                 return;
 
-            if (productDao.doesVersionExistAlready(repository.getLanguage(), key, versionNumber)){
+            if (productDao.doesVersionExistAlreadyByGA(groupId, artifactId, versionNumber)){
                 System.out.println("Version exist already: " + key + " : " + versionNumber);
                 return ;
             }
@@ -162,8 +162,7 @@ public class MavenUrlProcessor {
         String group    = httpUtils.getSingleValue(parent.evaluateXPath("/groupId"), properties);
         String artifact = httpUtils.getSingleValue(parent.evaluateXPath("/artifactId"), properties);
         String version  = httpUtils.getSingleValue(parent.evaluateXPath("/version"), properties);
-        String parentKey = group + SLASH + artifact;
-        Product product = productDao.getByKey("Java", parentKey);
+        Product product = productDao.getByGA(group, artifact);
         if (product == null)
             return null;
 

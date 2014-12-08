@@ -130,6 +130,23 @@ public class ProductDao implements IProductDao {
         return product;
     }
 
+    public Product getByGA(String groupId, String artifactId) throws Exception {
+        Product product = null;
+        DBCollection products = getCollection();
+        BasicDBObject match = new BasicDBObject();
+        match.put(Product.GROUPID, groupId);
+        match.put(Product.ARTIFACTID, artifactId);
+        DBCursor cursor = products.find(match);
+        if (cursor.size() > 1)
+            throw new Exception("To Much!");
+        if (cursor.hasNext()){
+            DBObject productDB = cursor.next();
+            product = new Product();
+            product.updateFromDbObject(productDB);
+        }
+        return product;
+    }
+
     public Set<Product> getByIds(ObjectId[] ids) throws Exception {
         Product product = null;
         DBCollection products = getCollection();
@@ -196,6 +213,15 @@ public class ProductDao implements IProductDao {
         BasicDBObject match = new BasicDBObject();
         match.put(Product.LANGUAGE, language);
         match.put(Product.PROD_KEY, productKey);
+        match.put("versions.version", version);
+        DBCursor cur = getCollection().find(match);
+        return cur.hasNext();
+    }
+
+    public boolean doesVersionExistAlreadyByGA(String groupId, String artifactId, String version){
+        BasicDBObject match = new BasicDBObject();
+        match.put(Product.GROUPID, groupId);
+        match.put(Product.ARTIFACTID, artifactId);
         match.put("versions.version", version);
         DBCursor cur = getCollection().find(match);
         return cur.hasNext();

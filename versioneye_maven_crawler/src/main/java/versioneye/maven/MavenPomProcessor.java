@@ -6,6 +6,7 @@ import org.apache.maven.model.Parent;
 import versioneye.domain.Product;
 import versioneye.domain.Repository;
 import versioneye.domain.Version;
+import versioneye.persistence.IProductDao;
 import versioneye.service.*;
 import versioneye.utils.LogUtils;
 import versioneye.utils.MavenCentralUtils;
@@ -24,6 +25,7 @@ import java.util.LinkedHashMap;
  */
 public class MavenPomProcessor {
 
+    private IProductDao productDao;
     private ProductService productService;
     private DependencyModelService dependencyModelService;
     private DeveloperModelService developerModelService;
@@ -124,27 +126,35 @@ public class MavenPomProcessor {
     }
 
     private Product buildProduct(String groupId, String artifactId, String version, String urlToProduct, Model model){
-        String key = groupId + "/" + artifactId;
-        Product product = new Product();
-
-        product.setProd_key(key.toLowerCase());
-        product.setGroupId(groupId);
-        product.setName(artifactId);
-        product.setVersion(version);
-        product.setArtifactId(artifactId);
-        if (repository != null){
-            product.addRepository(repository);
-            product.setProd_type(repository.getRepoType());
-            product.setLanguage(repository.getLanguage());
-        } else {
-            product.setProd_type("Maven2");
-            product.setLanguage("Java");
+        try {
+            Product product = productDao.getByGA(groupId, artifactId);
+            if (product == null) {
+                String key = groupId + "/" + artifactId;
+                product = new Product();
+                product.setProd_key(key.toLowerCase());
+                product.setGroupId(groupId);
+                product.setArtifactId(artifactId);
+                product.setName(artifactId);
+                if (repository != null){
+                    product.addRepository(repository);
+                    product.setProd_type(repository.getRepoType());
+                    product.setLanguage(repository.getLanguage());
+                } else {
+                    product.setProd_type("Maven2");
+                    product.setLanguage("Java");
+                }
+            }
+            product.setVersion(version);
+            product.setLink(urlToProduct);
+            if (model != null)
+                product.setDescription(model.getDescription());
+            return product;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            String message = "ERROR in buildProduct";
+            logUtils.addError(message, ex.toString(), null);
+            return null;
         }
-
-        product.setLink(urlToProduct);
-        if (model != null)
-            product.setDescription(model.getDescription());
-        return product;
     }
 
     private HashMap<String, String> getProperties(String groupId, String artifactId, String version){
@@ -205,5 +215,13 @@ public class MavenPomProcessor {
 
     public void setDeveloperModelService(DeveloperModelService developerModelService) {
         this.developerModelService = developerModelService;
+    }
+
+    public IProductDao getProductDao() {
+        return productDao;
+    }
+
+    public void setProductDao(IProductDao productDao) {
+        this.productDao = productDao;
     }
 }

@@ -27,6 +27,7 @@ public interface IProductDao {
     boolean existAlready(String language, String key);
 
     boolean doesVersionExistAlready(String language, String productKey, String version);
+    boolean doesVersionExistAlreadyByGA(String groupId, String artifactId, String version);
 
     boolean doesPomUrlExistAlready(String url);
 
@@ -45,6 +46,7 @@ public interface IProductDao {
 
     Product getByKey(String language, String key) throws Exception;
     Product getByKey(String language, String groupId, String artifactId) throws Exception;
+    Product getByGA(String groupId, String artifactId) throws Exception;
 
     Product getById(String id) throws Exception;
 

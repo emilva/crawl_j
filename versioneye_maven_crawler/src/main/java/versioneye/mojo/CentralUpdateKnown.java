@@ -111,9 +111,8 @@ public class CentralUpdateKnown extends CentralMojo {
             for (Document document : response.getDocs()){
                 String versionNumber = document.getV();
 
-                String key = groupId + "/" + artifactId;
-                if (productDao.doesVersionExistAlready(mavenRepository.getLanguage(), key, versionNumber)){
-                    getLog().info(" --- exist already " + key + ":" + versionNumber);
+                if (productDao.doesVersionExistAlreadyByGA(groupId, artifactId, versionNumber)){
+                    getLog().info(" --- exist already " + groupId + ":" + artifactId + ":" + versionNumber);
                     return ;
                 } else {
                     getLog().info(" --- check new version" + groupId + ":"+ artifactId + ": " + versionNumber);

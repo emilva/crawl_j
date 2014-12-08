@@ -60,8 +60,7 @@ public class SingleMojo extends SuperMojo {
 
             IteratorSearchResponse response = mavenIndexer.executeGroupArtifactSearch(groupid, artifactid, null);
             for ( ArtifactInfo ai : response ) {
-                String key = ai.groupId + "/" + ai.artifactId;
-                if (skipKnownVersions && productDao.doesVersionExistAlready(mavenRepository.getLanguage(), key, ai.version)){
+                if (skipKnownVersions && productDao.doesVersionExistAlreadyByGA(ai.groupId, ai.artifactId, ai.version)){
                     getLog().info(" - " + ai.groupId + ":"+ ai.artifactId + ": " + ai.version + " exist already! ");
                     continue;
                 }

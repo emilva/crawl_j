@@ -47,7 +47,7 @@ public class ProductService {
         if (version.getProduct_key() == null || version.getVersion() == null || version.getVersion().trim().equals(""))
             return false;
 
-        if (productDao.doesVersionExistAlready(product.getLanguage(), product.getProd_key(), version.getVersion())){
+        if (existProduct(product, version)){
             if (repository != null && !productDao.doesRepositoryExistAlready(product.getLanguage(), product.getProd_key(), repository.getSrc()))
                 productDao.addNewRepository(product.getLanguage(), product.getProd_key(), repository);
             return false;
@@ -64,10 +64,28 @@ public class ProductService {
         return true;
     }
 
+    private boolean existProduct(Product product, Version version){
+        boolean exist = false;
+        if (product.getGroupId() != null && !product.getGroupId().isEmpty() &&
+                product.getArtifactId() != null && !product.getArtifactId().isEmpty()){
+            exist = productDao.doesVersionExistAlreadyByGA (product.getGroupId(), product.getArtifactId(), version.getVersion());
+        } else {
+            exist = productDao.doesVersionExistAlready(product.getLanguage(), product.getProd_key(), version.getVersion());
+        }
+        return exist;
+    }
+
     public int writeNotifications(Product product, Version version) {
         int count = 0 ;
         try{
-            Product prod = productDao.getByKey( product.getLanguage(), product.getProd_key() );
+            Product prod = null;
+            if (product.getGroupId() != null && !product.getGroupId().isEmpty() &&
+                    product.getArtifactId() != null && !product.getArtifactId().isEmpty()){
+                prod = productDao.getByGA( product.getGroupId(), product.getArtifactId() );
+            } else {
+                prod = productDao.getByKey( product.getLanguage(), product.getProd_key());
+            }
+
             if (prod == null){
                 String errMsg = "no product found for: " + product.getLanguage() + ":" + product.getProd_key();
                 System.out.println(errMsg);

@@ -41,8 +41,7 @@ public class MavenCentralUtils {
             for (Document doc: resp.getResponse().getDocs()){
                 if (doc.getA() == null || doc.getG() == null || doc.getV() == null)
                     continue;
-                String key = groupId + "/" + artifactId;
-                if (productDao.doesVersionExistAlready(repository.getLanguage(), key, doc.getV()) )
+                if (productDao.doesVersionExistAlreadyByGA(groupId, artifactId, doc.getV()) )
                     continue;
                 String urlToVersion = mavenUrlUtils.getVersionUrl( groupId, artifactId, doc.getV() );
                 String urlToPom = mavenUrlUtils.getPomUrl( groupId, artifactId, doc.getV() );

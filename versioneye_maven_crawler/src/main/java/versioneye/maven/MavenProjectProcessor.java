@@ -149,7 +149,7 @@ public class MavenProjectProcessor {
     private Product fetchOrCreateProduct(MavenProject project) {
         Product product = null;
         try {
-            product = productDao.getByKey(repository.getLanguage(), project.getGroupId(), project.getArtifactId());
+            product = productDao.getByGA(project.getGroupId(), project.getArtifactId());
         } catch (Exception ex){
             ex.printStackTrace();
         }

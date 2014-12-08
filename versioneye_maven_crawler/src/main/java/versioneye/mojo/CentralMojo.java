@@ -88,10 +88,7 @@ public class CentralMojo extends SuperMojo {
                 return ;
             }
 
-            String key = artifactInfo.groupId + "/" + artifactInfo.artifactId;
-            key = key.toLowerCase();
-
-            if (productDao.doesVersionExistAlready(mavenRepository.getLanguage(), key, artifactInfo.version)){
+            if (productDao.doesVersionExistAlreadyByGA(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version)){
                 getLog().info(" - " + artifactInfo.groupId + ":"+ artifactInfo.artifactId + ":" + artifactInfo.version + " exist already! ");
                 return ;
             }

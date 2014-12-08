@@ -38,6 +38,7 @@
     </bean>
     <bean id="mavenPomProcessor"     class="versioneye.maven.MavenPomProcessor" >
         <property name="repository" ref="mavenCentral" />
+        <property name="productDao" ref="productDao" />
     </bean>
 
     <bean id="httpUtils"         class="versioneye.utils.HttpUtils" />
