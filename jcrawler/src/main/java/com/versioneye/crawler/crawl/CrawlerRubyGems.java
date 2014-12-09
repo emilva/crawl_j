@@ -121,6 +121,7 @@ public class CrawlerRubyGems implements ICrawl {
             }
         } catch (Exception ex) {
             logUtils.addError("ERROR in CrawlerRubyGems.crawlePackage("+ name +")", ex.toString(), crawle);
+            ex.printStackTrace();
         }
     }
 
@@ -199,7 +200,7 @@ public class CrawlerRubyGems implements ICrawl {
         if (gem.getLicense() != null && !gem.getLicense().isEmpty()) {
             licenseService.createLicenseIfNotExist(product, gem.getLicense(), null, null, null);
         }
-        if (gem.getLicenses() != null || gem.getLicenses().length > 0){
+        if (gem.getLicenses() != null && gem.getLicenses().length > 0){
             for (String license : gem.getLicenses()){
                 licenseService.createLicenseIfNotExist(product, license, null, null, null);
             }
