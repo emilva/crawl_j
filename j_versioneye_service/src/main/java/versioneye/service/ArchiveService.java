@@ -35,10 +35,8 @@ public class ArchiveService {
             versionarchiveDao.create(archive);
         } catch (Exception ex){
             logUtils.addError("error in ArchiveService.createArchive", ex.toString(), null);
-            System.out.println("error in ArchiveService.createArchive " + urlToArchive);
-            for (StackTraceElement ste : ex.getStackTrace()){
-                System.out.println(ste.toString());
-            }
+            System.out.println("error in ArchiveService.createArchive for " + urlToArchive);
+            ex.printStackTrace();
         }
     }
 
