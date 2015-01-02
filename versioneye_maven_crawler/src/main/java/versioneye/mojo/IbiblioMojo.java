@@ -27,11 +27,14 @@ public class IbiblioMojo extends CentralMojo {
             mavenPomProcessor = (MavenPomProcessor) context.getBean("mavenPomProcessor");
             mavenRepositoryDao = (IMavenRepostoryDao) context.getBean("mavenRepositoryDao");
             productDao = (IProductDao) context.getBean("productDao");
+
             mavenRepository = mavenRepositoryDao.findByName("ibiblio");
             Repository repository = repositoryUtils.convertRepository(mavenRepository);
             mavenProjectProcessor.setRepository(repository);
             mavenPomProcessor.setRepository(repository);
-            addAllRepos();
+
+            addRepo(mavenRepository);
+
             super.doUpdateFromIndex();
         } catch( Exception exception ){
             getLog().error(exception);

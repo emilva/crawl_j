@@ -25,11 +25,14 @@ public class PenthaoMojo extends CentralMojo {
             mavenPomProcessor = (MavenPomProcessor) context.getBean("mavenPomProcessor");
             mavenRepositoryDao = (IMavenRepostoryDao) context.getBean("mavenRepositoryDao");
             productDao = (IProductDao) context.getBean("productDao");
+
             mavenRepository = mavenRepositoryDao.findByName("pentaho");
             Repository repository = repositoryUtils.convertRepository(mavenRepository);
             mavenProjectProcessor.setRepository(repository);
             mavenPomProcessor.setRepository(repository);
+
             addRepo(mavenRepository);
+
             super.doUpdateFromIndex();
         } catch( Exception exception ){
             getLog().error(exception);
