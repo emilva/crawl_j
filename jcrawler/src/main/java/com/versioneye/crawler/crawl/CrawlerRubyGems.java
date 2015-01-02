@@ -81,6 +81,7 @@ public class CrawlerRubyGems implements ICrawl {
             }
         } catch (Exception exception) {
             logUtils.addError("ERROR in getGemNames()", exception.toString(), crawle);
+            exception.printStackTrace();
         }
         return gemNames;
     }
