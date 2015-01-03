@@ -66,8 +66,9 @@ public class ProductService {
 
     private boolean existProduct(Product product, Version version){
         boolean exist = false;
-        if (product.getGroupId() != null && !product.getGroupId().isEmpty() &&
-                product.getArtifactId() != null && !product.getArtifactId().isEmpty()){
+        boolean groupIdExists = product.getGroupId() != null && !product.getGroupId().isEmpty();
+        boolean artifactIdExists = product.getArtifactId() != null && !product.getArtifactId().isEmpty();
+        if (groupIdExists && artifactIdExists){
             exist = productDao.doesVersionExistAlreadyByGA (product.getGroupId(), product.getArtifactId(), version.getVersion());
         } else {
             exist = productDao.doesVersionExistAlready(product.getLanguage(), product.getProd_key(), version.getVersion());
