@@ -35,6 +35,18 @@ public class HttpUtilsTest {
         assert reader != null;
     }
 
+    @Test(dependsOnMethods = {"init"})
+    public void getResponseCode() throws Exception {
+        int code = httpUtils.getResponseCode("http://search.maven.org/remotecontent?filepath=net/sf/doolin/Doolin-Context/0.10.2/Doolin-Context-0.10.2.pom");
+        assert code == 200;
+    }
+
+    @Test(dependsOnMethods = {"init"})
+    public void getResponseCodeNegative() throws Exception {
+        int code = httpUtils.getResponseCode("http://search.maven.org/remotecontent?filepath=net/sf/doolin/Doolin-Context/0.10.2/Doolin-Context-0.10.2.pom_f");
+        assert code != 200;
+    }
+
 //    @Test(dependsOnMethods = {"init"})
 //    public void getResultReaderWithAuth() throws Exception {
 //        String url = "http://localhost:8081/artifactory/api/storage/remote-repos?list&deep=1&listFolders=0&mdTimestamps=1";
