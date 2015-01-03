@@ -113,6 +113,7 @@ public class CrawlerRubyGems implements ICrawl {
             versions.add(gem.getGemVersion()); // This is for the case that versions is empty.
             for (RubyGemsVersion ver: versions){
                 if (productDao.doesVersionExistAlready(product.getLanguage(), product.getProd_key(), ver.getNumber())){
+                    checkLicense(gem, product);
                     continue;
                 }
                 createVersionIfNotExist(product, gem, ver);
