@@ -129,11 +129,11 @@ public class MavenPomProcessor {
         try {
             Product product = productDao.getByGA(groupId, artifactId);
             if (product == null) {
-                String key = groupId + "/" + artifactId;
+                String key = groupId.toLowerCase() + "/" + artifactId.toLowerCase();
                 product = new Product();
                 product.setProd_key(key.toLowerCase());
-                product.setGroupId(groupId);
-                product.setArtifactId(artifactId);
+                product.setGroupId(groupId.toLowerCase());
+                product.setArtifactId(artifactId.toLowerCase());
                 product.setName(artifactId);
                 if (repository != null){
                     product.addRepository(repository);

@@ -149,7 +149,7 @@ public class MavenProjectProcessor {
     private Product fetchOrCreateProduct(MavenProject project) {
         Product product = null;
         try {
-            product = productDao.getByGA(project.getGroupId(), project.getArtifactId());
+            product = productDao.getByGA(project.getGroupId().toLowerCase(), project.getArtifactId().toLowerCase());
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -170,8 +170,8 @@ public class MavenProjectProcessor {
             product.setProd_type("Maven2");
             product.setLanguage("Java");
         }
-        product.setGroupId(project.getGroupId());
-        product.setArtifactId(project.getArtifactId());
+        product.setGroupId(project.getGroupId().toLowerCase());
+        product.setArtifactId(project.getArtifactId().toLowerCase());
         product.setProd_key(project.getGroupId().toLowerCase() + "/" + project.getArtifactId().toLowerCase());
         product.setName(project.getArtifactId());
         product.setVersion(project.getVersion());
