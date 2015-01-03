@@ -65,9 +65,13 @@ public class HttpUtils {
     }
 
     public static int getResponseCode(String urlString) throws MalformedURLException, IOException {
+        String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
+        System.setProperty("http.agent", userAgent);
         URL u = new URL(urlString);
         HttpURLConnection huc =  (HttpURLConnection) u.openConnection();
         huc.setRequestMethod("GET");
+        huc.setConnectTimeout(5000); // 5 seconds
+        huc.setRequestProperty("User-Agent", userAgent);
         huc.connect();
         return huc.getResponseCode();
     }
