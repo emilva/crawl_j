@@ -164,6 +164,11 @@ public class ProductDaoTest {
     }
 
     @Test(dependsOnMethods = {"addVersion"})
+    public void doesVersionExistAlreadyByGA(){
+        Assert.assertTrue( productDao.doesVersionExistAlreadyByGA(product.getGroupId(), product.getArtifactId(), "1.0") );
+    }
+
+    @Test(dependsOnMethods = {"addVersion"})
     public void addRepo(){
         RepoType repoType = new RepoType();
         repoType.setName("Maven2");
