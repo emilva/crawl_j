@@ -52,31 +52,31 @@ public class ArchiveService {
         String urlToSourcJar   = urlToPom.replaceAll(".pom", "-sources.jar");
         String urlToJavaDocJar = urlToPom.replaceAll(".pom", "-javadoc.jar");
 
-        String urlToZip        = urlToPom.replaceAll(".pom", ".zip");
-        String urlToTarGz      = urlToPom.replaceAll(".pom", ".tar.gz");
-        String urlToWar        = urlToPom.replaceAll(".pom", ".war");
-        String urlToEar        = urlToPom.replaceAll(".pom", ".ear");
-        String urlToAar        = urlToPom.replaceAll(".pom", ".aar");
+//        String urlToZip        = urlToPom.replaceAll(".pom", ".zip");
+//        String urlToTarGz      = urlToPom.replaceAll(".pom", ".tar.gz");
+//        String urlToWar        = urlToPom.replaceAll(".pom", ".war");
+//        String urlToEar        = urlToPom.replaceAll(".pom", ".ear");
+//        String urlToAar        = urlToPom.replaceAll(".pom", ".aar");
 
         String jarName        = product.getArtifactId() + "-" + product.getVersion() + ".jar";
         String jarSourceName  = product.getArtifactId() + "-" + product.getVersion() + "-sources.jar";
         String jarJavadocName = product.getArtifactId() + "-" + product.getVersion() + "-javadoc.jar";
         String pomName        = product.getArtifactId() + "-" + product.getVersion() + ".pom";
-        String zipName        = product.getArtifactId() + "-" + product.getVersion() + ".zip";
-        String tarGzName      = product.getArtifactId() + "-" + product.getVersion() + ".tar.gz";
-        String warName        = product.getArtifactId() + "-" + product.getVersion() + ".war";
-        String earName        = product.getArtifactId() + "-" + product.getVersion() + ".ear";
-        String aarName        = product.getArtifactId() + "-" + product.getVersion() + ".aar";
+//        String zipName        = product.getArtifactId() + "-" + product.getVersion() + ".zip";
+//        String tarGzName      = product.getArtifactId() + "-" + product.getVersion() + ".tar.gz";
+//        String warName        = product.getArtifactId() + "-" + product.getVersion() + ".war";
+//        String earName        = product.getArtifactId() + "-" + product.getVersion() + ".ear";
+//        String aarName        = product.getArtifactId() + "-" + product.getVersion() + ".aar";
 
         createArchive(product, urlToPom,        pomName);
         createArchive(product, urlToJar,        jarName);
         createArchive(product, urlToSourcJar,   jarSourceName);
         createArchive(product, urlToJavaDocJar, jarJavadocName);
-        createArchive(product, urlToZip,        zipName);
-        createArchive(product, urlToTarGz,      tarGzName);
-        createArchive(product, urlToWar,        warName);
-        createArchive(product, urlToEar,        earName);
-        createArchive(product, urlToAar,        aarName);
+//        createArchive(product, urlToZip,        zipName);
+//        createArchive(product, urlToTarGz,      tarGzName);
+//        createArchive(product, urlToWar,        warName);
+//        createArchive(product, urlToEar,        earName);
+//        createArchive(product, urlToAar,        aarName);
     }
 
     public void setVersionarchiveDao(IVersionarchiveDao versionarchiveDao) {
