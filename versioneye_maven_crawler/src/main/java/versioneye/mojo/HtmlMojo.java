@@ -36,15 +36,15 @@ public class HtmlMojo extends SuperMojo {
         if (startPoint == null || startPoint.equals("")){
             startPoint = src;
         }
-        follow(startPoint, "");
+        follow(startPoint);
     }
 
-    public void follow(String currentUrl, String prevUrl){
+    public void follow(String currentUrl){
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
             if (isFollowable(href)){
                 String newUrl = currentUrl + href;
-                follow(newUrl, currentUrl);
+                follow(newUrl);
             } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
                 String newUrl = currentUrl + href;
                 processPom(newUrl);
