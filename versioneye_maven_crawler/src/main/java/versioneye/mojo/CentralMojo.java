@@ -84,7 +84,6 @@ public class CentralMojo extends SuperMojo {
             final Document doc = indexReader.document( i );
             final ArtifactInfo artifactInfo = IndexUtils.constructArtifactInfo( doc, context );
             if (artifactInfo == null || artifactInfo.groupId == null || artifactInfo.artifactId == null){
-                getLog().info("artifactInfo is null");
                 return ;
             }
 
