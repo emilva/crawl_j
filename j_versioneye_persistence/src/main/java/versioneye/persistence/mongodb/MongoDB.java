@@ -40,13 +40,14 @@ public class MongoDB {
     }
 
     public synchronized void initDB(){
+        System.out.println("initDB - MongoDB " + host + ":" + port);
         try {
             Mongo mongo = null;
 
             String db_host = System.getenv("DB_PORT_27017_TCP_ADDR");
             String db_port = System.getenv("DB_PORT_27017_TCP_PORT");
 
-            System.out.println("host/port: " + db_host + ":" + db_port);
+            System.out.println("read ENV host/port: " + db_host + ":" + db_port);
 
             if (db_host != null && !db_host.isEmpty() && db_port != null && !db_port.isEmpty()){
                 host = db_host;
