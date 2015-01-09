@@ -89,7 +89,7 @@ public class CrawlerRubyGems implements ICrawl {
     public void crawlePackage(String name) {
         System.out.println("crawle rubygem : " + name);
         try{
-            String resource = "http://rubygems.org/api/v1/gems/" + name + ".json";
+            String resource = "https://rubygems.org/api/v1/gems/" + name + ".json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             RubyGemProduct gem = mapper.readValue(reader, RubyGemProduct.class);
@@ -105,7 +105,7 @@ public class CrawlerRubyGems implements ICrawl {
             }
             createProductLinkIfNotExist(product);
 
-            String resourceVersions = "http://rubygems.org/api/v1/versions/" + name + ".json";
+            String resourceVersions = "https://rubygems.org/api/v1/versions/" + name + ".json";
             Reader readerVersions = httpUtils.getResultReader(resourceVersions);
             ObjectMapper mapperVersions = new ObjectMapper();
             List<RubyGemsVersion> versions = mapperVersions.readValue(readerVersions, new TypeReference<List<RubyGemsVersion>>() {} ) ;
@@ -128,7 +128,7 @@ public class CrawlerRubyGems implements ICrawl {
     }
 
     private Integer getPageCountForLetter(String letter) throws Exception{
-        String resource = "http://rubygems.org/gems?letter=" + letter;
+        String resource = "https://rubygems.org/gems?letter=" + letter;
         TagNode page = httpUtils.getPageForResource(resource);
         Object[] objects = page.evaluateXPath("//div[@class=\"pagination\"]/a");
         Object obj = objects[objects.length - 2];
@@ -138,7 +138,7 @@ public class CrawlerRubyGems implements ICrawl {
     }
 
     private void getGemNamesFromPage(String letter, String pageCount, Set<String> gemNames) throws Exception {
-        String resource = "http://rubygems.org/gems?letter="+letter+"&page=" + pageCount;
+        String resource = "https://rubygems.org/gems?letter="+letter+"&page=" + pageCount;
         TagNode page = httpUtils.getPageForResource(resource);
         Object[] objects = page.evaluateXPath("//a[@class=\"gems__gem\"]");
         for (Object obj : objects){
@@ -181,7 +181,7 @@ public class CrawlerRubyGems implements ICrawl {
     private void createArchiveIfNotExist(Product product){
         String archiveName = product.getName() + "-" + product.getVersion() + ".gem";
         Versionarchive archive = new Versionarchive(product.getLanguage(), product.getProd_key(),
-                archiveName, "http://rubygems.org/gems/" + archiveName);
+                archiveName, "https://rubygems.org/gems/" + archiveName);
         archive.setVersion_id(product.getVersion());
         archiveService.createArchiveIfNotExist(product, archive);
     }
