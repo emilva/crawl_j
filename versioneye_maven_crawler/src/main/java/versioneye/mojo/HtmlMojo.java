@@ -1,15 +1,19 @@
 package versioneye.mojo;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.htmlcleaner.TagNode;
 import versioneye.domain.MavenRepository;
 import versioneye.domain.Repository;
+import versioneye.service.RabbitMqService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class HtmlMojo extends SuperMojo {
 
@@ -23,11 +27,16 @@ public class HtmlMojo extends SuperMojo {
 
     protected Repository repository;
 
+    protected final static String QUEUE_NAME = "html_worker";
+    protected Connection connection;
+    protected Channel channel;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
        super.execute();
     }
 
     public void crawl() {
+        initTheRabbit();
         if (repository.getFollowType().equals("text")){
             split1Pattern = "(?i)href=(?=.*['\"])(.*?)(?=.*['\"])>";
             split2Pattern = "<.*";
@@ -37,6 +46,7 @@ public class HtmlMojo extends SuperMojo {
             startPoint = src;
         }
         follow(startPoint);
+        closeTheRabbit();
     }
 
     public void follow(String currentUrl){
@@ -47,7 +57,8 @@ public class HtmlMojo extends SuperMojo {
                 follow(newUrl);
             } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
                 String newUrl = currentUrl + href;
-                processPom(newUrl);
+                sendPom(newUrl);
+//                processPom(newUrl);
                 return ;
             }
         }
@@ -89,6 +100,17 @@ public class HtmlMojo extends SuperMojo {
                 !url.startsWith("https://");
     }
 
+    protected void sendPom(String urlToPom){
+        try{
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.basicPublish("", QUEUE_NAME, null, urlToPom.getBytes());
+            System.out.println(" [x] Sent '" + urlToPom + "'");
+        } catch (Exception exception) {
+            getLog().error("urlToPom: " + urlToPom);
+            getLog().error(exception);
+        }
+    }
+
     protected void processPom(String urlToPom) {
         try{
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
@@ -120,6 +142,27 @@ public class HtmlMojo extends SuperMojo {
             parseArtifact(artifactInfo);
         } catch (Exception exception) {
             getLog().error("urlToPom: " + urlToPom);
+            getLog().error(exception);
+        }
+    }
+
+    protected void initTheRabbit(){
+        try {
+            Properties properties = getProperties();
+            String rabbitmqAddr = properties.getProperty("rabbitmq_addr");
+            String rabbitmqPort = properties.getProperty("rabbitmq_port");
+            connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
+            channel = connection.createChannel();
+        } catch (Exception exception){
+            getLog().error(exception);
+        }
+    }
+
+    protected void closeTheRabbit(){
+        try{
+            channel.close();
+            connection.close();
+        } catch (Exception exception){
             getLog().error(exception);
         }
     }
