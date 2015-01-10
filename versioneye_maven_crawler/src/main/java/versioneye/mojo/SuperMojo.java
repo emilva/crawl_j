@@ -23,6 +23,7 @@ import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.domain.MavenRepository;
+import versioneye.domain.Repository;
 import versioneye.maven.MavenPomProcessor;
 import versioneye.maven.MavenProjectProcessor;
 import versioneye.maven.MavenUrlProcessor;
@@ -65,6 +66,8 @@ public abstract class SuperMojo extends AbstractMojo {
     @Parameter( defaultValue = "${basedir}", property = "basedir", required = true)
     protected File projectDirectory;
 
+    protected MavenRepository mavenRepository;
+    protected Repository repository;
     protected MavenProjectProcessor mavenProjectProcessor;
     protected MavenPomProcessor mavenPomProcessor;
     protected MavenUrlProcessor mavenUrlProcessor;
@@ -73,6 +76,7 @@ public abstract class SuperMojo extends AbstractMojo {
     protected IGlobalSettingDao globalSettingDao;
     protected RepositoryUtils repositoryUtils = new RepositoryUtils();
     protected HttpUtils httpUtils;
+    protected ApplicationContext context;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
@@ -159,6 +163,11 @@ public abstract class SuperMojo extends AbstractMojo {
         if (repository == null){
             return ;
         }
+        for (RemoteRepository rr : repos ){
+            if (rr.getId().equals(repository.getName())){
+                return ;
+            }
+        }
         RemoteRepository remoteRepository = new RemoteRepository(repository.getName(), "default", repository.getUrl());
         remoteRepository.getPolicy(false).setUpdatePolicy("always");
         repos.add(remoteRepository);
@@ -215,6 +224,18 @@ public abstract class SuperMojo extends AbstractMojo {
             throw new MojoExecutionException(propFile + " is missing!");
 
         return propertiesUtils.readProperties(propFile);
+    }
+
+    protected void setRepository(String repoName){
+        if (context == null){
+            context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        }
+        repository = (Repository) context.getBean(repoName);
+        mavenProjectProcessor.setRepository(repository);
+        mavenPomProcessor.setRepository(repository);
+
+        mavenRepository = mavenRepositoryDao.findByName(repoName);
+        addRepo(mavenRepository);
     }
 
 }

@@ -39,12 +39,27 @@ public class HtmlWorkerMojo extends HtmlMojo {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
                 String message = new String(delivery.getBody());
                 System.out.println(" [x] Received '" + message + "'");
-                processPom(message);
+                processMessage( message );
             }
         } catch( Exception exception ){
             exception.printStackTrace();
             getLog().error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
+        }
+    }
+
+    private void processMessage(String message){
+        try{
+            String[] sps = message.split("::");
+            String repoName = sps[0].toLowerCase();
+            String pomUrl = sps[1];
+
+            setRepository( repoName );
+
+            processPom( pomUrl );
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            getLog().error(exception);
         }
     }
 

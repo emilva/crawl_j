@@ -6,8 +6,6 @@ import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.htmlcleaner.TagNode;
-import versioneye.domain.MavenRepository;
-import versioneye.domain.Repository;
 import versioneye.service.RabbitMqService;
 
 import java.util.ArrayList;
@@ -17,15 +15,12 @@ import java.util.Properties;
 
 public class HtmlMojo extends SuperMojo {
 
-    protected MavenRepository mavenRepository;
     protected String username = "admin";
     protected String password = "admin";
 
     protected String split1Pattern = "(?i)href=\"";
     protected String split2Pattern = "\".*";
     protected String startPoint;
-
-    protected Repository repository;
 
     protected final static String QUEUE_NAME = "html_worker";
     protected Connection connection;
@@ -102,9 +97,10 @@ public class HtmlMojo extends SuperMojo {
 
     protected void sendPom(String urlToPom){
         try{
+            String message = repository.getName() + "::" + urlToPom;
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            channel.basicPublish("", QUEUE_NAME, null, urlToPom.getBytes());
-            System.out.println(" [x] Sent '" + urlToPom + "'");
+            channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
+            System.out.println(" [x] Sent '" + message + "'");
         } catch (Exception exception) {
             getLog().error("urlToPom: " + urlToPom);
             getLog().error(exception);
