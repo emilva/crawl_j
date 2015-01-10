@@ -47,6 +47,9 @@
     <bean id="productDao"          class="versioneye.persistence.mongodb.ProductDao" >
         <property name="mongoDB" ref="mongoDb" />
     </bean>
+    <bean id="pomDao"          class="versioneye.persistence.mongodb.PomDao" >
+        <property name="mongoDB" ref="mongoDb" />
+    </bean>
     <bean id="globalSettingDao"          class="versioneye.persistence.mongodb.GlobalSettingDao" >
         <property name="mongoDB" ref="mongoDb" />
     </bean>

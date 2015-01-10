@@ -80,7 +80,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
-            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+            context = new ClassPathXmlApplicationContext("applicationContext.xml");
             mavenProjectProcessor = (MavenProjectProcessor) context.getBean("mavenProjectProcessor");
             mavenPomProcessor = (MavenPomProcessor) context.getBean("mavenPomProcessor");
             mavenUrlProcessor = (MavenUrlProcessor) context.getBean("mavenUrlProcessor");

@@ -6,6 +6,8 @@ import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.htmlcleaner.TagNode;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import versioneye.persistence.IPomDao;
 import versioneye.service.RabbitMqService;
 
 import java.util.ArrayList;
@@ -25,9 +27,14 @@ public class HtmlMojo extends SuperMojo {
     protected final static String QUEUE_NAME = "html_worker";
     protected Connection connection;
     protected Channel channel;
+    protected IPomDao pomDao;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
        super.execute();
+       if (context == null){
+           context = new ClassPathXmlApplicationContext("applicationContext.xml");
+       }
+       pomDao = (IPomDao) context.getBean("pomDao");
     }
 
     public void crawl() {
@@ -97,6 +104,10 @@ public class HtmlMojo extends SuperMojo {
 
     protected void sendPom(String urlToPom){
         try{
+            if (pomDao.existsAlready(urlToPom)){
+                getLog().info("Skip pom, because it was laready parsed! " + urlToPom);
+                return ;
+            }
             String message = repository.getName() + "::" + urlToPom;
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
@@ -136,6 +147,7 @@ public class HtmlMojo extends SuperMojo {
 
             resolveDependencies(artifactInfo);
             parseArtifact(artifactInfo);
+            pomDao.create(urlToPom);
         } catch (Exception exception) {
             getLog().error("urlToPom: " + urlToPom);
             getLog().error(exception);
