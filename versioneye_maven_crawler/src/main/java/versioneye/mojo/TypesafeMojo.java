@@ -18,13 +18,7 @@ public class TypesafeMojo extends HtmlMojo {
             username = null;
             password = null;
 
-            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            repository = (Repository) context.getBean("typesafe");
-            mavenProjectProcessor.setRepository(repository);
-            mavenPomProcessor.setRepository(repository);
-
-            mavenRepository = mavenRepositoryDao.findByName("typesafe");
-            addRepo(mavenRepository);
+            setRepository("typesafe");
 
             crawl();
         } catch( Exception exception ){

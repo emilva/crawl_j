@@ -20,17 +20,7 @@ public class JcenterMojo extends HtmlMojo {
             username = null;
             password = null;
 
-            ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-            repository = (Repository) context.getBean("jcenter");
-            mavenProjectProcessor.setRepository(repository);
-            mavenPomProcessor.setRepository(repository);
-
-            mavenRepository = mavenRepositoryDao.findByName("jcenter");
-            addRepo(mavenRepository);
-
-            for (RemoteRepository repo : repos){
-                getLog().info(repo.getUrl());
-            }
+            setRepository("jcenter");
 
             crawl();
         } catch( Exception exception ){
