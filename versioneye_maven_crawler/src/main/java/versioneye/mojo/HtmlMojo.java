@@ -129,7 +129,6 @@ public class HtmlMojo extends SuperMojo {
 
             boolean existAlready = productDao.doesVersionExistAlreadyByGA( groupId.toLowerCase(), artifactId.toLowerCase(), versionNumber );
             if (existAlready){
-                getLog().info(" --- Skip package " + groupId + ":" + artifactId + ":" + versionNumber + " because already in DB.");
                 pomDao.create(urlToPom);
                 return ;
             }
@@ -143,8 +142,6 @@ public class HtmlMojo extends SuperMojo {
             artifactInfo.groupId    = groupId;
             artifactInfo.artifactId = artifactId;
             artifactInfo.version    = versionNumber;
-
-            getLog().info("process pom -- " + groupId + ":" + artifactId + ":" + versionNumber + " packaging: " + packaging);
 
             resolveDependencies(artifactInfo);
             parseArtifact(artifactInfo);
