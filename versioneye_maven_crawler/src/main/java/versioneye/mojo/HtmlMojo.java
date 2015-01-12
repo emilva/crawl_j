@@ -33,11 +33,12 @@ public class HtmlMojo extends SuperMojo {
     protected MavenCentralUtils mavenCentralUtils;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-       super.execute();
-       if (context == null){
-           context = new ClassPathXmlApplicationContext("applicationContext.xml");
-       }
-       pomDao = (IPomDao) context.getBean("pomDao");
+        super.execute();
+        if (context == null){
+            context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        }
+        pomDao = (IPomDao) context.getBean("pomDao");
+        mavenCentralUtils = (MavenCentralUtils) context.getBean("mavenCentralUtils");
     }
 
     public void crawl() {
