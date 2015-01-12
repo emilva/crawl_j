@@ -3,12 +3,14 @@ package versioneye.mojo;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import org.apache.maven.index.ArtifactInfo;
+import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.htmlcleaner.TagNode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.persistence.IPomDao;
 import versioneye.service.RabbitMqService;
+import versioneye.utils.MavenCentralUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class HtmlMojo extends SuperMojo {
     protected Connection connection;
     protected Channel channel;
     protected IPomDao pomDao;
+    protected MavenCentralUtils mavenCentralUtils;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
        super.execute();
@@ -120,16 +123,30 @@ public class HtmlMojo extends SuperMojo {
 
     protected void processPom(String urlToPom) {
         try{
+            String groupId       = null;
+            String artifactId    = null;
+            String versionNumber = null;
+            String packaging     = null;
+
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
-            if (pom == null){
-                getLog().error("ERROR in processPom. Could not fetch " + urlToPom);
+            if (pom != null){
+                HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
+                groupId       = mavenUrlProcessor.getGroupId(pom, properties);
+                artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
+                versionNumber = mavenUrlProcessor.getVersion(pom, properties);
+                packaging     = mavenUrlProcessor.getPackaging(pom, properties);
+            } else {
+                Model model = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
+                groupId       = model.getGroupId();
+                artifactId    = model.getArtifactId();
+                versionNumber = model.getVersion();
+                packaging     = model.getPackaging();
+            }
+
+            if (groupId == null || artifactId == null || versionNumber == null){
+                getLog().error("ERROR: could not fetch GAV for " + urlToPom);
                 return ;
             }
-            HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
-            String groupId       = mavenUrlProcessor.getGroupId(pom, properties);
-            String artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
-            String versionNumber = mavenUrlProcessor.getVersion(pom, properties);
-            String packaging     = mavenUrlProcessor.getPackaging(pom, properties);
 
             boolean existAlready = productDao.doesVersionExistAlreadyByGA( groupId.toLowerCase(), artifactId.toLowerCase(), versionNumber );
             if (existAlready){
