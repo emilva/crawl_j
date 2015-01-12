@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 public class HttpUtils {
 
     private final HtmlCleaner cleaner = new HtmlCleaner();
+    public static String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
 
     public TagNode getSingleNode(Object[] objects){
         if (objects == null || objects.length == 0)
@@ -65,10 +66,10 @@ public class HttpUtils {
     }
 
     public static int getResponseCode(String urlString) throws MalformedURLException, IOException {
-        String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
+
         System.setProperty("http.agent", userAgent);
-        URL u = new URL(urlString);
-        HttpURLConnection huc =  (HttpURLConnection) u.openConnection();
+        URL url = new URL(urlString);
+        HttpURLConnection huc =  (HttpURLConnection) url.openConnection();
         huc.setRequestMethod("GET");
         huc.setConnectTimeout(5000); // 5 seconds
         huc.setRequestProperty("User-Agent", userAgent);
@@ -81,15 +82,23 @@ public class HttpUtils {
     }
 
     public TagNode getPageForResource(String resource, String username, String password) throws Exception {
+        System.setProperty("http.agent", userAgent);
         URL url = new URL(resource);
-        URLConnection conn = url.openConnection();
-        conn.setConnectTimeout(30000); // 30 seconds time out
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(5000); // 5 seconds time out
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("User-Agent", userAgent);
         if (username != null && password != null){
             String user_pass = username + ":" + password;
             String encoded = Base64.encodeBase64String( user_pass.getBytes() );
             conn.setRequestProperty("Authorization", "Basic " + encoded);
         }
-        return cleaner.clean(conn.getInputStream());
+        int code = conn.getResponseCode();
+        if (code == 200){
+            return cleaner.clean(conn.getInputStream());
+        }
+        System.out.print("ERROR response code " + code + " for " + resource);
+        return null;
     }
 
     public Object[] getObjectsFromPage(String resource, String xpath) throws Exception {

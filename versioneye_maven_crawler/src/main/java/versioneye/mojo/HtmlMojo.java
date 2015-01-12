@@ -121,6 +121,10 @@ public class HtmlMojo extends SuperMojo {
     protected void processPom(String urlToPom) {
         try{
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
+            if (pom == null){
+                getLog().error("ERROR in processPom. Could not fetch " + urlToPom);
+                return ;
+            }
             HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
             String groupId       = mavenUrlProcessor.getGroupId(pom, properties);
             String artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
