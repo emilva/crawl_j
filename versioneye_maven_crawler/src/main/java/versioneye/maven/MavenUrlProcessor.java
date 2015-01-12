@@ -136,16 +136,25 @@ public class MavenUrlProcessor {
                 }
             }
         }
+//        properties = getPropertiesFromParent(pom, properties);
+        return properties;
+    }
+
+    public HashMap<String, String> getPropertiesFromParent(TagNode pom, HashMap<String, String> properties) throws Exception {
+        if (properties == null)
+            properties = new HashMap<String, String>();
+
         String parentPomUrl = getParentPom(pom, properties);
-        if (parentPomUrl != null){
-            try{
-                TagNode parentPom = httpUtils.getPageForResource(parentPomUrl);
-                if (parentPom != null)
-                    properties = getProperties(parentPom, properties);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                logUtils.addError("error in CrawlerMavenDefaultJson.getProperties -> parentPomUrl: " + parentPomUrl, ex.toString(), null);
-            }
+        if (parentPomUrl == null){
+            return properties;
+        }
+        try{
+            TagNode parentPom = httpUtils.getPageForResource(parentPomUrl);
+            if (parentPom != null)
+                properties = getProperties(parentPom, properties);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logUtils.addError("error in CrawlerMavenDefaultJson.getProperties -> parentPomUrl: " + parentPomUrl, ex.toString(), null);
         }
         return properties;
     }
