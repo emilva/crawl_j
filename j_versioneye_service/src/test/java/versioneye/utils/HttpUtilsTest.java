@@ -1,5 +1,6 @@
 package versioneye.utils;
 
+import org.htmlcleaner.TagNode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
@@ -46,6 +47,14 @@ public class HttpUtilsTest {
         int code = httpUtils.getResponseCode("http://search.maven.org/remotecontent?filepath=net/sf/doolin/Doolin-Context/0.10.2/Doolin-Context-0.10.2.pom_f");
         assert code != 200;
     }
+
+    @Test(dependsOnMethods = {"init"})
+    public void getPageForResource() throws Exception {
+        TagNode node = httpUtils.getPageForResource("http://jcenter.bintray.com/au/com/permeance/permeance-parent/0.6/permeance-parent-0.6.pom");
+        assert node != null;
+    }
+
+
 
 //    @Test(dependsOnMethods = {"init"})
 //    public void getResultReaderWithAuth() throws Exception {
