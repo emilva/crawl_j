@@ -94,6 +94,7 @@ public class HttpUtils {
         try {
             return cleaner.clean(response);
         } catch (Exception ex) {
+            System.out.println("ERROR: HTMLCleaner can not clean up " + resource);
             ex.printStackTrace();
         }
         return null;
