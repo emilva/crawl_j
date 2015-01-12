@@ -105,7 +105,7 @@ public class HtmlMojo extends SuperMojo {
     protected void sendPom(String urlToPom){
         try{
             if (pomDao.existsAlready(urlToPom)){
-                getLog().info("Skip pom, because it was laready parsed! " + urlToPom);
+                getLog().info("Skip pom, because it was already parsed! " + urlToPom);
                 return ;
             }
             String message = repository.getName() + "::" + urlToPom;
