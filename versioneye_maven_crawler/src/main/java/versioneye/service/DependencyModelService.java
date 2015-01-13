@@ -52,6 +52,9 @@ public class DependencyModelService {
     }
 
     private String fetchVersionFromDependencyManagement(Model model, org.apache.maven.model.Dependency dependency){
+        if (model == null || model.getDependencyManagement() == null){
+            return null;
+        }
         for (org.apache.maven.model.Dependency dep : model.getDependencyManagement().getDependencies() ){
             if ( dep.getGroupId().equals(dependency.getGroupId() ) && dep.getArtifactId().equals(dependency.getArtifactId()) ){
                 return dep.getVersion();
