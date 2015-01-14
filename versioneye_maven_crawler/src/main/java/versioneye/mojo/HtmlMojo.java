@@ -12,10 +12,7 @@ import versioneye.persistence.IPomDao;
 import versioneye.service.RabbitMqService;
 import versioneye.utils.MavenCentralUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class HtmlMojo extends SuperMojo {
 
@@ -31,6 +28,8 @@ public class HtmlMojo extends SuperMojo {
     protected Channel channel;
     protected IPomDao pomDao;
     protected MavenCentralUtils mavenCentralUtils;
+    private Set<String> urls = new HashSet<String>(); // Follow each UEL only once per crawl.
+
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         super.execute();
@@ -58,8 +57,9 @@ public class HtmlMojo extends SuperMojo {
     public void follow(String currentUrl){
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
-            if (isFollowable(href)){
+            if (isFollowable(href) && !urls.contains(href)){
                 String newUrl = currentUrl + href;
+                urls.add(newUrl);
                 follow(newUrl);
             } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
                 String newUrl = currentUrl + href;
