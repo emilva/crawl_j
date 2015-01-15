@@ -256,6 +256,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="conjars" class="versioneye.domain.Repository" >
+        <property name="name"     value="conjars" />
+        <property name="src"      value="http://conjars.org/repo" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <bean id="fuin" class="versioneye.domain.Repository" >
         <property name="name"     value="fuin" />
         <property name="src"      value="http://www.fuin.org/maven-repository/" />
