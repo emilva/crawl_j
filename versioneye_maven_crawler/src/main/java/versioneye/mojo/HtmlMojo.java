@@ -50,6 +50,9 @@ public class HtmlMojo extends SuperMojo {
         if (startPoint == null || startPoint.equals("")){
             startPoint = src;
         }
+        if (startPoint != null && !startPoint.endsWith("/")){
+            startPoint = startPoint + "/";
+        }
         follow(startPoint);
         closeTheRabbit();
     }
