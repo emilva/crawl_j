@@ -187,6 +187,13 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="adobe" class="versioneye.domain.Repository" >
+        <property name="name"     value="adobe" />
+        <property name="src"      value="https://repo.adobe.com/nexus/content/groups/public/" />
+        <property name="repoType" value="Maven2" />
+        <property name="followType"  value="text" />
+    </bean>
+
     <bean id="atlassian" class="versioneye.domain.Repository" >
         <property name="name"     value="Atlassian" />
         <property name="src"      value="https://maven.atlassian.com/content/repositories/atlassian-public/" />
