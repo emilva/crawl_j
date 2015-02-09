@@ -23,10 +23,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             username = null;
             password = null;
 
-            Properties properties = getProperties();
-            String rabbitmqAddr = properties.getProperty("rabbitmq_addr");
-            String rabbitmqPort = properties.getProperty("rabbitmq_port");
-            Connection connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
+            Connection connection = initConnection();
             Channel channel = connection.createChannel();
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
@@ -61,6 +58,17 @@ public class HtmlWorkerMojo extends HtmlMojo {
             exception.printStackTrace();
             getLog().error(exception);
         }
+    }
+
+    private Connection initConnection() throws Exception {
+        String rabbitmqAddr = System.getenv("RM_PORT_5672_TCP_ADDR");
+        String rabbitmqPort = System.getenv("RM_PORT_5672_TCP_PORT");
+        if (rabbitmqAddr == null || rabbitmqAddr.isEmpty() || rabbitmqPort == null || rabbitmqPort.isEmpty()){
+            Properties properties = getProperties();
+            rabbitmqAddr = properties.getProperty("rabbitmq_addr");
+            rabbitmqPort = properties.getProperty("rabbitmq_port");
+        }
+        return RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
     }
 
 }
