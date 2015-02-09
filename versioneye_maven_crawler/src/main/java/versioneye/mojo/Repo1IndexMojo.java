@@ -7,9 +7,11 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import versioneye.domain.GlobalSetting;
 import versioneye.domain.Repository;
 import versioneye.maven.MavenPomProcessor;
 import versioneye.maven.MavenProjectProcessor;
+import versioneye.persistence.IGlobalSettingDao;
 import versioneye.persistence.IMavenRepostoryDao;
 import versioneye.persistence.IProductDao;
 import versioneye.service.ProductService;
@@ -23,6 +25,7 @@ public class Repo1IndexMojo extends CentralMojo {
 
             productDao = (IProductDao) context.getBean("productDao");
             mavenRepositoryDao = (IMavenRepostoryDao) context.getBean("mavenRepositoryDao");
+            globalSettingDao = (IGlobalSettingDao) context.getBean("globalSettingDao");
 
             productService = (ProductService) context.getBean("productService");
 
@@ -47,9 +50,11 @@ public class Repo1IndexMojo extends CentralMojo {
 
     private String fetchBaseUrl(){
         String env = System.getenv("RAILS_ENV");
+        getLog().info("fetchBaseUrl for env: " + env );
         try{
-            String url = globalSettingDao.getBy(env, "mvn_repo_1").getValue();
-            getLog().info("mvn_repo_1: " + url);
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1");
+            String url = gs.getValue();
+            getLog().info(" - mvn_repo_1: " + url);
             return url;
         } catch( Exception ex){
             ex.printStackTrace();
