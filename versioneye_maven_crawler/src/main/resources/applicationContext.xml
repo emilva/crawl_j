@@ -261,6 +261,7 @@
         <property name="name"     value="CloJars" />
         <property name="src"      value="http://clojars.org/repo" />
         <property name="repoType" value="Maven2" />
+        <property name="language" value="Clojure" />
     </bean>
 
     <bean id="conjars" class="versioneye.domain.Repository" >

@@ -1,5 +1,6 @@
 package versioneye.mojo;
 
+import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -29,34 +30,33 @@ public class Group1Mojo extends SuperMojo {
             productService = (ProductService) context.getBean("productService");
             crawlerMavenDefaultHtml = (CrawlerMavenDefaultHtml) context.getBean("crawlerMavenDefaultHtml");
             super.execute();
-            addAllRepos();
-            processGroup1();
+//            addAllRepos();
+
+            setRepository("CloJars", "http://clojars.org/repo");
+
+            ArtifactInfo artifactInfo = new ArtifactInfo();
+            artifactInfo.groupId = "lamina";
+            artifactInfo.artifactId = "lamina";
+            artifactInfo.version = "0.5.0";
+
+            resolveDependencies(artifactInfo);
+            parseArtifact(artifactInfo);
+
         } catch( Exception exception ){
             getLog().error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
 
-    private void processGroup1(){
-        List<MavenRepository> repositories = mavenRepositoryDao.loadAll();
-        for (MavenRepository repository : repositories ){
-            if (repository.getUrl().equals("http://repo.maven.apache.org/maven2"))
-                continue;
-            processRepository(repository);
-        }
-    }
-
-    private void processRepository(MavenRepository repository){
-        getLog().info("Process Repo: " + repository.getName());
+    private void setRepository(String name, String url){
         Repository repo = new Repository();
-        repo.setName(repository.getName());
+        repo.setName(name);
         repo.setRepoType("Maven2");
-        repo.setSrc(repository.getUrl());
+        repo.setSrc(url);
         mavenPomProcessor.setRepository(repo);
         mavenProjectProcessor.setRepository(repo);
         crawlerMavenDefaultHtml.setRepository(repo);
         crawlerMavenDefaultHtml.setStartPoint(repo.getSrc());
-        crawlerMavenDefaultHtml.crawl();
     }
 
 }
