@@ -40,6 +40,16 @@ public class MavenProjectProcessor {
     private MavenUrlUtils mavenUrlUtils = new MavenUrlUtils();
     private Repository repository;
 
+    public void updateLicense(MavenProject project){
+        try{
+            Product product = fetchOrCreateProduct(project);
+            updateLicenseInfo(product, project);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ;
+        }
+    }
+
     public void updateProject(MavenProject project, Date lastModified) {
         try{
             Product product = fetchOrCreateProduct(project);

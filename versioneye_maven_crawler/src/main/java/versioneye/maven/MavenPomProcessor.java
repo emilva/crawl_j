@@ -38,6 +38,36 @@ public class MavenPomProcessor {
     private LogUtils logUtils;
 
 
+    public boolean updateLicense(String groupId, String artifactId, String version) {
+        try{
+            String urlToProduct = null;
+            String urlToPom     = null;
+            if (repository.getName().equals("central")){
+                urlToProduct = mavenUrlUtils.getProductUrl( groupId, artifactId          );
+                urlToPom     = mavenUrlUtils.getPomUrl(     groupId, artifactId, version );
+            } else {
+                urlToProduct = mavenUrlUtils.getProductUrl(repository.getSrc(),  groupId, artifactId          );
+                urlToPom     = mavenUrlUtils.getPomUrl(    repository.getSrc(),  groupId, artifactId, version );
+            }
+
+            Model model = mavenCentralUtils.fetchModelFromUrl(urlToPom, repository.getUsername(), repository.getPassword());
+
+            if (model != null && model.getParent() != null)
+                model = mergeParent(model, version);
+
+            Product product = buildProduct(groupId, artifactId, version, urlToProduct, model);
+            createLicenses(model, product);
+
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            String message = "ERROR in updateNode("+groupId+", "+artifactId+", "+version+")";
+            logUtils.addError(message, ex.toString(), null);
+            return false;
+        }
+    }
+
+
     public boolean updateNode(String groupId, String artifactId, String version, Date lastModfied) {
         try{
             String urlToProduct = null;

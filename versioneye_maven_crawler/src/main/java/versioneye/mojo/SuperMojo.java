@@ -93,6 +93,17 @@ public abstract class SuperMojo extends AbstractMojo {
         }
     }
 
+    protected void parseLicenses(ArtifactInfo artifactInfo) throws Exception {
+        MavenProject projectModel = buildProjectModel( artifactInfo );
+        if (projectModel != null){
+            getLog().info("projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
+            mavenProjectProcessor.updateLicense(projectModel);
+        } else {
+            getLog().error("projectModel is null. Try 2nd way!");
+            mavenPomProcessor.updateLicense(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version);
+        }
+    }
+
     protected void parseArtifact(ArtifactInfo artifactInfo) throws Exception {
         Date releasedAt = null;
         if (artifactInfo.lastModified > 0){
