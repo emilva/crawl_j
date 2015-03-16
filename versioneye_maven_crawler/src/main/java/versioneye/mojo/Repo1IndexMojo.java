@@ -8,6 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.domain.GlobalSetting;
+import versioneye.domain.MavenRepository;
 import versioneye.domain.Repository;
 import versioneye.maven.MavenPomProcessor;
 import versioneye.maven.MavenProjectProcessor;
@@ -43,6 +44,10 @@ public class Repo1IndexMojo extends CentralMojo {
             mavenProjectProcessor.setRepository(repository);
             mavenPomProcessor.setRepository(repository);
 
+            mavenRepository = new MavenRepository();
+            mavenRepository.setName(repository.getName());
+            mavenRepository.setUrl(repository.getSrc());
+            mavenRepository.setLanguage("Java");
             addRepo(mavenRepository);
 
             super.doUpdateFromIndex();
