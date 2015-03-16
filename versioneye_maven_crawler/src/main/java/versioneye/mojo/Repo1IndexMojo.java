@@ -19,6 +19,9 @@ import versioneye.service.ProductService;
 @Mojo( name = "repo1index", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class Repo1IndexMojo extends CentralMojo {
 
+    private String username;
+    private String password;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -32,10 +35,11 @@ public class Repo1IndexMojo extends CentralMojo {
             mavenProjectProcessor = (MavenProjectProcessor) context.getBean("mavenProjectProcessor");
             mavenPomProcessor = (MavenPomProcessor) context.getBean("mavenPomProcessor");
 
-            mavenRepository = mavenRepositoryDao.findByName("central");
-            mavenRepository.setUrl(fetchBaseUrl());
-            Repository repository = repositoryUtils.convertRepository(mavenRepository);
-
+            fetchUserAndPassword();
+            String baseUrl = fetchBaseUrl();
+            Repository repository = repositoryUtils.convertRepository("MavenInternal", baseUrl, null);
+            repository.setUsername(username);
+            repository.setPassword(password);
             mavenProjectProcessor.setRepository(repository);
             mavenPomProcessor.setRepository(repository);
 
@@ -59,6 +63,18 @@ public class Repo1IndexMojo extends CentralMojo {
         } catch( Exception ex){
             ex.printStackTrace();
             return "http://repo.maven.apache.org/maven2";
+        }
+    }
+
+    private void fetchUserAndPassword(){
+        String env = System.getenv("RAILS_ENV");
+        try{
+            username = globalSettingDao.getBy(env, "mvn_repo_1_user").getValue();
+            password = globalSettingDao.getBy(env, "mvn_repo_1_password").getValue();
+        } catch( Exception ex){
+            ex.printStackTrace();
+            username = "admin";
+            password = "password";
         }
     }
 
