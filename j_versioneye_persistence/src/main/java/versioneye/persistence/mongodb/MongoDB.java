@@ -46,14 +46,23 @@ public class MongoDB {
 
             String db_host = System.getenv("DB_PORT_27017_TCP_ADDR");
             String db_port = System.getenv("DB_PORT_27017_TCP_PORT");
-
-            System.out.println("read ENV host/port: " + db_host + ":" + db_port);
-
             if (db_host != null && !db_host.isEmpty() && db_port != null && !db_port.isEmpty()){
                 host = db_host;
                 port = new Integer(db_port);
-                host2 = null;
-                host3 = null;
+            }
+
+            String db_host_2 = System.getenv("MONGO_RS_2_ADDR");
+            String db_port_2 = System.getenv("MONGO_RS_2_PORT");
+            if (db_host_2 != null && !db_host_2.isEmpty() && db_port_2 != null && !db_port_2.isEmpty()){
+                host2 = db_host_2;
+                port2 = new Integer(db_port_2);
+            }
+
+            String db_host_3 = System.getenv("MONGO_RS_3_ADDR");
+            String db_port_3 = System.getenv("MONGO_RS_3_PORT");
+            if (db_host_3 != null && !db_host_3.isEmpty() && db_port_3 != null && !db_port_3.isEmpty()){
+                host3 = db_host_3;
+                port3 = new Integer(db_port_3);
             }
 
             String env = System.getenv("RAILS_ENV");
