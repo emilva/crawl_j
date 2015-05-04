@@ -56,22 +56,6 @@
           <version>1.9.13</version>
         </dependency>
 
-        <!-- *** Spring Framework *** -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-aop</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- *** Date and Time ops *** -->
         <dependency>
             <groupId>joda-time</groupId>

@@ -48,7 +48,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <encoding>UTF-8</encoding>
-    <surefireVersion>2.5</surefireVersion>
+    <surefireVersion>2.18.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
     <spring.version>4.1.6.RELEASE</spring.version>
     <testngVersion>6.8.21</testngVersion>
@@ -68,26 +68,26 @@
           <version>${testngVersion}</version>
           <scope>test</scope>
       </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>${spring.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${spring.version}</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-aop</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
   </dependencies>
-
-  <dependencyManagement>
-    <dependencies>
-
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-
-    </dependencies>
-  </dependencyManagement>
 
   <build>
       <pluginManagement>
@@ -95,10 +95,11 @@
               <plugin>
                   <groupId>com.versioneye</groupId>
                   <artifactId>versioneye-maven-plugin</artifactId>
-                  <version>3.3.0</version>
+                  <version>3.4.0</version>
                   <configuration>
-                      <apiKey>b7f7c65e66d38f511fb2</apiKey>
-                      <projectId>54d462636e3965f058003242</projectId>
+                      <apiKey>bb241d0bb6fcbba54063</apiKey>
+                      <!--<licenseCheckBreakByUnknown>false</licenseCheckBreakByUnknown>-->
+                      <!--<projectId>553408179927cd1ed6010593</projectId>-->
                       <!--<baseUrl>http://localhost:3000</baseUrl>-->
                       <!--<apiKey>b7f7c65e66d38f511fb2</apiKey>-->
                   </configuration>
