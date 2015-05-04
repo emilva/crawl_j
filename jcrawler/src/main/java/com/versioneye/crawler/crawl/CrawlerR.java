@@ -65,7 +65,7 @@ public class CrawlerR implements ICrawl {
             for (Object object : objects){
                 TagNode node = (TagNode) object;
                 String href = node.getAttributeByName("href");
-                names.add(href.replaceAll("../../", "").toLowerCase());
+                names.add(href.replaceAll("../../", ""));
             }
             return names;
         } catch (Exception exception) {
