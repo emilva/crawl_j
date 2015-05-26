@@ -33,7 +33,7 @@ public class MongoDB {
     }
 
     public DB getDb(){
-        if (db == null || host == null || host.isEmpty() || host.equals("localhost")){
+        if (db == null || host == null || host.isEmpty() || host.trim().equals("localhost")){
             initDB();
         }
         return db;
@@ -46,6 +46,7 @@ public class MongoDB {
 
             String db_host = System.getenv("DB_PORT_27017_TCP_ADDR");
             String db_port = System.getenv("DB_PORT_27017_TCP_PORT");
+            System.out.println("DB_PORT_27017_TCP_ADDR: " + db_host + " DB_PORT_27017_TCP_PORT: " + db_port);
             if (db_host != null && !db_host.isEmpty() && db_port != null && !db_port.isEmpty()){
                 host = db_host;
                 port = new Integer(db_port);
