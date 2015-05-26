@@ -51,7 +51,7 @@
     <surefireVersion>2.18.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
     <spring.version>4.1.6.RELEASE</spring.version>
-    <testngVersion>6.8.21</testngVersion>
+    <testngVersion>6.9.4</testngVersion>
   </properties>
 
   <modules>
@@ -97,7 +97,7 @@
                   <artifactId>versioneye-maven-plugin</artifactId>
                   <version>3.4.0</version>
                   <configuration>
-                      <apiKey>bb241d0bb6fcbba54063</apiKey>
+                      <apiKey>b7f7c65e66d38f511fb2</apiKey>
                       <!--<licenseCheckBreakByUnknown>false</licenseCheckBreakByUnknown>-->
                       <!--<projectId>553408179927cd1ed6010593</projectId>-->
                       <!--<baseUrl>http://localhost:3000</baseUrl>-->
