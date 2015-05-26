@@ -33,7 +33,7 @@ public class MongoDB {
     }
 
     public DB getDb(){
-        if (db == null || host == null || host.isEmpty() || host == "localhost"){
+        if (db == null || host == null || host.isEmpty() || host.equals("localhost")){
             initDB();
         }
         return db;
