@@ -77,8 +77,10 @@ public class MongoDB {
                 replicaset.add(new ServerAddress(host2, port2));
                 replicaset.add(new ServerAddress(host3, port3));
                 mongo = new Mongo(replicaset);
+                System.out.println("Connected to ReplicaSet ");
             } else {
                 mongo = new Mongo(host, port);
+                System.out.println("Connected to Single Node " + host);
             }
 
             db = mongo.getDB(dbname);
@@ -91,6 +93,10 @@ public class MongoDB {
         } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public String toString(){
+        return "host: "+host+" host2: "+host2+" host3: " + host3;
     }
 
     public String getHost(){
