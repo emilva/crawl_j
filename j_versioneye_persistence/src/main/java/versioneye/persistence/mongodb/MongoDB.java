@@ -7,6 +7,7 @@ import com.mongodb.ServerAddress;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,6 +41,15 @@ public class MongoDB {
     }
 
     public synchronized void initDB(){
+        try{
+            for (Map.Entry<String,String> k : System.getenv().entrySet()){
+                System.out.println(k.getKey() + ": " + k.getValue());
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
         System.out.println("initDB - MongoDB " + host + ":" + port);
         try {
             Mongo mongo = null;
@@ -52,25 +62,30 @@ public class MongoDB {
                 port = new Integer(db_port);
             }
 
-            String db_host_2 = System.getenv("MONGO_RS_2_ADDR");
-            String db_port_2 = System.getenv("MONGO_RS_2_PORT");
-            if (db_host_2 != null && !db_host_2.isEmpty() && db_port_2 != null && !db_port_2.isEmpty()){
-                host2 = db_host_2;
-                port2 = new Integer(db_port_2);
-            }
-
-            String db_host_3 = System.getenv("MONGO_RS_3_ADDR");
-            String db_port_3 = System.getenv("MONGO_RS_3_PORT");
-            if (db_host_3 != null && !db_host_3.isEmpty() && db_port_3 != null && !db_port_3.isEmpty()){
-                host3 = db_host_3;
-                port3 = new Integer(db_port_3);
-            }
-
             String env = System.getenv("RAILS_ENV");
             if (env != null && !env.isEmpty()){
                 dbname = "veye_" + env;
             }
             System.out.println("dbname: " + dbname);
+
+            if (!env.equals("enterprise")){
+                String db_host_2 = System.getenv("MONGO_RS_2_ADDR");
+                String db_port_2 = System.getenv("MONGO_RS_2_PORT");
+                if (db_host_2 != null && !db_host_2.isEmpty() && db_port_2 != null && !db_port_2.isEmpty()){
+                    host2 = db_host_2;
+                    port2 = new Integer(db_port_2);
+                }
+
+                String db_host_3 = System.getenv("MONGO_RS_3_ADDR");
+                String db_port_3 = System.getenv("MONGO_RS_3_PORT");
+                if (db_host_3 != null && !db_host_3.isEmpty() && db_port_3 != null && !db_port_3.isEmpty()){
+                    host3 = db_host_3;
+                    port3 = new Integer(db_port_3);
+                }
+            } else {
+                host2 = null;
+                host3 = null;
+            }
 
             if (host2 != null && !host2.isEmpty() && host3 != null && !host3.isEmpty()){
                 List replicaset = new ArrayList();
