@@ -38,24 +38,39 @@ public class Repo1IndexMojo extends CentralMojo {
 
             fetchUserAndPassword();
             String baseUrl = fetchBaseUrl();
-            Repository repository = repositoryUtils.convertRepository("MavenInternal", baseUrl, null);
-            repository.setUsername(username);
-            repository.setPassword(password);
-            mavenProjectProcessor.setRepository(repository);
-            mavenPomProcessor.setRepository(repository);
 
-            mavenRepository = new MavenRepository();
-            mavenRepository.setName(repository.getName());
-            mavenRepository.setUrl(repository.getSrc());
-            mavenRepository.setLanguage("Java");
-
-            addRepo(mavenRepository);
-
-            super.doUpdateFromIndex();
+            if (!baseUrl.contains(";")) {
+                crawlUrl(baseUrl, 0);
+            } else {
+                int z = 0;
+                String[] splits = baseUrl.split(";");
+                for (String url : splits){
+                    crawlUrl(url, z);
+                    z += 1;
+                }
+            }
         } catch( Exception exception ){
             getLog().error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
+    }
+
+    private void crawlUrl(String baseUrl, int count){
+        String name = "MavenInternal" + count;
+        Repository repository = repositoryUtils.convertRepository(name, baseUrl, null);
+        repository.setUsername(username);
+        repository.setPassword(password);
+        mavenProjectProcessor.setRepository(repository);
+        mavenPomProcessor.setRepository(repository);
+
+        mavenRepository = new MavenRepository();
+        mavenRepository.setName(repository.getName());
+        mavenRepository.setUrl(repository.getSrc());
+        mavenRepository.setLanguage("Java");
+
+        addRepo(mavenRepository);
+
+        super.doUpdateFromIndex();
     }
 
     private String fetchBaseUrl(){
