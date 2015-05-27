@@ -164,6 +164,8 @@ public class MavenPomProcessor {
                 product.setProd_key(key.toLowerCase());
                 product.setGroupId(groupId.toLowerCase());
                 product.setArtifactId(artifactId.toLowerCase());
+                product.setGroupId_orig(groupId);
+                product.setArtifactId_orig(artifactId);
                 product.setName(artifactId);
                 if (repository != null){
                     product.addRepository(repository);

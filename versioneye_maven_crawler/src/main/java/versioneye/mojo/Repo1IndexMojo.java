@@ -48,6 +48,7 @@ public class Repo1IndexMojo extends CentralMojo {
             mavenRepository.setName(repository.getName());
             mavenRepository.setUrl(repository.getSrc());
             mavenRepository.setLanguage("Java");
+
             addRepo(mavenRepository);
 
             super.doUpdateFromIndex();

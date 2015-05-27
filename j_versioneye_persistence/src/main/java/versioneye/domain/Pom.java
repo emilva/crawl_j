@@ -10,6 +10,7 @@ import java.util.Date;
 public class Pom {
 
     public static final String POM = "poms";
+
     public static final String ID = "_id";
     public static final String URL = "url";
 

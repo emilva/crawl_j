@@ -25,6 +25,9 @@ public class Product {
     public static final String GROUPID = "group_id";
     public static final String ARTIFACTID = "artifact_id";
 
+    public static final String GROUPID_ORIG = "group_id_orig";
+    public static final String ARTIFACTID_ORIG = "artifact_id_orig";
+
     public static final String AUTHORS = "authors";
     public static final String DESCRIPTION = "description";
     public static final String LINK = "link";
@@ -52,6 +55,9 @@ public class Product {
 
     private String groupId;
     private String artifactId;
+
+    private String groupId_orig;
+    private String artifactId_orig;
 
     private String authors;
     private String description;
@@ -81,6 +87,8 @@ public class Product {
         }
         doc.put(ARTIFACTID, artifactId);
         doc.put(GROUPID, groupId);
+        doc.put(ARTIFACTID_ORIG, artifactId_orig);
+        doc.put(GROUPID_ORIG, groupId_orig);
         doc.put(AUTHORS, authors);
         doc.put(DESCRIPTION, description);
         doc.put(FOLLOWERS, followers);
@@ -104,6 +112,8 @@ public class Product {
         setProd_type((String) object.get(Product.PROD_TYPE));
         setArtifactId((String) object.get(Product.ARTIFACTID));
         setGroupId((String) object.get(Product.GROUPID));
+        setArtifactId_orig((String) object.get(Product.ARTIFACTID_ORIG));
+        setGroupId_orig((String) object.get(Product.GROUPID_ORIG));
         setAuthors((String) object.get(Product.AUTHORS));
         setDescription((String) object.get(Product.DESCRIPTION));
         setIcon((String) object.get(Product.ICON));
@@ -358,6 +368,22 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getArtifactId_orig() {
+        return artifactId_orig;
+    }
+
+    public void setArtifactId_orig(String artifactId_orig) {
+        this.artifactId_orig = artifactId_orig;
+    }
+
+    public String getGroupId_orig() {
+        return groupId_orig;
+    }
+
+    public void setGroupId_orig(String groupId_orig) {
+        this.groupId_orig = groupId_orig;
     }
 
 }

@@ -182,6 +182,8 @@ public class MavenProjectProcessor {
         }
         product.setGroupId(project.getGroupId().toLowerCase());
         product.setArtifactId(project.getArtifactId().toLowerCase());
+        product.setGroupId_orig(project.getGroupId());
+        product.setArtifactId_orig(project.getArtifactId());
         product.setProd_key(project.getGroupId().toLowerCase() + "/" + project.getArtifactId().toLowerCase());
         product.setName(project.getArtifactId());
         product.setVersion(project.getVersion());
