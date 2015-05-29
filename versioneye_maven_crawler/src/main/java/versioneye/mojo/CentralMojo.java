@@ -20,6 +20,7 @@ import versioneye.service.ProductService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.*;
 
 /**
  * Fetches the index from the maven central repository and walks through the index
@@ -88,13 +89,49 @@ public class CentralMojo extends SuperMojo {
             }
 
             if (productDao.doesVersionExistAlreadyByGA(artifactInfo.groupId.toLowerCase(), artifactInfo.artifactId.toLowerCase(), artifactInfo.version)){
+                getLog().info("skip " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
                 return ;
             }
 
-            resolveDependencies(artifactInfo);
-            parseArtifact(artifactInfo);
+            processArtifact(artifactInfo);
         } catch (Exception ex) {
             getLog().error(ex);
+        }
+    }
+
+
+    protected void processArtifact(ArtifactInfo artifactInfo) {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Callable<Object> task = new MyCallable(artifactInfo);
+
+        Future<Object> future = executor.submit(task);
+        try {
+            future.get(60, TimeUnit.SECONDS);
+        } catch (TimeoutException ex) {
+            getLog().error("Timeout Exception: " + ex);
+        } catch (InterruptedException e) {
+            getLog().error("Interrupted Exception: " + e);
+        } catch (ExecutionException e) {
+            getLog().error("Execution Exception: " + e);
+        } finally {
+            future.cancel(true);
+        }
+    }
+
+
+    public class MyCallable implements Callable<Object> {
+
+        private ArtifactInfo artifactInfo;
+
+        public MyCallable (ArtifactInfo artifactInf) {
+            artifactInfo = artifactInf;
+        }
+
+        public Object call() throws Exception {
+            getLog().info("call " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
+            resolveDependencies(artifactInfo);
+            parseArtifact(artifactInfo);
+            return null;
         }
     }
 
@@ -110,5 +147,6 @@ public class CentralMojo extends SuperMojo {
         getLog().info(version.getReleased_string());
         productDao.updateVersionReleaseTime(version);
     }
+
 
 }
