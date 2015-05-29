@@ -1,9 +1,6 @@
 package versioneye.persistence.mongodb;
 
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-import com.mongodb.ReadPreference;
-import com.mongodb.ServerAddress;
+import com.mongodb.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,10 +89,10 @@ public class MongoDB {
                 replicaset.add(new ServerAddress(host, port));
                 replicaset.add(new ServerAddress(host2, port2));
                 replicaset.add(new ServerAddress(host3, port3));
-                mongo = new Mongo(replicaset);
+                mongo = new MongoClient(replicaset);
                 System.out.println("Connected to ReplicaSet ");
             } else {
-                mongo = new Mongo(host, port);
+                mongo = new MongoClient(host, port);
                 System.out.println("Connected to Single Node " + host);
             }
 
@@ -106,6 +103,12 @@ public class MongoDB {
             }
             db.setReadPreference(ReadPreference.primary());
             System.out.println("getDB .. db is null .. create new db connection. MongoDB: " + this.toString() + " db: " + db.toString() );
+
+//            MongoOptions options = new MongoOptions();
+//            options.autoConnectRetry = true;
+//            options.connectionsPerHost = 40;
+//            options.threadsAllowedToBlockForConnectionMultiplier = 25;
+
         } catch (Exception ex){
             ex.printStackTrace();
         }
