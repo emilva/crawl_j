@@ -56,21 +56,28 @@ public class Repo1IndexMojo extends CentralMojo {
     }
 
     private void crawlUrl(String baseUrl, int count){
-        String name = "MavenInternal" + count;
-        Repository repository = repositoryUtils.convertRepository(name, baseUrl, null);
-        repository.setUsername(username);
-        repository.setPassword(password);
-        mavenProjectProcessor.setRepository(repository);
-        mavenPomProcessor.setRepository(repository);
+        try{
+            String name = "MavenInternal" + count;
+            getLog().info("-- Starting to crawl " + name + " with base Url: " + baseUrl);
+            Repository repository = repositoryUtils.convertRepository(name, baseUrl, null);
+            repository.setUsername(username);
+            repository.setPassword(password);
+            mavenProjectProcessor.setRepository(repository);
+            mavenPomProcessor.setRepository(repository);
 
-        mavenRepository = new MavenRepository();
-        mavenRepository.setName(repository.getName());
-        mavenRepository.setUrl(repository.getSrc());
-        mavenRepository.setLanguage("Java");
+            mavenRepository = new MavenRepository();
+            mavenRepository.setName(repository.getName());
+            mavenRepository.setUrl(repository.getSrc());
+            mavenRepository.setUsername(username);
+            mavenRepository.setPassword(password);
+            mavenRepository.setLanguage("Java");
 
-        addRepo(mavenRepository);
+            addRepo(mavenRepository);
 
-        super.doUpdateFromIndex();
+            super.doUpdateFromIndex();
+        } catch (Exception ex){
+            getLog().error(ex);
+        }
     }
 
     private String fetchBaseUrl(){

@@ -27,6 +27,8 @@ public class MavenRepository {
     private String id;
     private String name;
     private String url;
+    private String username;
+    private String password;
     private Boolean replaceWithRepoSrc = true;
     private String language;
     private Date createdAt = new Date();
@@ -49,6 +51,22 @@ public class MavenRepository {
         setUrl( (String) object.get(URL) );
         setReplaceWithRepoSrc( (Boolean) object.get(REPLACE_WITH_REPO_SRC) );
         setLanguage( (String) object.get( LANGUAGE ) );
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {

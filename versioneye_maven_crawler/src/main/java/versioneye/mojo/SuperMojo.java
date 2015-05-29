@@ -17,6 +17,7 @@ import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.collection.CollectRequest;
 import org.sonatype.aether.graph.DependencyNode;
+import org.sonatype.aether.repository.Authentication;
 import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.DependencyRequest;
 import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
@@ -181,8 +182,12 @@ public abstract class SuperMojo extends AbstractMojo {
         }
         RemoteRepository remoteRepository = new RemoteRepository(repository.getName(), "default", repository.getUrl());
         remoteRepository.getPolicy(false).setUpdatePolicy("always");
+        if (repository.getUsername() != null && !repository.getUsername().isEmpty() && repository.getPassword() != null && !repository.getPassword().isEmpty()){
+            Authentication auth = new Authentication(repository.getUsername(), repository.getPassword());
+            remoteRepository.setAuthentication(auth);
+        }
         repos.add(remoteRepository);
-        for (RemoteRepository repo : repos){
+        for (RemoteRepository repo : repos) {
             repo.getPolicy(false).setUpdatePolicy("always");
         }
         getLog().info("There are " + repos.size() + " remote repositories in the list");
