@@ -24,7 +24,7 @@
   </description>
 
   <properties>
-    <wagonVersion>2.8</wagonVersion>
+    <wagonVersion>2.9</wagonVersion>
     <aetherVersion>1.13.1</aetherVersion>
   </properties>
 
@@ -159,7 +159,7 @@
     <dependency>
       <groupId>com.rabbitmq</groupId>
       <artifactId>amqp-client</artifactId>
-      <version>3.5.1</version>
+      <version>3.5.2</version>
     </dependency>
 
   </dependencies>
