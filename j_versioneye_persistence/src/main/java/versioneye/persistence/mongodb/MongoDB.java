@@ -68,7 +68,7 @@ public class MongoDB {
             }
             System.out.println("dbname: " + dbname);
 
-            if (!env.equals("enterprise")){
+            if (!dbname.equals("veye_enterprise")){
                 String db_host_2 = System.getenv("MONGO_RS_2_ADDR");
                 String db_port_2 = System.getenv("MONGO_RS_2_PORT");
                 if (db_host_2 != null && !db_host_2.isEmpty() && db_port_2 != null && !db_port_2.isEmpty()){
