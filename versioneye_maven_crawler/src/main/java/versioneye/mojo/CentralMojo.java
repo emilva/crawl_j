@@ -109,10 +109,13 @@ public class CentralMojo extends SuperMojo {
             future.get(60, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
             getLog().error("Timeout Exception: " + ex);
+            ex.printStackTrace();
         } catch (InterruptedException e) {
             getLog().error("Interrupted Exception: " + e);
+            e.printStackTrace();
         } catch (ExecutionException e) {
             getLog().error("Execution Exception: " + e);
+            e.printStackTrace();
         } finally {
             future.cancel(true);
         }
