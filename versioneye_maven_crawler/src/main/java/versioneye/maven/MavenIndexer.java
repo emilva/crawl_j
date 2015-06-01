@@ -22,7 +22,6 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.sonatype.aether.repository.Authentication;
 import org.sonatype.aether.version.InvalidVersionSpecificationException;
 
 import java.io.File;
@@ -56,7 +55,7 @@ public class MavenIndexer {
 
     public void initCentralContext(String repo, String centraCache, String centralIndex) throws IOException, ComponentLookupException, InvalidVersionSpecificationException {
         if (repo == null){
-            repo = "http://repo.maven.apache.org/maven2"; // http://repo1.maven.org/maven2 //
+            repo = "http://repo.maven.apache.org/maven2"; // http://repo1.maven.org/maven2
         }
         File centralLocalCache = new File( centraCache );
         File centralIndexDir   = new File( centralIndex );
@@ -134,12 +133,7 @@ public class MavenIndexer {
             query.add( versionQ, Occur.MUST );
         }
 
-//        we want "jar" artifacts only
         query.add( indexer.constructQuery( MAVEN.PACKAGING, new SourcedSearchExpression( "jar" ) ), Occur.MUST );
-
-        // we want main artifacts only (no classifier)
-        // Note: this below is unfinished API, needs fixing
-//        query.add( indexer.constructQuery( MAVEN.CLASSIFIER, new SourcedSearchExpression( Field.NOT_PRESENT ) ), Occur.MUST_NOT );
 
         IteratorSearchRequest  request  = new IteratorSearchRequest( query, Collections.singletonList( centralContext ), null );
         IteratorSearchResponse response = indexer.searchIterator( request );

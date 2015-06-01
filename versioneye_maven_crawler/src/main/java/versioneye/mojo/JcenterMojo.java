@@ -5,10 +5,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.sonatype.aether.repository.RemoteRepository;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import versioneye.domain.Repository;
 
 @Mojo( name = "jcenter", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class JcenterMojo extends HtmlMojo {

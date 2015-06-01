@@ -9,11 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.crawler.CrawlerMavenDefaultHtml;
 import versioneye.crawler.ICrawl;
-import versioneye.domain.MavenRepository;
 import versioneye.domain.Repository;
 import versioneye.service.ProductService;
-
-import java.util.List;
 
 /**
  * Crawles all repositories in group1.
