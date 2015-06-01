@@ -56,7 +56,7 @@ public class ProductDao implements IProductDao {
         newValues.put(Product.VERSION_LINK, version.getLink());
         newValues.put(Product.REINDEX, true);
         BasicDBObject set = new BasicDBObject("$set", newValues);
-        getCollection().update(match, set);
+        getCollection().update(match, set, false, true);
     }
 
     public void updateDescription(String language, String prodKey, String desciption){
@@ -67,7 +67,7 @@ public class ProductDao implements IProductDao {
         newValues.put(Product.DESCRIPTION, desciption);
         newValues.put(Product.REINDEX, true);
         BasicDBObject set = new BasicDBObject("$set", newValues);
-        getCollection().update(match, set);
+        getCollection().update(match, set, false, true);
     }
 
     public Product create(Product product) {
@@ -250,7 +250,7 @@ public class ProductDao implements IProductDao {
         versionObj.put(Version.VERSION, version.getVersion());
         BasicDBObject versionsUpdate = new BasicDBObject();
         versionsUpdate.put("$addToSet", new BasicDBObject(Version.VERSIONS, versionObj));
-        getCollection().update(productMatch, versionsUpdate, true, false);
+        getCollection().update(productMatch, versionsUpdate, false, true);
 
         DBObject verUpdate = getDBObjectByKey(language, prodKey);
         if (verUpdate == null){
@@ -258,7 +258,7 @@ public class ProductDao implements IProductDao {
             return ;
         }
         verUpdate.put(Product.UPDATED_AT, new Date());
-        getCollection().update(productMatch, verUpdate);
+        getCollection().update(productMatch, verUpdate, false, true);
     }
 
     // TODO test
@@ -268,14 +268,14 @@ public class ProductDao implements IProductDao {
         productMatch.put(Product.PROD_KEY, prod_key);
         BasicDBObject newUserId = new BasicDBObject();
         newUserId.put("$push", new BasicDBObject(Product.USER_IDS, userId));
-        getCollection().update(productMatch, newUserId, true, false);
+        getCollection().update(productMatch, newUserId, false, true);
         try{
             Product product = getByKey(language, prod_key);
             int count = product.getUser_ids().size();
             BasicDBObject newFollowers = new BasicDBObject();
             newFollowers.put("followers", count);
             BasicDBObject set = new BasicDBObject("$set", newFollowers);
-            getCollection().update(productMatch, set);
+            getCollection().update(productMatch, set, false, true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -293,7 +293,7 @@ public class ProductDao implements IProductDao {
         newValues.put("versions.$.released_string", version.getReleased_string());
         newValues.put("versions.$.released_at", version.getReleased_at());
         BasicDBObject set = new BasicDBObject("$set", newValues);
-        getCollection().update(match, set);
+        getCollection().update(match, set, false, true);
     }
 
     public boolean doesKeywordExistAlready(String language, String productKey, String keyword){
@@ -312,7 +312,7 @@ public class ProductDao implements IProductDao {
         BasicDBObject keywordObj = keyword.getDBObject();
         BasicDBObject keywordUpdate = new BasicDBObject();
         keywordUpdate.put("$addToSet", new BasicDBObject(Keyword.KEYWORDS, keywordObj));
-        getCollection().update(productMatch, keywordUpdate, true, false);
+        getCollection().update(productMatch, keywordUpdate, false, true);
     }
 
     public boolean doesRepositoryExistAlready(String language, String productKey, String repositorySrc) {
