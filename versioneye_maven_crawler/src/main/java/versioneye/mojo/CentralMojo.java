@@ -108,14 +108,14 @@ public class CentralMojo extends SuperMojo {
         try {
             future.get(60, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
-            getLog().error("Timeout Exception: " + ex);
-            ex.printStackTrace();
-        } catch (InterruptedException e) {
-            getLog().error("Interrupted Exception: " + e);
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            getLog().error("Execution Exception: " + e);
-            e.printStackTrace();
+            getLog().error("Timeout Exception for " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version + " - " + ex);
+            getLog().error(ex);
+        } catch (InterruptedException ex) {
+            getLog().error("Interrupted Exception: " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version + " - " + ex);
+            getLog().error(ex);
+        } catch (ExecutionException ex) {
+            getLog().error("Execution Exception: " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version + " - " + ex);
+            getLog().error(ex);
         } finally {
             future.cancel(true);
         }

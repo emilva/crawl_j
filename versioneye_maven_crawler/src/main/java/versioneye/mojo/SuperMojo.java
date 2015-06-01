@@ -135,8 +135,9 @@ public abstract class SuperMojo extends AbstractMojo {
             system.resolveDependencies(session, dependencyRequest);
             root.accept(new PreorderNodeListGenerator());
         } catch (Exception ex) {
+            getLog().error("ERROR in resolveDependencies for " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
             for (RemoteRepository rr : repos){
-                getLog().error("with repo: " + rr.getUrl());
+                getLog().info("resolveDependencies with repo: " + rr.getUrl());
             }
             getLog().error("error in resolveDependencies ", ex);
         }
