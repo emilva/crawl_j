@@ -103,12 +103,6 @@ public class MongoDB {
             }
             db.setReadPreference(ReadPreference.primary());
             System.out.println("getDB .. db is null .. create new db connection. MongoDB: " + this.toString() + " db: " + db.toString() );
-
-//            MongoOptions options = new MongoOptions();
-//            options.autoConnectRetry = true;
-//            options.connectionsPerHost = 40;
-//            options.threadsAllowedToBlockForConnectionMultiplier = 25;
-
         } catch (Exception ex){
             ex.printStackTrace();
         }
