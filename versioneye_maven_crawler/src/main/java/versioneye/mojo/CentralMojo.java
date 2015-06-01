@@ -60,7 +60,7 @@ public class CentralMojo extends SuperMojo {
 
             MavenIndexer mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext(mavenRepository.getUrl(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(mavenRepository.getUsername(), mavenRepository.getPassword());
 
             IndexingContext context = mavenIndexer.getCentralContext();
             IndexSearcher searcher  = context.acquireIndexSearcher();

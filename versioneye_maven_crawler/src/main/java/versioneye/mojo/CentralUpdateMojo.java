@@ -54,7 +54,7 @@ public class CentralUpdateMojo extends CentralMojo {
 
             MavenIndexer mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext(mavenRepository.getUrl(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(mavenRepository.getUsername(), mavenRepository.getPassword());
 
             getLog().info("Search for: " + group + " " + artifact);
             IteratorSearchResponse response = mavenIndexer.executeGroupArtifactSearch(group, artifact, null);

@@ -93,7 +93,7 @@ public class PopularMojo extends SuperMojo {
 
             mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext( repository.getSrc(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(null, null);
 
             IteratorSearchResponse response = mavenIndexer.executeGroupArtifactSearch(product.getGroupId(), product.getArtifactId(), null);
             for ( ArtifactInfo artifactInfo : response ) {

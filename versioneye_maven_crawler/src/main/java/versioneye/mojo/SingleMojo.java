@@ -56,7 +56,7 @@ public class SingleMojo extends SuperMojo {
 
             MavenIndexer mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext(mavenRepository.getUrl(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(null, null);
 
             IteratorSearchResponse response = mavenIndexer.executeGroupArtifactSearch(groupid, artifactid, null);
             for ( ArtifactInfo ai : response ) {

@@ -13,6 +13,7 @@ import org.apache.maven.index.context.IndexingContext;
 import org.apache.maven.index.expr.SourcedSearchExpression;
 import org.apache.maven.index.updater.*;
 import org.apache.maven.wagon.Wagon;
+import org.apache.maven.wagon.authentication.AuthenticationInfo;
 import org.apache.maven.wagon.events.TransferEvent;
 import org.apache.maven.wagon.events.TransferListener;
 import org.apache.maven.wagon.observers.AbstractTransferListener;
@@ -21,6 +22,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.sonatype.aether.repository.Authentication;
 import org.sonatype.aether.version.InvalidVersionSpecificationException;
 
 import java.io.File;
@@ -47,6 +49,7 @@ public class MavenIndexer {
         this.httpWagon    = plexusContainer.lookup( Wagon.class, "http" );
         Properties p = new Properties();
         p.setProperty("User-Agent", "mojo/nb-repository-plugin");
+
         HttpWagon httpWagon_ = (HttpWagon) httpWagon;
         httpWagon_.setHttpHeaders(p);
     }
@@ -78,7 +81,7 @@ public class MavenIndexer {
      * other index sources might have different index publishing frequency.
      * Preferred frequency is once a week.
      */
-    public void updateIndex() throws IOException, ComponentLookupException, InvalidVersionSpecificationException {
+    public void updateIndex(String username, String password) throws IOException, ComponentLookupException, InvalidVersionSpecificationException {
         System.out.println( "Updating Index..." );
         System.out.println( "This might take a while on first run, so please be patient!" );
         // Create ResourceFetcher implementation to be used with IndexUpdateRequest
@@ -92,7 +95,15 @@ public class MavenIndexer {
                 System.out.println( " - Done" );
             }
         };
-        ResourceFetcher resourceFetcher     = new WagonHelper.WagonFetcher( httpWagon, listener, null, null );
+
+        AuthenticationInfo authInfo = null;
+        if (username != null && password != null){
+            authInfo = new AuthenticationInfo();
+            authInfo.setUserName(username);
+            authInfo.setPassword(password);
+        }
+
+        ResourceFetcher resourceFetcher     = new WagonHelper.WagonFetcher( httpWagon, listener, authInfo, null );
         Date centralContextCurrentTimestamp = centralContext.getTimestamp();
         IndexUpdateRequest updateRequest    = new IndexUpdateRequest( centralContext, resourceFetcher );
         IndexUpdateResult updateResult      = indexUpdater.fetchAndUpdateIndex( updateRequest );

@@ -82,7 +82,7 @@ public class CentralPopularMojo extends SuperMojo {
 
             mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext( repository.getUrl(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(mavenRepository.getUsername(), mavenRepository.getPassword());
 
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -167,7 +167,7 @@ public class CentralUpdateKnown extends CentralMojo {
 
             mavenIndexer = new MavenIndexer();
             mavenIndexer.initCentralContext( repository.getUrl(), centralCache, centralIndex);
-            mavenIndexer.updateIndex();
+            mavenIndexer.updateIndex(mavenRepository.getUsername(), mavenRepository.getPassword());
         } catch (Exception ex) {
             ex.printStackTrace();
             closeIndexer(mavenIndexer);
