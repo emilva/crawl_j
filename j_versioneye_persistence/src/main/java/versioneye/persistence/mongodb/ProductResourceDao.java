@@ -46,9 +46,7 @@ public class ProductResourceDao implements IProductResourceDao {
         newValues.put(ProductResource.PROD_KEY, resource.getName());
         newValues.put(ProductResource.LANGUAGE, resource.getLanguage());
         BasicDBObject set = new BasicDBObject("$set", newValues);
-        WriteResult result = getCollection().update(match, set);
-        if (result.getError() != null)
-            System.out.println("updateCrawledForGithub result.error: " + result.getError());
+        getCollection().update(match, set, false, true, WriteConcern.SAFE);
     }
 
     public void setMongoDB(MongoDB mongoDB) {

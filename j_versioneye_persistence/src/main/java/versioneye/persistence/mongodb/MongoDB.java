@@ -3,6 +3,7 @@ package versioneye.persistence.mongodb;
 import com.mongodb.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -84,23 +85,33 @@ public class MongoDB {
                 host3 = null;
             }
 
+            MongoCredential mc = null;
+            if (username != null && password != null && !username.trim().equals("") && !password.trim().equals("")){
+                mc = MongoCredential.createCredential(username, dbname, password.toCharArray());
+            }
+
             if (host2 != null && !host2.isEmpty() && host3 != null && !host3.isEmpty()){
                 List replicaset = new ArrayList();
                 replicaset.add(new ServerAddress(host, port));
                 replicaset.add(new ServerAddress(host2, port2));
                 replicaset.add(new ServerAddress(host3, port3));
-                mongo = new MongoClient(replicaset);
+                if (mc != null){
+                    mongo = new MongoClient(replicaset, Arrays.asList(mc));
+                } else {
+                    mongo = new MongoClient(replicaset);
+                }
                 System.out.println("Connected to ReplicaSet ");
             } else {
-                mongo = new MongoClient(host, port);
-                System.out.println("Connected to Single Node " + host);
+                ServerAddress sa = new ServerAddress(host, port);
+                if (mc != null){
+                    mongo = new MongoClient(sa, Arrays.asList(mc));
+                } else {
+                    mongo = new MongoClient(sa);
+                }
+                System.out.println("Connected to Single Node " + host + ":" + port);
             }
 
             db = mongo.getDB(dbname);
-            if (username != null && password != null && !username.trim().equals("") && !password.trim().equals("")){
-                boolean auth = db.authenticate(username, password.toCharArray());
-                System.out.println("auth: " + auth);
-            }
             db.setReadPreference(ReadPreference.primary());
             System.out.println("getDB .. db is null .. create new db connection. MongoDB: " + this.toString() + " db: " + db.toString() );
         } catch (Exception ex){
