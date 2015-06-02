@@ -91,8 +91,8 @@ public class MavenUrlProcessor {
             version.setLink(urlToVersion);
             version.setPom(urlToPom);
             version.setProduct_key(key);
-            version.setCreatedAt(new java.sql.Date(new Date().getTime()));
-            version.setUpdatedAt(new java.sql.Date(new Date().getTime()));
+            version.setCreatedAt(new java.util.Date(new Date().getTime()));
+            version.setUpdatedAt(new java.util.Date(new Date().getTime()));
             version.setType(product.getProd_type());
 
             productService.createProductIfNotExist(product, repository);

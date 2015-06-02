@@ -144,8 +144,8 @@ public class MavenPomProcessor {
         versionObj.setLink(urlToVersion);
         versionObj.setPom(urlToPom);
         versionObj.setProduct_key(product.getProd_key());
-        versionObj.setCreatedAt(new java.sql.Date(new Date().getTime()));
-        versionObj.setUpdatedAt(new java.sql.Date(new Date().getTime()));
+        versionObj.setCreatedAt(new java.util.Date(new Date().getTime()));
+        versionObj.setUpdatedAt(new java.util.Date(new Date().getTime()));
         if (lastModified != null){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             versionObj.setReleased_at(lastModified);
