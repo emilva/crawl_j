@@ -106,7 +106,7 @@ public class CentralMojo extends SuperMojo {
 
         Future<Object> future = executor.submit(task);
         try {
-            future.get(5, TimeUnit.MINUTES);
+            future.get(30, TimeUnit.MINUTES);
         } catch (TimeoutException ex) {
             getLog().error("Timeout Exception for " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version + " - " + ex);
             getLog().error(ex);
