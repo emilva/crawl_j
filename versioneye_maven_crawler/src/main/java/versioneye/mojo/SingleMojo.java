@@ -58,6 +58,8 @@ public class SingleMojo extends SuperMojo {
             mavenIndexer.initCentralContext(mavenRepository.getUrl(), centralCache, centralIndex);
             mavenIndexer.updateIndex(null, null);
 
+            getLog().info("crawl single: " + groupid + ":" + artifactid);
+
             IteratorSearchResponse response = mavenIndexer.executeGroupArtifactSearch(groupid, artifactid, null);
             for ( ArtifactInfo ai : response ) {
                 if (skipKnownVersions && productDao.doesVersionExistAlreadyByGA(ai.groupId, ai.artifactId, ai.version)){
