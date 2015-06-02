@@ -184,7 +184,6 @@
         <configuration>
             <groupid>org.apache.maven.indexer</groupid>
             <artifactid>indexer-core</artifactid>
-            <version>5.1.1</version>
             <repoName>central</repoName>
             <indexDirectory>central</indexDirectory>
             <skipKnownVersions>false</skipKnownVersions>
