@@ -61,7 +61,7 @@ public class MavenPomProcessor {
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            String message = "ERROR in updateNode("+groupId+", "+artifactId+", "+version+")";
+            String message = "ERROR in updateLicense("+groupId+", "+artifactId+", "+version+")";
             logUtils.addError(message, ex.toString(), null);
             return false;
         }
@@ -118,7 +118,7 @@ public class MavenPomProcessor {
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            String message = "ERROR in updateNode("+groupId+", "+artifactId+", "+version+")";
+            String message = "ERROR in MavenPomProcessor.updateNode("+groupId+", "+artifactId+", "+version+")";
             logUtils.addError(message, ex.toString(), null);
             return false;
         }

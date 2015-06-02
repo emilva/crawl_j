@@ -111,7 +111,8 @@ public class MavenUrlProcessor {
             if (description != null && !description.trim().equals(""))
                 productDao.updateDescription(product.getLanguage(), product.getProd_key(), description);
         } catch (Exception ex) {
-            String message = "ERROR in updateNode(..) for pom file " + urlToPom;
+            ex.printStackTrace();
+            String message = "ERROR in MavenUrlProcessor.updateNode(..) for pom file " + urlToPom;
             logUtils.addError(message, ex.toString(), crawle);
             return ;
         }
