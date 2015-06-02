@@ -182,8 +182,8 @@
         <artifactId>versioneye-maven-crawler</artifactId>
         <version>1.2.0</version>
         <configuration>
-            <groupid>org.apache.maven.indexer</groupid>
-            <artifactid>indexer-core</artifactid>
+            <groupid>org.webjars.npm</groupid>
+            <artifactid>leven</artifactid>
             <repoName>central</repoName>
             <indexDirectory>central</indexDirectory>
             <skipKnownVersions>false</skipKnownVersions>
