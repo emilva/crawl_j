@@ -89,7 +89,7 @@ public class CentralMojo extends SuperMojo {
             }
 
             if (productDao.doesVersionExistAlreadyByGA(artifactInfo.groupId.toLowerCase(), artifactInfo.artifactId.toLowerCase(), artifactInfo.version)){
-                getLog().info("Already in DB: " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
+//                getLog().info("Already in DB: " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
                 return ;
             }
 
@@ -106,7 +106,7 @@ public class CentralMojo extends SuperMojo {
 
         Future<Object> future = executor.submit(task);
         try {
-            future.get(120, TimeUnit.SECONDS);
+            future.get(5, TimeUnit.MINUTES);
         } catch (TimeoutException ex) {
             getLog().error("Timeout Exception for " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version + " - " + ex);
             getLog().error(ex);
