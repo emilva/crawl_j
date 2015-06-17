@@ -6,6 +6,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.htmlcleaner.TagNode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.persistence.IPomDao;
@@ -161,9 +162,9 @@ public class HtmlMojo extends SuperMojo {
             }
 
             Artifact artifact = getArtifact(groupId + ":" + artifactId + ":" + versionNumber);
-            resolveArtifact(artifact);
+            ArtifactResult result = resolveArtifact(artifact);
             resolveDependencies(artifact);
-            parseArtifact(artifact, null);
+            parseArtifact(result.getArtifact(), null);
             pomDao.create(urlToPom);
         } catch (Exception exception) {
             getLog().error("urlToPom: " + urlToPom);
