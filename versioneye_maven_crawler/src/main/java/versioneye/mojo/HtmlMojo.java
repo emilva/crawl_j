@@ -161,7 +161,7 @@ public class HtmlMojo extends SuperMojo {
                 return ;
             }
 
-            Artifact artifact = getArtifact(groupId + ":" + artifactId + ":" + versionNumber);
+            Artifact artifact = getArtifact(groupId + ":" + artifactId + ":pom:" + versionNumber);
             ArtifactResult result = resolveArtifact(artifact);
             resolveDependencies(artifact);
             parseArtifact(result.getArtifact(), null);
