@@ -121,17 +121,22 @@ public abstract class SuperMojo extends AbstractMojo {
 
 
     protected ArtifactResult resolveArtifact(Artifact artifact) throws MojoExecutionException, MojoFailureException {
+        if (artifact == null)
+            return null;
         try {
             ArtifactRequest request = new ArtifactRequest();
             request.setArtifact( artifact );
             request.setRepositories( repos );
             return repoSystem.resolveArtifact( session, request );
         } catch ( ArtifactResolutionException e ) {
+            getLog().error("resolveArtifact failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoExecutionException( e.getMessage(), e );
         }
     }
 
     public ArtifactDescriptorResult resolveDependencies(Artifact artifact) throws MojoExecutionException, MojoFailureException {
+        if (artifact == null)
+            return null;
         try {
             getLog().info( "Resolving dependencies for " + artifact + " from " + repos );
             ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
@@ -145,6 +150,7 @@ public abstract class SuperMojo extends AbstractMojo {
             }
             return descriptorResult;
         } catch (Exception ex) {
+            getLog().error("resolveDependencies failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoFailureException( ex.getMessage(), ex );
         }
     }
@@ -193,6 +199,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
             return project;
         } catch (Exception ex) {
+            getLog().error("getProject failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoFailureException( ex.getMessage(), ex );
         }
     }

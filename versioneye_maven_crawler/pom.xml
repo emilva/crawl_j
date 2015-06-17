@@ -53,6 +53,73 @@
       </snapshots>
     </repository>
     <repository>
+      <id>conjars</id>
+      <name>conjars</name>
+      <url>http://conjars.org/repo</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>clojars</id>
+      <name>clojars</name>
+      <url>https://clojars.org/repo</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>typesafe</id>
+      <name>typesafe</name>
+      <url>http://repo.typesafe.com/typesafe/releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>atlassian</id>
+      <name>atlassian</name>
+      <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>adobe</id>
+      <name>adobe</name>
+      <url>https://repo.adobe.com/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spray</id>
+      <name>spray</name>
+      <url>http://repo.spray.io/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
         <id>fuin.org</id>
         <name>Repository at fuin.org</name>
         <url>http://www.fuin.org/maven-repository</url>
