@@ -1,28 +1,29 @@
 package versioneye.mojo;
 
-import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.DefaultProjectBuildingRequest;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.project.ProjectBuildingRequest;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.collection.CollectRequest;
-import org.sonatype.aether.graph.DependencyNode;
-import org.sonatype.aether.repository.Authentication;
-import org.sonatype.aether.repository.RemoteRepository;
-import org.sonatype.aether.resolution.DependencyRequest;
-import org.sonatype.aether.util.graph.PreorderNodeListGenerator;
+import org.apache.maven.project.*;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.DependencyFilter;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.*;
+import org.eclipse.aether.resolution.DependencyResolutionException;
+import org.eclipse.aether.util.artifact.JavaScopes;
+import org.eclipse.aether.util.filter.DependencyFilterUtils;
+import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import versioneye.domain.GlobalSetting;
 import versioneye.domain.MavenRepository;
 import versioneye.domain.Repository;
 import versioneye.maven.MavenPomProcessor;
@@ -31,7 +32,6 @@ import versioneye.maven.MavenUrlProcessor;
 import versioneye.persistence.IGlobalSettingDao;
 import versioneye.persistence.IMavenRepostoryDao;
 import versioneye.persistence.IProductDao;
-import versioneye.utils.DependencyUtils;
 import versioneye.utils.HttpUtils;
 import versioneye.utils.PropertiesUtils;
 import versioneye.utils.RepositoryUtils;
@@ -46,6 +46,9 @@ import java.util.Properties;
  */
 public abstract class SuperMojo extends AbstractMojo {
 
+    protected String username = "admin";
+    protected String password = "admin";
+
     @Component
     protected RepositorySystem system;
 
@@ -57,6 +60,9 @@ public abstract class SuperMojo extends AbstractMojo {
 
     @Parameter( defaultValue="${project}" )
     protected MavenProject project;
+
+    @Component
+    protected RepositorySystem repoSystem;
 
     @Parameter( defaultValue="${repositorySystemSession}" )
     protected RepositorySystemSession session;
@@ -79,6 +85,7 @@ public abstract class SuperMojo extends AbstractMojo {
     protected HttpUtils httpUtils;
     protected ApplicationContext context;
 
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             context = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -94,143 +101,111 @@ public abstract class SuperMojo extends AbstractMojo {
         }
     }
 
-    protected void parseLicenses(ArtifactInfo artifactInfo) throws Exception {
-        MavenProject projectModel = buildProjectModel( artifactInfo );
-        if (projectModel != null){
-            getLog().info("projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
-            mavenProjectProcessor.updateLicense(projectModel);
-        } else {
-            getLog().error("projectModel is null. Try 2nd way!");
-            mavenPomProcessor.updateLicense(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version);
-        }
-    }
 
-    protected void parseArtifact(ArtifactInfo artifactInfo) throws Exception {
-        Date releasedAt = null;
-        if (artifactInfo.lastModified > 0){
-            releasedAt = new Date(artifactInfo.lastModified);
-        }
+    protected void parseArtifact(Artifact artifactInfo, Date releasedAt) throws Exception {
         MavenProject projectModel = buildProjectModel( artifactInfo );
         if (projectModel != null){
             if (projectModel.getVersion().startsWith("${")){
-                projectModel.setVersion(artifactInfo.version);
+                projectModel.setVersion(artifactInfo.getVersion());
                 getLog().info("------ 42 is not true ------");
                 getLog().info("------ Upsi! ProjectModel doesn't seems to be complete! The Maven God is mad today!");
+                getLog().info("------ projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
                 getLog().info("------ 42 is not true ------");
             }
-            getLog().info("projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
             mavenProjectProcessor.updateProject( projectModel, releasedAt );
         } else {
             getLog().error("projectModel is null. Try 2nd way!");
-            mavenPomProcessor.updateNode(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version, releasedAt);
+            mavenPomProcessor.updateNode(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion(), releasedAt);
         }
     }
 
-    protected void resolveDependencies(ArtifactInfo artifactInfo) throws Exception{
+
+    protected ArtifactResult resolveArtifact(Artifact artifact) throws MojoExecutionException, MojoFailureException {
         try {
-            DependencyUtils dependencyUtils = new DependencyUtils();
-            CollectRequest collectRequest = dependencyUtils.getCollectRequest( artifactInfo, repos );
-            DependencyNode root = system.collectDependencies(session, collectRequest).getRoot();
-            DependencyRequest dependencyRequest = new DependencyRequest(root, null);
-            system.resolveDependencies(session, dependencyRequest);
-            root.accept(new PreorderNodeListGenerator());
+            ArtifactRequest request = new ArtifactRequest();
+            request.setArtifact( artifact );
+            request.setRepositories( repos );
+            return repoSystem.resolveArtifact( session, request );
+        } catch ( ArtifactResolutionException e ) {
+            throw new MojoExecutionException( e.getMessage(), e );
+        }
+    }
+
+    public ArtifactDescriptorResult resolveDependencies(Artifact artifact) throws MojoExecutionException, MojoFailureException {
+        try {
+            getLog().info( "Resolving dependencies for " + artifact + " from " + repos );
+            ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
+            descriptorRequest.setArtifact( artifact );
+            descriptorRequest.setRepositories( repos );
+
+            ArtifactDescriptorResult descriptorResult = repoSystem.readArtifactDescriptor( session, descriptorRequest );
+
+            for ( Dependency dependency : descriptorResult.getDependencies() ) {
+                System.out.println( " - dependency: " + dependency );
+            }
+            return descriptorResult;
         } catch (Exception ex) {
-            getLog().error("ERROR in resolveDependencies for " + artifactInfo.groupId + ":" + artifactInfo.artifactId + ":" + artifactInfo.version);
-            for (RemoteRepository rr : repos){
-                getLog().info("resolveDependencies with repo: " + rr.getUrl());
-            }
-            getLog().error("error in resolveDependencies ", ex);
+            throw new MojoFailureException( ex.getMessage(), ex );
         }
     }
 
-    protected MavenProject buildProjectModel(ArtifactInfo artifactInfo) throws Exception {
-        return buildProjectModelFor(artifactInfo.groupId, artifactInfo.artifactId, artifactInfo.version);
+    private void resolveTransitiveDependencies(Artifact artifact){
+        DependencyFilter classpathFlter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
+        CollectRequest collectRequest = new CollectRequest();
+        collectRequest.setRoot(new Dependency(artifact, JavaScopes.COMPILE));
+        collectRequest.setRepositories( repos );
+        DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, classpathFlter);
+
+        try {
+            List<ArtifactResult> artifactResults = repoSystem.resolveDependencies(session, dependencyRequest).getArtifactResults();
+            for (ArtifactResult artifactResult : artifactResults) {
+                System.out.println(" - " + artifactResult.getArtifact() + " resolved to " + artifactResult.getArtifact().getFile());
+            }
+        } catch (DependencyResolutionException e1) {
+            e1.printStackTrace();
+        }
     }
 
-    public MavenProject buildProjectModelFor(String groupId, String artifactId, String versionNumber) throws Exception {
+    protected MavenProject buildProjectModel(Artifact artifactInfo) throws Exception {
+        return getProject(artifactInfo);
+    }
+
+    protected MavenProject buildProjectModelFor(String groupId, String artifactId, String versionNumber) throws Exception {
         try {
-            ProjectBuildingRequest configuration = new DefaultProjectBuildingRequest();
-            configuration.setLocalRepository( localRepository );
-            configuration.setValidationLevel( ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL );
-            configuration.setProcessPlugins( false );
-            configuration.setRepositoryMerging( ProjectBuildingRequest.RepositoryMerging.REQUEST_DOMINANT );
-            Properties properties = new Properties();
-            for ( String key : session.getSystemProperties( ).keySet() ){
-                properties.put( key, session.getSystemProperties().get(key) );
-            }
-            configuration.setSystemProperties( properties );
-            configuration.setRepositorySession( session );
+            Artifact artifact = getArtifact(groupId + ":" + artifactId + ":" + versionNumber);
+            return getProject(artifact);
+        } catch (Exception ex) {
+            throw new MojoFailureException( ex.getMessage(), ex );
+        }
+    }
 
-            org.apache.maven.artifact.Artifact artifact = new org.apache.maven.artifact.DefaultArtifact(
-                    groupId, artifactId, versionNumber, "compile", "", "", new DefaultArtifactHandler());
+    protected MavenProject getProject(Artifact artifact) throws MojoExecutionException, MojoFailureException {
+        try {
+            getLog().info("build project from file: " + artifact.getFile());
 
-            MavenProject project = projectBuilder.build(artifact, configuration).getProject();
+            ProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
+            projectBuildingRequest.setLocalRepository(localRepository);
+            projectBuildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
+            projectBuildingRequest.setProcessPlugins(false);
+            projectBuildingRequest.setRepositoryMerging(ProjectBuildingRequest.RepositoryMerging.REQUEST_DOMINANT);
+            ProjectBuildingResult pbr = projectBuilder.build(artifact.getFile(), projectBuildingRequest);
+            MavenProject project = pbr.getProject();
+
             return project;
         } catch (Exception ex) {
-            getLog().error("error in buildProjectModel ", ex);
+            throw new MojoFailureException( ex.getMessage(), ex );
         }
-        return null;
     }
 
-    protected void addRepo(MavenRepository repository){
-        if (repository == null){
-            return ;
+    protected Artifact getArtifact(String artifactCoords) throws MojoExecutionException, MojoFailureException {
+        try {
+            Artifact artifact = new DefaultArtifact( artifactCoords );
+            return artifact;
+        } catch ( IllegalArgumentException e ) {
+            throw new MojoFailureException( e.getMessage(), e );
         }
-        for (RemoteRepository rr : repos ){
-            if (rr.getId().equals(repository.getName())){
-                return ;
-            }
-        }
-        RemoteRepository remoteRepository = new RemoteRepository(repository.getName(), "default", repository.getUrl());
-        remoteRepository.getPolicy(false).setUpdatePolicy("always");
-        if (repository.getUsername() != null && !repository.getUsername().isEmpty() && repository.getPassword() != null && !repository.getPassword().isEmpty()){
-            Authentication auth = new Authentication(repository.getUsername(), repository.getPassword());
-            remoteRepository.setAuthentication(auth);
-        }
-        repos.add(remoteRepository);
-        for (RemoteRepository repo : repos) {
-            repo.getPolicy(false).setUpdatePolicy("always");
-        }
-        getLog().info("There are " + repos.size() + " remote repositories in the list");
     }
 
-    protected void addAllRepos(){
-        List<MavenRepository> repositories = mavenRepositoryDao.loadAll();
-        for (MavenRepository repository : repositories){
-            if (repository.getName().equals("central"))
-                continue;
-            if (repository.getUrl().equals("http://download.java.net/maven/2/"))
-                continue;
-            RemoteRepository remoteRepository = new RemoteRepository(repository.getName(), "default", repository.getUrl());
-            remoteRepository.getPolicy(false).setUpdatePolicy("always");
-            repos.add(remoteRepository);
-        }
-        getLog().info("There are " + repos.size() + " remote repositories in the list");
-    }
-
-    protected String getCacheDirectory(String name) throws Exception {
-        Properties properties = getProperties();
-        String baseDir = properties.getProperty("base_cache");
-        File directory = new File(baseDir + "/" + name + "-cache");
-        if (directory.exists()){
-            directory.delete();
-        }
-        directory.mkdir();
-        getLog().info("cache directory for Indexer: " + directory.getAbsolutePath());
-        return directory.getAbsolutePath();
-    }
-
-    protected String getIndexDirectory(String name) throws Exception {
-        Properties properties = getProperties();
-        String baseDir = properties.getProperty("base_index");
-        File directory = new File(baseDir + "/" + name + "-index");
-        if (directory.exists()){
-            directory.delete();
-        }
-        directory.mkdir();
-        getLog().info("index directory for Indexer: " + directory.getAbsolutePath());
-        return directory.getAbsolutePath();
-    }
 
     protected Properties getProperties() throws Exception {
         PropertiesUtils propertiesUtils = new PropertiesUtils();
@@ -243,16 +218,95 @@ public abstract class SuperMojo extends AbstractMojo {
         return propertiesUtils.readProperties(propFile);
     }
 
+
+    protected void fetchUserAndPassword(){
+        String env = System.getenv("RAILS_ENV");
+        try{
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1_user");
+            if (gs != null)
+                username = gs.getValue();
+            gs = globalSettingDao.getBy(env, "mvn_repo_1_password");
+            if (gs != null)
+                password = gs.getValue();
+        } catch( Exception ex){
+            ex.printStackTrace();
+            username = "admin";
+            password = "password";
+        }
+    }
+
+
     protected void setRepository(String repoName){
         if (context == null){
             context = new ClassPathXmlApplicationContext("applicationContext.xml");
         }
-        repository = (Repository) context.getBean(repoName);
-        mavenProjectProcessor.setRepository(repository);
-        mavenPomProcessor.setRepository(repository);
+        Repository rep = (Repository) context.getBean(repoName);
+        setRepository(rep, true);
 
-        mavenRepository = mavenRepositoryDao.findByName(repoName);
+        MavenRepository mp = mavenRepositoryDao.findByName(repoName);
+        setMavenRepository(mp, true);
+    }
+
+    protected void setRepository(Repository repository, boolean withAuth){
+        if (repository == null){
+            return ;
+        }
+        this.repository = repository;
+        if (withAuth){
+            this.repository.setUsername(username);
+            this.repository.setPassword(password);
+        }
+        mavenProjectProcessor.setRepository(this.repository);
+        mavenPomProcessor.setRepository(this.repository);
+    }
+
+    protected void setMavenRepository(MavenRepository mp, boolean withAuth){
+        if (mp == null)
+            return;
+
+        mavenRepository = mp;
+        if (withAuth) {
+            mavenRepository.setUsername(username);
+            mavenRepository.setPassword(password);
+        }
         addRepo(mavenRepository);
+    }
+
+    protected void addRepo(MavenRepository repository){
+        if (repository == null){
+            return ;
+        }
+        for (RemoteRepository rr : repos ){
+            if (rr.getId().equals(repository.getName())){
+                return ;
+            }
+        }
+
+        RemoteRepository.Builder builder = new RemoteRepository.Builder(repository.getName(), "default", repository.getUrl());
+        if (repository.getUsername() != null && !repository.getUsername().isEmpty() && repository.getPassword() != null && !repository.getPassword().isEmpty()){
+            AuthenticationBuilder authBuilder =  new AuthenticationBuilder();
+            authBuilder.addUsername(repository.getUsername());
+            authBuilder.addPassword(repository.getPassword());
+            builder.setAuthentication(authBuilder.build());
+        }
+
+        RemoteRepository remoteRepository = builder.build();
+        repos.add(remoteRepository);
+        getLog().info("There are " + repos.size() + " remote repositories in the list");
+    }
+
+    protected void addAllRepos() {
+        List<MavenRepository> repositories = mavenRepositoryDao.loadAll();
+        for (MavenRepository repository : repositories) {
+            if (repository.getName().equals("central"))
+                continue;
+            if (repository.getUrl().equals("http://download.java.net/maven/2/"))
+                continue;
+            RemoteRepository.Builder builder = new RemoteRepository.Builder(repository.getName(), "default", repository.getUrl());
+            RemoteRepository remoteRepository = builder.build();
+            repos.add(remoteRepository);
+        }
+        getLog().info("There are " + repos.size() + " remote repositories in the list");
     }
 
 }

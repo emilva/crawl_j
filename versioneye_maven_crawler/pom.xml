@@ -24,8 +24,9 @@
   </description>
 
   <properties>
+    <mavenVersion>3.2.3</mavenVersion>
     <wagonVersion>2.9</wagonVersion>
-    <aetherVersion>1.13.1</aetherVersion>
+    <aetherVersion>1.0.2.v20150114</aetherVersion>
   </properties>
 
   <repositories>
@@ -80,7 +81,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.0.5</version>
+      <version>3.3.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -91,7 +92,7 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
-      <version>3.0.5</version>
+      <version>3.3.3</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -105,29 +106,49 @@
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.aether</groupId>
+      <groupId>org.eclipse.aether</groupId>
       <artifactId>aether-api</artifactId>
       <version>${aetherVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-spi</artifactId>
-      <version>${aetherVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-impl</artifactId>
-      <version>${aetherVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.sonatype.aether</groupId>
+      <groupId>org.eclipse.aether</groupId>
       <artifactId>aether-util</artifactId>
       <version>${aetherVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-connector-wagon</artifactId>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-impl</artifactId>
       <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-connector-basic</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-transport-file</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-transport-http</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-transport-wagon</artifactId>
+      <version>${aetherVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-aether-provider</artifactId>
+      <version>${mavenVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-ssh</artifactId>
+      <version>${wagonVersion}</version>
     </dependency>
 
     <dependency>
@@ -141,48 +162,19 @@
       <version>4.4.1</version>
     </dependency>
 
-    <!-- Required for Maven Indexer -->
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-provider-api</artifactId>
-      <version>${wagonVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-file</artifactId>
-      <version>${wagonVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-http</artifactId>
-      <version>${wagonVersion}</version>
-      <classifier>shaded</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-ssh</artifactId>
-      <version>${wagonVersion}</version>
-    </dependency>
-
-    <!-- For accessing the Maven Indexer -->
-    <dependency>
-      <groupId>org.apache.maven.indexer</groupId>
-      <artifactId>indexer-core</artifactId>
-      <version>5.1.1</version>
-      <exclusions>
-          <exclusion>
-              <groupId>jakarta-regexp</groupId>
-              <artifactId>jakarta-regexp</artifactId>
-          </exclusion>
-      </exclusions>
-    </dependency>
-
     <!-- *** RabbitMQ *** -->
     <dependency>
       <groupId>com.rabbitmq</groupId>
       <artifactId>amqp-client</artifactId>
       <version>3.5.3</version>
     </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.maven.plugins</groupId>-->
+      <!--<artifactId>maven-checkstyle-plugin</artifactId>-->
+      <!--<version>2.15</version>-->
+      <!--&lt;!&ndash;<type>maven-plugin</type>&ndash;&gt;-->
+    <!--</dependency>-->
 
   </dependencies>
 
@@ -193,8 +185,9 @@
         <artifactId>versioneye-maven-crawler</artifactId>
         <version>1.2.0</version>
         <configuration>
-            <groupid>org.webjars.npm</groupid>
-            <artifactid>leven</artifactid>
+            <groupid>org.apache.maven.plugins</groupid>
+            <artifactid>maven-checkstyle-plugin</artifactid>
+            <version>2.15</version>
             <repoName>central</repoName>
             <indexDirectory>central</indexDirectory>
             <skipKnownVersions>false</skipKnownVersions>

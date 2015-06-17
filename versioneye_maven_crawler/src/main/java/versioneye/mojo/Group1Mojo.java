@@ -1,10 +1,11 @@
 package versioneye.mojo;
 
-import org.apache.maven.index.ArtifactInfo;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.eclipse.aether.artifact.Artifact;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.crawler.CrawlerMavenDefaultHtml;
@@ -27,17 +28,14 @@ public class Group1Mojo extends SuperMojo {
             productService = (ProductService) context.getBean("productService");
             crawlerMavenDefaultHtml = (CrawlerMavenDefaultHtml) context.getBean("crawlerMavenDefaultHtml");
             super.execute();
-//            addAllRepos();
 
             setRepository("CloJars", "http://clojars.org/repo");
 
-            ArtifactInfo artifactInfo = new ArtifactInfo();
-            artifactInfo.groupId = "lamina";
-            artifactInfo.artifactId = "lamina";
-            artifactInfo.version = "0.5.0";
+            Artifact artifactInfo = getArtifact("lamina:lamina:0.5.0");
 
+            resolveArtifact(artifactInfo);
             resolveDependencies(artifactInfo);
-            parseArtifact(artifactInfo);
+            parseArtifact(artifactInfo, null);
 
         } catch( Exception exception ){
             getLog().error(exception);

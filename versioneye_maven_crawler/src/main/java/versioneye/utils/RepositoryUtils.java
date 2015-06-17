@@ -35,4 +35,15 @@ public class RepositoryUtils {
         return repository;
     }
 
+    public MavenRepository convertMavenRepository(String name, String url, String language){
+        if (language == null) {
+            language = "Java";
+        }
+        MavenRepository repository = new MavenRepository();
+        repository.setUrl(url);
+        repository.setName(name);
+        repository.setLanguage(language);
+        return repository;
+    }
+
 }

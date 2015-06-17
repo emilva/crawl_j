@@ -2,10 +2,10 @@ package versioneye.mojo;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import org.apache.maven.index.ArtifactInfo;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.eclipse.aether.artifact.Artifact;
 import org.htmlcleaner.TagNode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.persistence.IPomDao;
@@ -15,9 +15,6 @@ import versioneye.utils.MavenCentralUtils;
 import java.util.*;
 
 public class HtmlMojo extends SuperMojo {
-
-    protected String username = "admin";
-    protected String password = "admin";
 
     protected String split1Pattern = "(?i)href=\"";
     protected String split2Pattern = "\".*";
@@ -135,10 +132,10 @@ public class HtmlMojo extends SuperMojo {
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
             if (pom != null){
                 HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
-                groupId       = mavenUrlProcessor.getGroupId(pom, properties);
-                artifactId    = mavenUrlProcessor.getArtifactId(pom, properties);
-                versionNumber = mavenUrlProcessor.getVersion(pom, properties);
-                packaging     = mavenUrlProcessor.getPackaging(pom, properties);
+                groupId       = mavenUrlProcessor.getGroupId(    pom, properties);
+                artifactId    = mavenUrlProcessor.getArtifactId( pom, properties);
+                versionNumber = mavenUrlProcessor.getVersion(    pom, properties);
+                packaging     = mavenUrlProcessor.getPackaging(  pom, properties);
             } else {
                 Model model = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
                 groupId       = model.getGroupId();
@@ -163,13 +160,10 @@ public class HtmlMojo extends SuperMojo {
                 return ;
             }
 
-            ArtifactInfo artifactInfo = new ArtifactInfo();
-            artifactInfo.groupId    = groupId;
-            artifactInfo.artifactId = artifactId;
-            artifactInfo.version    = versionNumber;
-
-            resolveDependencies(artifactInfo);
-            parseArtifact(artifactInfo);
+            Artifact artifact = getArtifact(groupId + ":" + artifactId + ":" + versionNumber);
+            resolveArtifact(artifact);
+            resolveDependencies(artifact);
+            parseArtifact(artifact, null);
             pomDao.create(urlToPom);
         } catch (Exception exception) {
             getLog().error("urlToPom: " + urlToPom);

@@ -6,8 +6,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.sonatype.aether.repository.Authentication;
-import org.sonatype.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.util.repository.AuthenticationBuilder;
 import versioneye.domain.Repository;
 import versioneye.dto.ArtifactoryFile;
 import versioneye.dto.ArtifactoryRepoDescription;
@@ -56,17 +56,6 @@ public class ArtifactoryMojo extends HtmlMojo {
         }
     }
 
-    private void fetchUserAndPassword(){
-        String env = System.getenv("RAILS_ENV");
-        try{
-            username = globalSettingDao.getBy(env, "mvn_repo_1_user").getValue();
-            password = globalSettingDao.getBy(env, "mvn_repo_1_password").getValue();
-        } catch( Exception ex){
-            ex.printStackTrace();
-            username = "admin";
-            password = "password";
-        }
-    }
 
     private ArtifactoryRepoDescription[] fetchRepoList() throws Exception {
         String url = baseUrl + "/api/repositories";
@@ -106,16 +95,16 @@ public class ArtifactoryMojo extends HtmlMojo {
     }
 
     private void addAsRepo(String name, String url, boolean withAuth){
-        RemoteRepository remoteRepository = new RemoteRepository(name, "default", url);
-        remoteRepository.getPolicy(false).setUpdatePolicy("always");
+        RemoteRepository.Builder builder = new RemoteRepository.Builder(name, "default", url);
         if (withAuth){
-            Authentication auth = new Authentication(username, password);
-            remoteRepository.setAuthentication(auth);
+            AuthenticationBuilder authBuilder =  new AuthenticationBuilder();
+            authBuilder.addUsername(username);
+            authBuilder.addPassword(password);
+            builder.setAuthentication(authBuilder.build());
         }
+
+        RemoteRepository remoteRepository = builder.build();
         repos.add(remoteRepository);
-        for (RemoteRepository repo : repos){
-            repo.getPolicy(false).setUpdatePolicy("always");
-        }
     }
 
     private void listFiles(String repo){
