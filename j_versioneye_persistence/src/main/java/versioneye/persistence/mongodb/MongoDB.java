@@ -100,6 +100,8 @@ public class MongoDB {
                 } else {
                     mongo = new MongoClient(replicaset);
                 }
+                db = mongo.getDB(dbname);
+                db.setReadPreference(ReadPreference.secondary());
                 System.out.println("Connected to ReplicaSet ");
             } else {
                 ServerAddress sa = new ServerAddress(host, port);
@@ -108,11 +110,11 @@ public class MongoDB {
                 } else {
                     mongo = new MongoClient(sa);
                 }
+                db = mongo.getDB(dbname);
+                db.setReadPreference(ReadPreference.primary());
                 System.out.println("Connected to Single Node " + host + ":" + port);
             }
 
-            db = mongo.getDB(dbname);
-            db.setReadPreference(ReadPreference.primary());
             System.out.println("getDB .. db is null .. create new db connection. MongoDB: " + this.toString() + " db: " + db.toString() );
         } catch (Exception ex){
             ex.printStackTrace();
