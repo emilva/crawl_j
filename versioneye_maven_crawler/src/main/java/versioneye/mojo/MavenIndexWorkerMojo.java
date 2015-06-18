@@ -54,9 +54,9 @@ public class MavenIndexWorkerMojo extends AetherMojo {
         try{
             String[] sps = message.split("::");
 
-            String repoName = sps[0].toLowerCase();
-            String repoUrl  = sps[1];
-            String gav = sps[2];
+            String repoName     = sps[0].toLowerCase();
+            String repoUrl      = sps[1];
+            String gav          = sps[2];
             String lastModified = sps[3];
 
             fetchUserAndPassword();
