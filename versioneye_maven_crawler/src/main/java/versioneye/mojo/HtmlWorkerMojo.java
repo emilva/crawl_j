@@ -27,7 +27,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             Channel channel = connection.createChannel();
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
+            getLog().info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
             channel.basicConsume(QUEUE_NAME, true, consumer);
@@ -35,8 +35,9 @@ public class HtmlWorkerMojo extends HtmlMojo {
             while (true) {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
                 String message = new String(delivery.getBody());
-                System.out.println(" [x] Received '" + message + "'");
+                getLog().info(" [x] Received '" + message + "'");
                 processMessage( message );
+                getLog().info("Job done for '" + message + "'");
             }
         } catch( Exception exception ){
             exception.printStackTrace();
