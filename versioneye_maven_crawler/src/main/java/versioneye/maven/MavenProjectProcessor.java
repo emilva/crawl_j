@@ -111,8 +111,8 @@ public class MavenProjectProcessor {
         if (project.getDependencies() == null || project.getDependencies().isEmpty()){
             return ;
         }
-        // TODO this is temp.
-        dependencyDao.deleteDependencies(product.getLanguage(), product.getProd_key(), project.getVersion() );
+
+//      dependencyDao.deleteDependencies(product.getLanguage(), product.getProd_key(), project.getVersion() );  // this is temp.
         for (org.apache.maven.model.Dependency dep : project.getDependencies() ){
             String key = dep.getGroupId() + "/" + dep.getArtifactId();
             Dependency dependency = new Dependency(product.getLanguage(), product.getProd_key(), project.getVersion(),
