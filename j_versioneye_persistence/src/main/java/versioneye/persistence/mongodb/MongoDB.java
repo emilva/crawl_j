@@ -62,7 +62,17 @@ public class MongoDB {
 
             String env = System.getenv("RAILS_ENV");
             if (env != null && !env.isEmpty()){
-                dbname = "veye_" + env;
+                if (env.toLowerCase().trim().equals("development")){
+                    dbname = "veye_dev";
+                } else if (env.toLowerCase().trim().equals("test")){
+                    dbname = "veye_test";
+                } else if (env.toLowerCase().trim().equals("production")) {
+                    dbname = "veye_prod";
+                } else if (env.toLowerCase().trim().equals("enterprise")) {
+                    dbname = "veye_enterprise";
+                } else {
+                    dbname = "veye_enterprise";
+                }
             }
             System.out.println("dbname: " + dbname);
 
