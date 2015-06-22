@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 import versioneye.domain.Crawle;
 import versioneye.persistence.ICrawleDao;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,7 +29,7 @@ public class CrawleDao implements ICrawleDao {
         products.insert(crawle.getDBObject());
     }
 
-    public void updateDates(ObjectId id, Timestamp updated, Timestamp duration) {
+    public void updateDates(ObjectId id, Date updated, Date duration) {
         BasicDBObject match = new BasicDBObject();
         match.put(Crawle.ID, id);
         DBCursor cursor = getCollection().find(match);

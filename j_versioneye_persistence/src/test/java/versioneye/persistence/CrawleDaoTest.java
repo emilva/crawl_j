@@ -5,7 +5,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
 import versioneye.domain.Crawle;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import static org.testng.Assert.*;
@@ -55,8 +54,8 @@ public class CrawleDaoTest {
 
     @Test(dependsOnMethods = {"getById1"})
     public void doUpdate(){
-        Timestamp stop = new Timestamp(new Date().getTime());
-        Timestamp duration = new Timestamp(stop.getTime() - crawle.getCreatedAt().getTime());
+        Date stop = new Date();
+        Date duration = new Date( stop.getTime() - crawle.getCreatedAt().getTime() );
         crawleDao.updateDates(crawle.getId(), stop, duration);
     }
 

@@ -79,13 +79,21 @@ public class MavenProjectProcessor {
     private void addVersionIfNotExist(Product product, MavenProject project, Date lastModified){
         Version version = new Version();
         version.setVersion( project.getVersion() );
-        version.setProduct_key(product.getProd_key());
+        version.setProduct_key( product.getProd_key() );
         if (lastModified != null){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             version.setReleased_at(lastModified);
-            version.setReleased_string(sdf.format(lastModified));
+            setReleasedDateString(version, lastModified);
         }
         productService.createVersionIfNotExist(product, version, repository);
+    }
+
+    private void setReleasedDateString(Version version, Date lastModified){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            version.setReleased_string(sdf.format(lastModified));
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     private void createLinks(Product product, MavenProject project, String urlToProduct){

@@ -1,6 +1,5 @@
 package versioneye.maven;
 
-import org.apache.maven.wagon.providers.http.HttpWagon;
 import org.testng.annotations.Test;
 
 /**
@@ -13,8 +12,8 @@ public class MavenIndexerTest {
 
     @Test
     public void doTest() throws Exception {
-        String cache = "/Users/robertreiz/target/central-cache";
-        String index = "/Users/robertreiz/target/central-index";
+//        String cache = "/Users/robertreiz/target/central-cache";
+//        String index = "/Users/robertreiz/target/central-index";
 //        AbstractHttpClientWagon wagon = new HttpWagon();
 //        wagon.getReadTimeout();
 //        MavenIndexer indexer = new MavenIndexer();

@@ -38,7 +38,7 @@ public class HttpUtilsTest {
 
     @Test(dependsOnMethods = {"init"})
     public void getResponseCode() throws Exception {
-        int code = httpUtils.getResponseCode("http://search.maven.org/remotecontent?filepath=net/sf/doolin/Doolin-Context/0.10.2/Doolin-Context-0.10.2.pom");
+        int code = httpUtils.getResponseCode("https://repo1.maven.org/maven2/net/sf/doolin/Doolin-Context/0.10.2/Doolin-Context-0.10.2.pom");
         assert code == 200;
     }
 
