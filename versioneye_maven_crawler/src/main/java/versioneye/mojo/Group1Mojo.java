@@ -29,7 +29,7 @@ public class Group1Mojo extends AetherMojo {
     @Parameter( defaultValue = "lamina", property = "artifactIdC")
     protected String artifactIdC;
 
-    @Parameter( defaultValue = "0.5.0", property = "${versionC}")
+    @Parameter( defaultValue = "0.5.0", property = "versionC")
     protected String versionC;
 
     protected ProductService productService;
