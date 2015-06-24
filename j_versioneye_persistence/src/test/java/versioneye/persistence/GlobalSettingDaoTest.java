@@ -14,6 +14,7 @@ public class GlobalSettingDaoTest {
     public void init() {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         globalSettingDao = (IGlobalSettingDao) context.getBean("globalSettingDao");
+        globalSettingDao.getCollection().drop();
     }
 
     @Test(dependsOnMethods = {"init"})

@@ -12,7 +12,7 @@ public class GlobalSettingDao implements IGlobalSettingDao {
 
     private MongoDB mongoDB;
 
-    private DBCollection getCollection(){
+    public DBCollection getCollection(){
         return mongoDB.getDb().getCollection(GlobalSetting.GLOBAL_SETTINGS);
     }
 

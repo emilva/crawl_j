@@ -161,6 +161,32 @@ public class ProductDaoTest {
         Product prod = productDao.getByKey(LANGUAGE, KEY);
         Assert.assertNotNull(prod);
         assertEquals(prod.getVersions().size(), 1);
+        System.out.println(prod.getVersion());
+
+        assertEquals(prod.getVersions().get("1.0").getVersion(), "1.0");
+    }
+
+    @Test(dependsOnMethods = {"addVersion"})
+    public void addVersion2() throws Exception {
+        Version version = new Version();
+        version.setVersion("2.0");
+        version.setLink(VERSION_LINK);
+        version.setProduct_key(KEY);
+        productDao.addNewVersion(LANGUAGE, KEY, version);
+        assertTrue(productDao.doesVersionExistAlready(LANGUAGE, KEY, "2.0"));
+        Product product = productDao.getByKey(LANGUAGE, KEY);
+        assertNotNull(product);
+        assertEquals(product.getVersions().size(), 2);
+
+        productDao.updateVersionInfosInProduct(product.getLanguage(), product.getProd_key(), version);
+
+        assertTrue(productDao.doesVersionExistAlready(LANGUAGE, KEY, "2.0"));
+
+        Product prod = productDao.getByKey(LANGUAGE, KEY);
+        Assert.assertNotNull(prod);
+        assertEquals(prod.getVersions().size(), 2);
+        System.out.println(prod.getVersion());
+        assertEquals(prod.getVersions().get("2.0").getVersion(), "2.0");
     }
 
     @Test(dependsOnMethods = {"addVersion"})
