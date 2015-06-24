@@ -251,14 +251,6 @@
         <groupId>versioneye</groupId>
         <artifactId>versioneye-maven-crawler</artifactId>
         <version>1.2.0</version>
-        <configuration>
-            <groupid>org.apache.maven.plugins</groupid>
-            <artifactid>maven-checkstyle-plugin</artifactid>
-            <version>2.15</version>
-            <repoName>central</repoName>
-            <indexDirectory>central</indexDirectory>
-            <skipKnownVersions>false</skipKnownVersions>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
