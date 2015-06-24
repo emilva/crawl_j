@@ -193,6 +193,7 @@ public abstract class SuperMojo extends AbstractMojo {
             projectBuildingRequest.setLocalRepository(localRepository);
             projectBuildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
             projectBuildingRequest.setProcessPlugins(false);
+            projectBuildingRequest.setSystemProperties(System.getProperties());
             projectBuildingRequest.setRepositoryMerging(ProjectBuildingRequest.RepositoryMerging.REQUEST_DOMINANT);
             ProjectBuildingResult pbr = projectBuilder.build(artifact.getFile(), projectBuildingRequest);
             MavenProject project = pbr.getProject();
