@@ -42,7 +42,7 @@ public class MavenIndexWorkerMojo extends AetherMojo {
                 getLog().info(" . ");
                 getLog().info(" [x] Received '" + message + "'");
                 processMessage( message );
-                getLog().info("Job done for '" + message + "'");
+                getLog().info(" [x] Job done for '" + message + "'");
             }
         } catch( Exception exception ){
             exception.printStackTrace();
