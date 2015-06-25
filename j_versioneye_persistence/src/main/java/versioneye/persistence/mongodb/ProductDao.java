@@ -50,8 +50,8 @@ public class ProductDao implements IProductDao {
         match.put(Product.PROD_KEY, prodKey);
 
         BasicDBObject newValues = new BasicDBObject();
-        newValues.put(Product.VERSION_LINK, version.getLink());
         newValues.put(Product.REINDEX, true);
+        newValues.put(Product.UPDATED_AT, new Date());
 
         BasicDBObject set = new BasicDBObject("$set", newValues);
 
@@ -66,6 +66,7 @@ public class ProductDao implements IProductDao {
         BasicDBObject newValues = new BasicDBObject();
         newValues.put(Product.DESCRIPTION, desciption);
         newValues.put(Product.REINDEX, true);
+        newValues.put(Product.UPDATED_AT, new Date());
 
         BasicDBObject set = new BasicDBObject("$set", newValues);
 
