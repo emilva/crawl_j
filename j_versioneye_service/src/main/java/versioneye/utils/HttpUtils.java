@@ -1,13 +1,16 @@
 package versioneye.utils;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,20 +36,35 @@ public class HttpUtils {
         return (TagNode) objects[0];
     }
 
-    public String getHttpResponse(String address) throws Exception{
+    public String getHttpResp(String address) throws Exception {
         System.setProperty("http.agent", userAgent);
-        URL url = new URL(address);
-        URLConnection conn = url.openConnection();
-        conn.setConnectTimeout(10000); // 10 seconds time out
-        conn.setRequestProperty("User-Agent", userAgent);
 
-        String line = "";
+        HttpGet httpget = new HttpGet( address );
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        httpget.setHeader("http.agent", userAgent);
+
+        CloseableHttpResponse response = httpclient.execute(httpget);
+        HttpEntity entity = response.getEntity();
+
         StringBuffer sb = new StringBuffer();
-        BufferedReader input =  new BufferedReader(new InputStreamReader(conn.getInputStream()) );
+        if (entity == null) {
+            return sb.toString();
+        }
+
+        InputStream instream = entity.getContent();
+        String line = "";
+        sb = new StringBuffer();
+        BufferedReader input =  new BufferedReader(new InputStreamReader( instream ) );
         while((line = input.readLine())!=null)
             sb.append(line);
         input.close();
+        instream.close();
+
         return sb.toString();
+    }
+
+    public String getHttpResponse(String address) throws Exception{
+        return getHttpResp(address);
     }
 
     public String getHttpResponse(String address, String username, String password) throws Exception {
