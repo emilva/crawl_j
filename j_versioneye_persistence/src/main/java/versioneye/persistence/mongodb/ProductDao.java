@@ -48,10 +48,13 @@ public class ProductDao implements IProductDao {
         BasicDBObject match = new BasicDBObject();
         match.put(Product.LANGUAGE, language);
         match.put(Product.PROD_KEY, prodKey);
+
         BasicDBObject newValues = new BasicDBObject();
         newValues.put(Product.VERSION_LINK, version.getLink());
         newValues.put(Product.REINDEX, true);
+
         BasicDBObject set = new BasicDBObject("$set", newValues);
+
         getCollection().update(match, set, false, false, WriteConcern.FSYNC_SAFE);
     }
 
@@ -59,10 +62,13 @@ public class ProductDao implements IProductDao {
         BasicDBObject match = new BasicDBObject();
         match.put(Product.LANGUAGE, language);
         match.put(Product.PROD_KEY, prodKey);
+
         BasicDBObject newValues = new BasicDBObject();
         newValues.put(Product.DESCRIPTION, desciption);
         newValues.put(Product.REINDEX, true);
+
         BasicDBObject set = new BasicDBObject("$set", newValues);
+
         getCollection().update(match, set);
     }
 
@@ -248,15 +254,7 @@ public class ProductDao implements IProductDao {
 
         BasicDBObject versionsUpdate = new BasicDBObject();
         versionsUpdate.put("$push", new BasicDBObject(Version.VERSIONS, versionObj));
-        getCollection().update(productMatch, versionsUpdate, true, true, WriteConcern.MAJORITY);
-
-//        DBObject verUpdate = getDBObjectByKey(language, prodKey);
-//        if (verUpdate == null){
-//            System.out.println("addNewVersion. getDBObjectByKey(" + language + "," + prodKey + ") returns nil!" );
-//            return ;
-//        }
-//        verUpdate.put(Product.UPDATED_AT, new Date());
-//        getCollection().update(productMatch, verUpdate);
+        getCollection().update(productMatch, versionsUpdate, true, true, WriteConcern.FSYNC_SAFE);
     }
 
     // TODO test
@@ -267,7 +265,8 @@ public class ProductDao implements IProductDao {
 
         BasicDBObject newUserId = new BasicDBObject();
         newUserId.put("$push", new BasicDBObject(Product.USER_IDS, userId));
-        getCollection().update(productMatch, newUserId);
+
+        getCollection().update(productMatch, newUserId, true, true, WriteConcern.MAJORITY);
         try{
             Product product = getByKey(language, prod_key);
             int count = product.getUser_ids().size();
