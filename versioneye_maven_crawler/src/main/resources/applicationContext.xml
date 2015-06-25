@@ -342,7 +342,7 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
-    <bean id="spray" class="versioneye.domain.Repository" >
+    <bean id="sprayio" class="versioneye.domain.Repository" >
         <property name="name"     value="spray" />
         <property name="src"      value="http://repo.spray.io/" />
         <property name="repoType" value="Maven2" />
