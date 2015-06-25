@@ -25,8 +25,8 @@ public class Main {
 
         String daemon       = getParam(args, 0);
         String crawler      = getParam(args, 1);
-        String sleepHour    = getParam(args, 3);
-        String package_name = getParam(args, 4);
+        String sleepHour    = getParam(args, 2);
+        String package_name = getParam(args, 3);
 
         MongoDB mongoDB = (MongoDB) context.getBean("mongoDb");
         mongoDB.initDB();
