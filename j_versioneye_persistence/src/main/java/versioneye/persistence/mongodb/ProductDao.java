@@ -247,7 +247,7 @@ public class ProductDao implements IProductDao {
         versionObj.put(Version.VERSION, version.getVersion());
         BasicDBObject versionsUpdate = new BasicDBObject();
         versionsUpdate.put("$addToSet", new BasicDBObject(Version.VERSIONS, versionObj));
-        getCollection().update(productMatch, versionsUpdate);
+        getCollection().update(productMatch, versionsUpdate, false, false, WriteConcern.FSYNC_SAFE);
 
         DBObject verUpdate = getDBObjectByKey(language, prodKey);
         if (verUpdate == null){
