@@ -76,12 +76,14 @@ public class HtmlMojo extends SuperMojo {
         try{
             String html = httpUtils.getHttpResponse(src);
             String[] firstS = html.split(split1Pattern);
+
             for (String element: firstS){
                 String link = element.replaceAll(split2Pattern, "");
                 if (repository.isReplaceWithRepoSrc())
                     link = link.replaceFirst(repository.getSrc(), "");
                 else
                     link = link.replaceFirst(src, "");
+
                 if (link.startsWith("#")){
                     link = link.replaceFirst("#", "");
                 }

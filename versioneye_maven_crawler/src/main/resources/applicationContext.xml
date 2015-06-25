@@ -346,6 +346,7 @@
         <property name="name"     value="spray" />
         <property name="src"      value="http://repo.spray.io/" />
         <property name="repoType" value="Maven2" />
+        <property name="followType" value="text" />
     </bean>
 
     <!--<bean id="jfrog" class="versioneye.domain.Repository" >-->
