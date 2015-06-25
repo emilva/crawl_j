@@ -23,45 +23,49 @@ public class Main {
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
         logUtils = (LogUtils) context.getBean("logUtils");
 
-        String daemon     = getParam(args, 0);
-        String crawler    = getParam(args, 1);
-        String sleepHour  = getParam(args, 3);
+        String daemon       = getParam(args, 0);
+        String crawler      = getParam(args, 1);
+        String sleepHour    = getParam(args, 3);
+        String package_name = getParam(args, 4);
 
         MongoDB mongoDB = (MongoDB) context.getBean("mongoDb");
         mongoDB.initDB();
 
-        execute( crawler );
+        execute( crawler, package_name );
 
         if (!daemon.equals("-d"))
             return ;
 
         for (;;){
             sleepAWhile( Integer.parseInt( sleepHour ) );
-            execute( crawler );
+            execute( crawler, package_name );
         }
     }
 
-    private static void execute( String crawlerName ){
+    private static void execute( String crawlerName, String package_name ){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
         String execGroup = sdf.format(new Date());
         ICrawl crawler = (ICrawl) context.getBean(crawlerName);
-        startCrawlerWithAllRepos( crawler, crawlerName, execGroup );
+        startCrawlerWithAllRepos( crawler, crawlerName, execGroup, package_name );
     }
 
-    private static void startCrawlerWithAllRepos( ICrawl crawlerOne, String crawlerName, String execGroup ){
+    private static void startCrawlerWithAllRepos( ICrawl crawlerOne, String crawlerName, String execGroup, String packageName ){
         for ( Repository repo : crawlerOne.getRepositories() ){
             ICrawl crawler = (ICrawl) context.getBean(crawlerName); // init a new object because of threading!
-            startCrawler(crawler, repo, execGroup);
+            startCrawler(crawler, repo, execGroup, packageName);
         }
     }
 
-    private static void startCrawler(ICrawl crawler, Repository repository, String execGroup){
+    private static void startCrawler(ICrawl crawler, Repository repository, String execGroup, String packageName){
         crawler.setRepository(repository);
         crawler.setExecGroup(execGroup);
         if (crawler.isThreadable()){
             startThreads(crawler, execGroup);
         } else {
-            crawler.crawl();
+            if (packageName == null || packageName.trim().equals(""))
+                crawler.crawl();
+            else
+                crawler.crawlePackage(packageName);
         }
     }
 
