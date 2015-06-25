@@ -12,7 +12,6 @@ import versioneye.service.VersionLinkService;
 import versioneye.utils.HttpUtils;
 import versioneye.utils.LogUtils;
 
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -82,7 +81,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
                 return;
             String name = rPackage;
             name = name.replace("/index.html", "").replace("web/packages/", "");
-            String resource = "http://cran.r-project.org/" + encodeURI(rPackage);
+            String resource = "http://cran.r-project.org/" + rPackage;
             TagNode page = httpUtils.getPageForResource(resource);
             TagNode description = httpUtils.getSingleNode(page.evaluateXPath("//body/p"));
 
