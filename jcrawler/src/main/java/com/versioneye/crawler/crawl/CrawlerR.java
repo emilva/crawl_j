@@ -22,7 +22,7 @@ import java.util.*;
  * Time: 8:58 AM
  *
  */
-public class CrawlerR implements ICrawl {
+public class CrawlerR extends SuperCrawler implements ICrawl {
 
     private String crawlerName = "R";
     private String crawlerVersion = "0.1";
@@ -82,7 +82,7 @@ public class CrawlerR implements ICrawl {
                 return;
             String name = rPackage;
             name = name.replace("/index.html", "").replace("web/packages/", "");
-            String resource = "http://cran.r-project.org/" + URLEncoder.encode(rPackage, "UTF-8");
+            String resource = "http://cran.r-project.org/" + encodeURI(rPackage);
             TagNode page = httpUtils.getPageForResource(resource);
             TagNode description = httpUtils.getSingleNode(page.evaluateXPath("//body/p"));
 

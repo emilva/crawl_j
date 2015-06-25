@@ -26,7 +26,7 @@ import java.util.*;
  * Date: 3/16/12
  * Time: 3:19 PM
  */
-public class CrawlerPythonPip implements ICrawl {
+public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
     private String crawlerName = "PIP";
     private String crawlerVersion = "0.1";
@@ -82,7 +82,7 @@ public class CrawlerPythonPip implements ICrawl {
 
     public void crawlePackage(String pipName) {
         try{
-            String resource = "https://pypi.python.org/pypi/" + URLEncoder.encode(pipName, "UTF-8") + "/json";
+            String resource = "https://pypi.python.org/pypi/" + encodeURI(pipName) + "/json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             PipProduct pip = mapper.readValue(reader, PipProduct.class);
@@ -102,7 +102,7 @@ public class CrawlerPythonPip implements ICrawl {
 
     private void crawlePackageVersion(String pipName, String version){
         try{
-            String resource = "https://pypi.python.org/pypi/" + URLEncoder.encode(pipName, "UTF-8") + "/"+ URLEncoder.encode(version, "UTF-8") +"/json";
+            String resource = "https://pypi.python.org/pypi/" + encodeURI(pipName) + "/"+ encodeURI(version) +"/json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             PipProduct pip = mapper.readValue(reader, PipProduct.class);
