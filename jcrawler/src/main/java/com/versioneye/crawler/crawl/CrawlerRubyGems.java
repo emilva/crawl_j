@@ -17,6 +17,7 @@ import versioneye.utils.LicenseChecker;
 import versioneye.utils.LogUtils;
 
 import java.io.Reader;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -89,7 +90,7 @@ public class CrawlerRubyGems implements ICrawl {
     public void crawlePackage(String name) {
         System.out.println("crawle rubygem : " + name);
         try{
-            String resource = "https://rubygems.org/api/v1/gems/" + name + ".json";
+            String resource = "https://rubygems.org/api/v1/gems/" + URLEncoder.encode(name, "UTF-8") + ".json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             RubyGemProduct gem = mapper.readValue(reader, RubyGemProduct.class);
@@ -105,7 +106,7 @@ public class CrawlerRubyGems implements ICrawl {
             }
             createProductLinkIfNotExist(product);
 
-            String resourceVersions = "https://rubygems.org/api/v1/versions/" + name + ".json";
+            String resourceVersions = "https://rubygems.org/api/v1/versions/" + URLEncoder.encode(name, "UTF-8") + ".json";
             Reader readerVersions = httpUtils.getResultReader(resourceVersions);
             ObjectMapper mapperVersions = new ObjectMapper();
             List<RubyGemsVersion> versions = mapperVersions.readValue(readerVersions, new TypeReference<List<RubyGemsVersion>>() {} ) ;

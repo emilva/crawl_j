@@ -16,6 +16,8 @@ import versioneye.utils.HttpUtils;
 import versioneye.utils.LogUtils;
 
 import java.io.Reader;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -80,7 +82,7 @@ public class CrawlerPythonPip implements ICrawl {
 
     public void crawlePackage(String pipName) {
         try{
-            String resource = "https://pypi.python.org/pypi/" + pipName + "/json";
+            String resource = "https://pypi.python.org/pypi/" + URLEncoder.encode(pipName, "UTF-8") + "/json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             PipProduct pip = mapper.readValue(reader, PipProduct.class);
@@ -100,7 +102,7 @@ public class CrawlerPythonPip implements ICrawl {
 
     private void crawlePackageVersion(String pipName, String version){
         try{
-            String resource = "https://pypi.python.org/pypi/" + pipName + "/"+ version +"/json";
+            String resource = "https://pypi.python.org/pypi/" + URLEncoder.encode(pipName, "UTF-8") + "/"+ URLEncoder.encode(version, "UTF-8") +"/json";
             Reader reader = httpUtils.getResultReader(resource);
             ObjectMapper mapper = new ObjectMapper();
             PipProduct pip = mapper.readValue(reader, PipProduct.class);
