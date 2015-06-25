@@ -49,11 +49,10 @@ public class ProductDao implements IProductDao {
         match.put(Product.LANGUAGE, language);
         match.put(Product.PROD_KEY, prodKey);
         BasicDBObject newValues = new BasicDBObject();
-        newValues.put(Product.VERSION, version.getVersion());
         newValues.put(Product.VERSION_LINK, version.getLink());
         newValues.put(Product.REINDEX, true);
         BasicDBObject set = new BasicDBObject("$set", newValues);
-        getCollection().update(match, set, false, false, WriteConcern.SAFE);
+        getCollection().update(match, set, false, false, WriteConcern.FSYNC_SAFE);
     }
 
     public void updateDescription(String language, String prodKey, String desciption){
@@ -249,15 +248,15 @@ public class ProductDao implements IProductDao {
 
         BasicDBObject versionsUpdate = new BasicDBObject();
         versionsUpdate.put("$push", new BasicDBObject(Version.VERSIONS, versionObj));
-        getCollection().update(productMatch, versionsUpdate, true, true, WriteConcern.FSYNC_SAFE);
+        getCollection().update(productMatch, versionsUpdate, true, true, WriteConcern.MAJORITY);
 
-        DBObject verUpdate = getDBObjectByKey(language, prodKey);
-        if (verUpdate == null){
-            System.out.println("addNewVersion. getDBObjectByKey(" + language + "," + prodKey + ") returns nil!" );
-            return ;
-        }
-        verUpdate.put(Product.UPDATED_AT, new Date());
-        getCollection().update(productMatch, verUpdate);
+//        DBObject verUpdate = getDBObjectByKey(language, prodKey);
+//        if (verUpdate == null){
+//            System.out.println("addNewVersion. getDBObjectByKey(" + language + "," + prodKey + ") returns nil!" );
+//            return ;
+//        }
+//        verUpdate.put(Product.UPDATED_AT, new Date());
+//        getCollection().update(productMatch, verUpdate);
     }
 
     // TODO test
@@ -265,6 +264,7 @@ public class ProductDao implements IProductDao {
         BasicDBObject productMatch = new BasicDBObject();
         productMatch.put(Product.LANGUAGE, language);
         productMatch.put(Product.PROD_KEY, prod_key);
+
         BasicDBObject newUserId = new BasicDBObject();
         newUserId.put("$push", new BasicDBObject(Product.USER_IDS, userId));
         getCollection().update(productMatch, newUserId);
@@ -308,9 +308,12 @@ public class ProductDao implements IProductDao {
         BasicDBObject productMatch = new BasicDBObject();
         productMatch.put(Product.LANGUAGE, language);
         productMatch.put(Product.PROD_KEY, prodKey);
+
         BasicDBObject keywordObj = keyword.getDBObject();
+
         BasicDBObject keywordUpdate = new BasicDBObject();
         keywordUpdate.put("$addToSet", new BasicDBObject(Keyword.KEYWORDS, keywordObj));
+
         getCollection().update(productMatch, keywordUpdate);
     }
 
