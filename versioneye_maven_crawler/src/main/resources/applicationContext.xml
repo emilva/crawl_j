@@ -137,6 +137,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="alfresco" class="versioneye.domain.Repository" >
+        <property name="name"     value="alfresco" />
+        <property name="src"      value="https://artifacts.alfresco.com/nexus/content/groups/public/" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <bean id="activity_designer" class="versioneye.domain.Repository" >
         <property name="name"     value="activity_designer" />
         <property name="src"      value="https://maven.alfresco.com/nexus/content/repositories/activiti/org/activiti/designer/" />
