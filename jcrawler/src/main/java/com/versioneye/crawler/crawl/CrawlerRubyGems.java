@@ -9,6 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.htmlcleaner.TagNode;
 import versioneye.domain.*;
+import versioneye.persistence.IDeveloperDao;
 import versioneye.persistence.IProductDao;
 import versioneye.persistence.IVersionlinkDao;
 import versioneye.service.*;
@@ -42,6 +43,7 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     private LicenseService licenseService;
     private ArchiveService archiveService;
     private DependencyService dependencyService;
+    private IDeveloperDao developerDao;
     private LicenseChecker licenseChecker;
     private Crawle crawle;
     private String execGroup;
@@ -120,6 +122,7 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
                 createVersionIfNotExist(product, gem, ver);
                 createDependencies(product, gem);
                 createArchiveIfNotExist(product);
+                createAuthorsIfNotExist(product, ver);
                 checkLicense(gem, product);
             }
         } catch (Exception ex) {
@@ -185,6 +188,21 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
                 archiveName, "https://rubygems.org/gems/" + archiveName);
         archive.setVersion_id(product.getVersion());
         archiveService.createArchiveIfNotExist(product, archive);
+    }
+
+    private void createAuthorsIfNotExist(Product product, RubyGemsVersion version){
+        if (version == null || version.getAuthors() == null || version.getAuthors().isEmpty()){
+            return ;
+        }
+        String[] authors = version.getAuthors().split(",");
+
+        for (String authorName : authors ){
+            String devName = authorName.trim();
+            Developer developer = new Developer(product.getLanguage(), product.getProd_key(), product.getVersion(),
+                    devName, devName, "", "", "", null, null, null);
+            if (!developerDao.doesExistAlready(product.getLanguage(), product.getProd_key(), product.getVersion(), devName))
+                developerDao.create(developer);
+        }
     }
 
     private void createDependenciesIfNotExist(RubyGemDependency[] dependencies, Product product, String scope){
@@ -324,4 +342,11 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
         this.licenseService = licenseService;
     }
 
+    public IDeveloperDao getDeveloperDao() {
+        return developerDao;
+    }
+
+    public void setDeveloperDao(IDeveloperDao developerDao) {
+        this.developerDao = developerDao;
+    }
 }
