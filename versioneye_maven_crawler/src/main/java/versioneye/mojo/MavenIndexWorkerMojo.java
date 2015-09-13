@@ -62,10 +62,15 @@ public class MavenIndexWorkerMojo extends AetherMojo {
 
             fetchUserAndPassword();
 
-            Repository repo = repositoryUtils.convertRepository(repoName, repoUrl, null);
+            String language = "Java";
+            if (repoName.toLowerCase().equals("clojars") || repoUrl.equals("https://clojars.org/repo") ) {
+                language = "Clojure";
+            }
+
+            Repository repo = repositoryUtils.convertRepository(repoName, repoUrl, language);
             setRepository(repo, true);
 
-            MavenRepository mrepo = repositoryUtils.convertMavenRepository(repoName, repoUrl, null);
+            MavenRepository mrepo = repositoryUtils.convertMavenRepository(repoName, repoUrl, language);
             setMavenRepository(mrepo, true);
 
             Date releasedAt = getReleasedDate(lastModified);
