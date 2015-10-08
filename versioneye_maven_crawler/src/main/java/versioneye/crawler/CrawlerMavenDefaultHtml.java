@@ -106,7 +106,7 @@ public class CrawlerMavenDefaultHtml implements ICrawl {
                 links.add(link);
             }
         } catch (Exception ex) {
-            logUtils.addError("ERROR in CrawlerMavenDefaultHhtml.follow(.,.)", ex.toString(), crawle);
+            logUtils.addError("ERROR in CrawlerMavenDefaultHtml.follow(.,.)", ex.toString(), crawle);
             return new ArrayList<String>();
         }
         return links;

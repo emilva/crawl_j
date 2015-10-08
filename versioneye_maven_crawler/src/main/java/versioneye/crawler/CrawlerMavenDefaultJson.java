@@ -105,7 +105,7 @@ public class CrawlerMavenDefaultJson implements ICrawl {
             resultReader.close();
             return json;
         }  catch (Exception ex){
-            logUtils.addError("ERROR in CrawlerMavenDefaultHtml.follow(.,.)", ex.toString(), crawle);
+            logUtils.addError("ERROR in CrawlerMavenDefaultJson.getResponse(.,.)", ex.toString(), crawle);
             return null;
         }
     }
