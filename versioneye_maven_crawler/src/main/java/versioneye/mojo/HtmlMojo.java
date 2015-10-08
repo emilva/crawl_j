@@ -59,6 +59,9 @@ public class HtmlMojo extends SuperMojo {
 //        getLog().info("follow: " + currentUrl);
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
+            if (href.startsWith(":")){
+                href = href.replaceFirst(":", "");
+            }
             if (isFollowable(href) && !urls.contains(href)){
                 String newUrl = currentUrl + href;
                 urls.add(newUrl);

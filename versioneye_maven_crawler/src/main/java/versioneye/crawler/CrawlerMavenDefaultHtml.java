@@ -78,6 +78,9 @@ public class CrawlerMavenDefaultHtml implements ICrawl {
     public void follow(String currentUrl, String prevUrl){
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
+            if (href.startsWith(":")){
+                href = href.replaceFirst(":", "");
+            }
             if (isFollowable(href)){
                 String newUrl = currentUrl + href;
                 follow(newUrl, currentUrl);
