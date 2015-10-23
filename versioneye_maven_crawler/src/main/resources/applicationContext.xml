@@ -176,6 +176,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="springPlugins" class="versioneye.domain.Repository" >
+        <property name="name"     value="springPlugins" />
+        <property name="src"      value="http://repo.spring.io/plugins-release/" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <bean id="iceFaces" class="versioneye.domain.Repository" >
         <property name="name"     value="iceFaces" />
         <property name="src"      value="http://anonsvn.icesoft.org/repo/maven2/releases/" />
