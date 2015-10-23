@@ -15,7 +15,7 @@ public class SpringPluginsMojo extends HtmlMojo  {
             username = null;
             password = null;
 
-            setRepository("springPlugins");
+            setRepository("spring_plugins");
 
             crawl();
         } catch( Exception exception ){

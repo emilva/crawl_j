@@ -176,8 +176,8 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
-    <bean id="springPlugins" class="versioneye.domain.Repository" >
-        <property name="name"     value="springPlugins" />
+    <bean id="spring_plugins" class="versioneye.domain.Repository" >
+        <property name="name"     value="spring_plugins" />
         <property name="src"      value="http://repo.spring.io/plugins-release/" />
         <property name="repoType" value="Maven2" />
     </bean>
