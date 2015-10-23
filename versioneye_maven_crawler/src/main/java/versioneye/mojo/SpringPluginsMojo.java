@@ -5,7 +5,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
-@Mojo( name = "adobe", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Mojo( name = "springPlugins", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class SpringPluginsMojo extends HtmlMojo  {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
