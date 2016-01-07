@@ -50,8 +50,8 @@
     <encoding>UTF-8</encoding>
     <surefireVersion>2.18.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
-    <spring.version>4.2.0.RELEASE</spring.version>
-    <testngVersion>6.9.6</testngVersion>
+    <spring.version>4.2.3.RELEASE</spring.version>
+    <testngVersion>6.9.10</testngVersion>
   </properties>
 
   <modules>
