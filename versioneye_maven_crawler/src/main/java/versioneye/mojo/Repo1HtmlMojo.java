@@ -14,6 +14,13 @@ public class Repo1HtmlMojo extends HtmlMojo {
         try{
             super.execute();
 
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1_type");
+            if (!gs.getValue().equals("html")){
+                getLog().info("Skip repo1html because mvn_repo_1_type is not html");
+                return ;
+            }
+
             username = null;
             password = null;
 

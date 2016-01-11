@@ -8,6 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.util.repository.AuthenticationBuilder;
+import versioneye.domain.GlobalSetting;
 import versioneye.domain.Repository;
 import versioneye.dto.ArtifactoryFile;
 import versioneye.dto.ArtifactoryRepoDescription;
@@ -26,6 +27,13 @@ public class ArtifactoryMojo extends HtmlMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             super.execute(); // Init Processors and Daos
+
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1_type");
+            if (!gs.getValue().equals("artifactory")){
+                getLog().info("Skip artifactory because mvn_repo_1_type is not artifactory");
+                return ;
+            }
 
             fetchBaseUrl();
             fetchUserAndPassword();
