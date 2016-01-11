@@ -183,6 +183,13 @@ public class HtmlMojo extends SuperMojo {
             Properties properties = getProperties();
             String rabbitmqAddr = properties.getProperty("rabbitmq_addr");
             String rabbitmqPort = properties.getProperty("rabbitmq_port");
+
+            if (rabbitmqAddr == null || rabbitmqAddr.isEmpty()){
+                rabbitmqAddr = System.getenv("RM_PORT_5672_TCP_ADDR");
+                rabbitmqPort = System.getenv("RM_PORT_5672_TCP_PORT");
+            }
+            System.out.println("RM_PORT_5672_TCP_ADDR: " + rabbitmqAddr + " RM_PORT_5672_TCP_PORT: " + rabbitmqPort);
+
             connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
             channel = connection.createChannel();
         } catch (Exception exception){
