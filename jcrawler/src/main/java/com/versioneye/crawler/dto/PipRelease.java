@@ -1,11 +1,14 @@
 package com.versioneye.crawler.dto;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * Created with IntelliJ IDEA.
  * User: robertreiz
  * Date: 27/04/14
  * Time: 20:53
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PipRelease {
 
     private Boolean has_sig;
@@ -18,6 +21,15 @@ public class PipRelease {
     private String filename;
     private String packagetype;
     private Integer size;
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public Boolean getHas_sig() {
         return has_sig;

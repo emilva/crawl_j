@@ -1,11 +1,14 @@
 package com.versioneye.crawler.dto;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * Created by IntelliJ IDEA.
  * User: reiz
  * Date: 3/16/12
  * Time: 4:01 PM
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PipProductUrls {
 
     private Boolean has_sig;

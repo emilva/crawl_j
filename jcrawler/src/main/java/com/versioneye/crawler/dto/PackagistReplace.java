@@ -1,6 +1,7 @@
 package com.versioneye.crawler.dto;
 
 import org.codehaus.jackson.annotate.JsonAnySetter;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
  * Date: 7/24/12
  * Time: 11:49 AM
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PackagistReplace {
 
     private Map<String, String> all = new HashMap<String, String> ();
