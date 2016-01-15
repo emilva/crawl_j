@@ -10,5 +10,5 @@ M2=/opt/mvn/bin
 MAVEN_OPTS=-Djava.net.preferIPv4Stack=true
 JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-* * * * * echo "VersionEye CrawlJ cron job is running" >> /var/log/cron.log 2>&1
+* * * * * echo "VersionEye CrawlJ cron job is running" >> /var/log/cron.log
 
