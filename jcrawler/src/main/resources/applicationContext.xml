@@ -57,7 +57,7 @@
 
     <bean id="r" class="versioneye.domain.Repository" >
         <property name="name"     value="R" />
-        <property name="src"      value="http://cran.r-project.org/web/packages/available_packages_by_date.html" />
+        <property name="src"      value="https://cran.r-project.org/web/packages/available_packages_by_date.html" />
         <property name="repoType" value="R" />
         <property name="language" value="R" />
     </bean>
