@@ -1,0 +1,23 @@
+
+
+ELASTICSEARCH_PRODUCT_INDEX=product
+ELASTICSEARCH_USER_INDEX=user
+
+SHELL=/bin/bash
+PATH=/bin:/usr/bin/:/usr/local/bin:/opt/mvn/bin
+M2_HOME=/opt/mvn
+M2=/opt/mvn/bin
+MAVEN_OPTS=-Djava.net.preferIPv4Stack=true
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+* * * * * echo "VersionEye CrawlJ cron job is running" >> /var/log/cron.log 2>&1
+
+# Clear Maven indexes / caches and force reload!
+00 1  * * * rm -Rf /mnt/crawl_indexes/*;
+
+# Crawlers rely on maven-index!
+10 1  * * * M2=/opt/apache-maven-3.0.5/bin && M2_HOME=/opt/apache-maven-3.0.5 && /opt/apache-maven-3.0.5/bin/mvn -f /mnt/maven-indexer/pom.xml crawl:repo1index >> /mnt/logs/crawlj.log
+
+# Crawlers doesn't rely on maven-index!
+15 1  * * * /opt/mvn/bin/mvn -f /mnt/crawl_j/versioneye_maven_crawler/pom.xml crawl:repo1html   >> /mnt/logs/crawlj.log
+20 1  * * * /opt/mvn/bin/mvn -f /mnt/crawl_j/versioneye_maven_crawler/pom.xml crawl:artifactory >> /mnt/logs/crawlj.log
