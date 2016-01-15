@@ -81,7 +81,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
                 return;
             String name = rPackage;
             name = name.replace("/index.html", "").replace("web/packages/", "");
-            String resource = "http://cran.r-project.org/" + rPackage;
+            String resource = "https://cran.r-project.org/" + rPackage;
             TagNode page = httpUtils.getPageForResource(resource);
             TagNode description = httpUtils.getSingleNode(page.evaluateXPath("//body/p"));
 
@@ -153,7 +153,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
                     for (Object obj : valuechilds) {
                         if (obj instanceof TagNode){
                             TagNode link = (TagNode) obj;
-                            String href = "http://cran.r-project.org/web/packages/" + name + "/";
+                            String href = "https://cran.r-project.org/web/packages/" + name + "/";
                             href = href + link.getAttributeByName("href");
                             versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), product.getVersion(), link.getText().toString(), href);
                             break;
@@ -165,7 +165,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
                     for (Object ch : childrenChanges){
                         if (ch instanceof TagNode){
                             TagNode change = (TagNode) ch;
-                            String href = "http://cran.r-project.org/web/packages/" + name + "/";
+                            String href = "https://cran.r-project.org/web/packages/" + name + "/";
                             href = href + change.getAttributeByName("href");
                             versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), product.getVersion(), change.getText().toString(), href);
                         }
@@ -181,7 +181,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
         String name = label.replaceAll(" ", "_") + "_" + link.getText().toString();
         String href = link.getAttributeByName("href");
         href = href.replace("../../../", "");
-        href = "http://cran.r-project.org/" + href;
+        href = "https://cran.r-project.org/" + href;
         Versionarchive archive = new Versionarchive(product.getLanguage(), product.getProd_key(),
                 name, href);
         archive.setVersion_id(product.getVersion());
