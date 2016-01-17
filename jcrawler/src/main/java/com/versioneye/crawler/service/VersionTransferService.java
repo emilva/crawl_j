@@ -2,6 +2,8 @@ package com.versioneye.crawler.service;
 
 import com.versioneye.crawler.dto.PipProduct;
 import com.versioneye.crawler.dto.RubyGemsVersion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import versioneye.domain.Version;
 
 import java.text.DateFormat;
@@ -16,6 +18,8 @@ import java.util.Date;
  */
 public class VersionTransferService {
 
+    static final Logger logger = LogManager.getLogger(VersionTransferService.class.getName());
+
     public void updateFromGem(String name, RubyGemsVersion gemsVersion, Version version){
         version.setVersion(gemsVersion.getNumber());
         version.setDownloads(gemsVersion.getDownloads_count());
@@ -27,7 +31,7 @@ public class VersionTransferService {
         try {
             String date_string = version.getReleased_string();
             if (date_string == null) {
-                System.out.println(" - built_at date for " + name + " : " + version.getVersion() + " is null. ");
+                logger.info(" - built_at date for " + name + " : " + version.getVersion() + " is null. ");
             } else {
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date_string = date_string.replaceAll("T", " ");

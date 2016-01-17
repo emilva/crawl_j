@@ -4,6 +4,8 @@ import com.versioneye.crawler.dto.PipProduct;
 import com.versioneye.crawler.dto.PipProductInfo;
 import com.versioneye.crawler.service.ProductTransferService;
 import com.versioneye.crawler.service.VersionTransferService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.htmlcleaner.TagNode;
 import versioneye.domain.*;
@@ -28,6 +30,8 @@ import java.util.*;
  */
 public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
+    static final Logger logger = LogManager.getLogger(CrawlerPythonPip.class.getName());
+
     private String crawlerName = "PIP";
     private String crawlerVersion = "0.1";
     private List<Repository> repositories;
@@ -51,14 +55,11 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
     public void crawl() {
         Date start = new Date();
-        logUtils.logStart(start, crawlerName, getRepository().getSrc());
 
         Set<String> pipNames = getFirstLevelList();
         for (String pipName : pipNames){
             crawlePackage(pipName);
         }
-
-        logUtils.logStop(start, crawlerName, getRepository().getSrc());
     }
 
     public Set<String> getFirstLevelList() {
@@ -75,7 +76,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                 pipNames.add(name);
             }
         } catch (Exception ex) {
-            logUtils.addError("ERROR in CrawlerPythonPip.getFirstLevelList()", ex.toString(), crawle);
+            logger.error("ERROR in CrawlerPythonPip.getFirstLevelList()", ex.toString());
         }
         return pipNames;
     }
@@ -95,8 +96,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                 crawlePackageVersion(pipName, version_string);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            logUtils.addError("ERROR in CrawlerPython.crawlePackage(" + pipName + ")", ex.toString(), crawle);
+            logger.error("ERROR in CrawlerPython.crawlePackage(" + pipName + ")", ex.toString());
         }
     }
 
@@ -122,10 +122,9 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                     versionarchiveDao.create(archive);
 
             addVersionIfNotExist(product, pip);
-            createLicenses( product, pip );
+            createLicenses( product, pip);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            logUtils.addError("ERROR in CrawlerPython.crawlePackageVersion(" + pipName + ", "+ version +")", ex.toString(), crawle);
+            logger.error("ERROR in CrawlerPython.crawlePackageVersion(" + pipName + ", "+ version +")", ex.toString());
         }
     }
 
@@ -138,8 +137,8 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
         version.setLanguage(product.getLanguage());
         version.setReleased_string(pip.getReleaseDate());
         boolean dateParsed = productService.parseDate(version);
-        if (dateParsed == false){
-            System.out.println("Not able to parse Date for " + pip.getInfo().getName() + " version " + version.getVersion());
+        if (dateParsed == false) {
+            logger.info("Not able to parse Date for " + pip.getInfo().getName() + " version " + version.getVersion());
         }
         boolean created = productService.createVersionIfNotExist(product, version, null);
         if (!created){

@@ -5,6 +5,8 @@ import com.versioneye.crawler.dto.RubyGemProduct;
 import com.versioneye.crawler.dto.RubyGemsVersion;
 import com.versioneye.crawler.service.ProductTransferService;
 import com.versioneye.crawler.service.VersionTransferService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.htmlcleaner.TagNode;
@@ -29,6 +31,8 @@ import java.util.*;
  *
  */
 public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
+
+    static final Logger logger = LogManager.getLogger(CrawlerRubyGems.class.getName());
 
     private String name = "RubyGems";
     private String crawlerVersion = "0.1";
@@ -62,14 +66,11 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     public void crawl() {
         Date start = new Date();
         String src = getRepository().getSrc();
-        logUtils.logStart(start, name, src);
 
         Set<String> gemNames = getFirstLevelList();
         for (String gemName: gemNames){
             crawlePackage(gemName);
         }
-
-        logUtils.logStop(start, name, src);
     }
 
     public Set<String> getFirstLevelList(){
@@ -78,19 +79,19 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
             for (String letter: alphabet){
                 Integer count = getPageCountForLetter(letter);
                 for (int z = 1; z <= count; z++){
-                    System.out.println(gemNames.size() + " names. Collect names from page: " + z + " for letter " + letter);
+                    logger.info(gemNames.size() + " names. Collect names from page: " + z + " for letter " + letter);
                     getGemNamesFromPage(letter, String.valueOf(z), gemNames);
                 }
             }
         } catch (Exception exception) {
-            logUtils.addError("ERROR in getGemNames()", exception.toString(), crawle);
+            logger.error("ERROR in getGemNames()", exception.toString());
             exception.printStackTrace();
         }
         return gemNames;
     }
 
     public void crawlePackage(String name) {
-        System.out.println("crawle rubygem : " + name);
+        logger.info("crawle rubygem : " + name);
         try{
             String resource = "https://rubygems.org/api/v1/gems/" + encodeURI(name) + ".json";
             Reader reader = httpUtils.getResultReader(resource);
@@ -126,7 +127,7 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
                 checkLicense(gem, product);
             }
         } catch (Exception ex) {
-            logUtils.addError("ERROR in CrawlerRubyGems.crawlePackage("+ name +")", ex.toString(), crawle);
+            logger.info("ERROR in CrawlerRubyGems.crawlePackage(" + name + ")", ex.toString());
             ex.printStackTrace();
         }
     }
@@ -229,13 +230,13 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     }
 
     private void checkLicenseTheHardWay(RubyGemProduct gem, Product product){
-        System.out.println("check license the hard way for " + product.getProd_key());
+        logger.info("check license the hard way for " + product.getProd_key());
         String license = licenseChecker.checkLicenseOnGitHub(gem.getSource_code_uri());
         if (license == null || license.isEmpty()){
             license = licenseChecker.checkLicenseOnGitHub(gem.getHomepage_uri());
         }
         if (license != null && !license.isEmpty()){
-            System.out.println(" ---> license: " + license);
+            logger.info(" ---> license: " + license);
             String licenseLink = null;
             if (license.equals("MIT")){
                 licenseLink = "http://opensource.org/licenses/mit-license.html";

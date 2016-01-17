@@ -1,5 +1,7 @@
 package com.versioneye.crawler.crawl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.htmlcleaner.TagNode;
 import versioneye.domain.*;
 import versioneye.persistence.IProductDao;
@@ -22,6 +24,8 @@ import java.util.*;
  *
  */
 public class CrawlerR extends SuperCrawler implements ICrawl {
+
+    static final Logger logger = LogManager.getLogger(CrawlerR.class.getName());
 
     private String crawlerName = "R";
     private String crawlerVersion = "0.1";
@@ -47,14 +51,11 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
 
     public void crawl() {
         Date start = new Date();
-        logUtils.logStart(start, crawlerName, getRepository().getSrc());
 
         Set<String> names = getFirstLevelList();
         for (String rPackage : names){
             crawlePackage(rPackage);
         }
-
-        logUtils.logStop(start, crawlerName, getRepository().getSrc());
     }
 
     public Set<String> getFirstLevelList(){
@@ -69,14 +70,14 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
             }
             return names;
         } catch (Exception exception) {
-            logUtils.addError("ERROR in CrawlerR.getGemNames()", exception.toString(), crawle);
+            logger.error("ERROR in CrawlerR.getGemNames()", exception.toString());
             return null;
         }
     }
 
     public void crawlePackage(String rPackage){
         try{
-            System.out.println("rPackage: " + rPackage);
+            logger.info("rPackage: " + rPackage);
             if (rPackage.contains("web/packagindex.html"))
                 return;
             String name = rPackage;
@@ -173,7 +174,7 @@ public class CrawlerR extends SuperCrawler implements ICrawl {
                 }
             }
         } catch (Exception ex){
-            logUtils.addError("ERROR in crawlerR.crawlePackage("+rPackage+")", ex.toString(), crawle);
+            logger.error("ERROR in crawlerR.crawlePackage("+rPackage+")", ex.toString());
         }
     }
 

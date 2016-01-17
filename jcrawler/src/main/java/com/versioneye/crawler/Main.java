@@ -1,6 +1,8 @@
 package com.versioneye.crawler;
 
 import com.versioneye.crawler.crawl.ICrawl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import versioneye.domain.Repository;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
+
+    static final Logger logger = LogManager.getLogger(Main.class.getName());
 
     private static final long SECOND = 1000L;
     private static ApplicationContext context;
@@ -85,7 +89,7 @@ public class Main {
             Thread thread = startThread(crawlerName, repository, id, execGroup);
             threads[z++] = thread;
             done.add(id);
-            System.out.println("Start new Thread " + thread.getName());
+            logger.info("Start new Thread " + thread.getName());
             if (z == threadAmount)
                 break;
         }
@@ -105,14 +109,14 @@ public class Main {
                     thread = getNextThread(list, done, crawlerName, repository, execGroup);
                     if (thread != null){
                         threads[i] = thread;
-                        System.out.println("Start new Thread " + thread.getName());
+                        logger.info("Start new Thread " + thread.getName());
                     }
                 }
                 if (threadsAlive == 0)
                     break;
             }
         } catch (Exception ex){
-            logUtils.addError("error in startThreads()", ex.getMessage(), crawler.getCrawle());
+            logger.info("error in startThreads()", ex.getMessage());
         }
     }
 
