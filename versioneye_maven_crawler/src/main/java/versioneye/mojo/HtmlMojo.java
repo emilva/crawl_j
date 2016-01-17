@@ -156,9 +156,10 @@ public class HtmlMojo extends SuperMojo {
                 return ;
             }
 
-            boolean existAlready = productDao.doesVersionExistAlreadyByGA( groupId.toLowerCase(), artifactId.toLowerCase(), versionNumber );
-            if (existAlready){
-                getLog().info(" --- exists already: " + groupId + "/" + artifactId + ":" + versionNumber);
+            boolean existAlreadyLowerCase = productDao.doesVersionExistAlreadyByGA( groupId.toLowerCase(), artifactId.toLowerCase(), versionNumber );
+            boolean existAlready          = productDao.doesVersionExistAlreadyByGA( groupId, artifactId, versionNumber );
+            if (existAlreadyLowerCase || existAlready){
+                getLog().info(" --- Exists already: " + groupId + "/" + artifactId + ":" + versionNumber);
                 pomDao.create(urlToPom);
                 return ;
             }
@@ -168,7 +169,7 @@ public class HtmlMojo extends SuperMojo {
                 return ;
             }
 
-            getLog().info(" -- process: " + groupId + "/" + artifactId + ":" + versionNumber);
+            getLog().info(" --- Process: " + groupId + "/" + artifactId + ":" + versionNumber);
             Artifact artifact = getArtifact(groupId + ":" + artifactId + ":pom:" + versionNumber);
             ArtifactResult result = resolveArtifact(artifact);
             resolveDependencies(artifact);

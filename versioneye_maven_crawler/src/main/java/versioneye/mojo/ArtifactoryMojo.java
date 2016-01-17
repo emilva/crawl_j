@@ -131,8 +131,6 @@ public class ArtifactoryMojo extends HtmlMojo {
                     continue;
                 }
                 String pomUrl = baseUrl + "/" + repo + file.getUri();
-                getLog().info(" - Add: " + pomUrl);
-//                poms.add(pomUrl);
                 processPom( pomUrl );
             }
         } catch (Exception ex) {
