@@ -17,9 +17,14 @@ import java.io.Reader;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 @Mojo( name = "artifactory", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class ArtifactoryMojo extends HtmlMojo {
 
+    static final Logger logger = LogManager.getLogger(ArtifactoryMojo.class.getName());
     private String baseUrl;
     private Set<String> poms = new HashSet<String>();
 
@@ -30,7 +35,7 @@ public class ArtifactoryMojo extends HtmlMojo {
             String env = System.getenv("RAILS_ENV");
             GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1_type");
             if (!gs.getValue().equals("artifactory")){
-                getLog().info("Skip artifactory because mvn_repo_1_type is not artifactory");
+                logger.info("Skip artifactory because mvn_repo_1_type is not artifactory");
                 return ;
             }
 
@@ -46,9 +51,9 @@ public class ArtifactoryMojo extends HtmlMojo {
             collectPoms(repositories);
 //            processPoms();
 
-            getLog().info("The End");
+            logger.info("The End");
         } catch( Exception exception ){
-            getLog().error(exception);
+            logger.error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
@@ -77,26 +82,26 @@ public class ArtifactoryMojo extends HtmlMojo {
         for (ArtifactoryRepoDescription repo: repos ){
             String url = baseUrl + "/" + repo.getKey();
             addAsRepo(repo.getKey(), url, true);
-            getLog().info("Add custom repo: " + repo.getKey() + " url: " + url + " type: " + repo.getType());
+            logger.info("Add custom repo: " + repo.getKey() + " url: " + url + " type: " + repo.getType());
         }
-        getLog().info("There are " + this.repos.size() + " remote repositories in the list");
+        logger.info("There are " + this.repos.size() + " remote repositories in the list");
     }
 
     private void collectPoms(ArtifactoryRepoDescription[] repos){
         for (ArtifactoryRepoDescription repo: repos ){
             if (!repo.getType().equals("LOCAL")){
-                getLog().info("continue because repo type is LOCAL");
+                logger.info("continue because repo type is LOCAL");
                 continue;
             }
-            getLog().info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
+            logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
             listFiles( repo.getKey() );
         }
     }
 
 //    private void processPoms(){
-//        getLog().info(" ---");
-//        getLog().info(" --- " + poms.size() + " unique pom files found");
-//        getLog().info(" ---");
+//        logger.info(" ---");
+//        logger.info(" --- " + poms.size() + " unique pom files found");
+//        logger.info(" ---");
 //        for (String pom : poms){
 //            processPom(pom);
 //        }
@@ -134,7 +139,7 @@ public class ArtifactoryMojo extends HtmlMojo {
                 processPom( pomUrl );
             }
         } catch (Exception ex) {
-            getLog().error(ex);
+            logger.error(ex);
         }
     }
 
