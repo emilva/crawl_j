@@ -1,5 +1,7 @@
 package versioneye.mojo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.building.ModelBuildingRequest;
 import org.apache.maven.plugin.AbstractMojo;
@@ -45,6 +47,8 @@ import java.util.Properties;
  * The Mother of all Mojos!
  */
 public abstract class SuperMojo extends AbstractMojo {
+
+    static final Logger logger = LogManager.getLogger(SuperMojo.class.getName());
 
     protected String username = "admin";
     protected String password = "admin";
@@ -97,7 +101,7 @@ public abstract class SuperMojo extends AbstractMojo {
             globalSettingDao = (IGlobalSettingDao) context.getBean("globalSettingDao");
             httpUtils = (HttpUtils) context.getBean("httpUtils");
         } catch (Exception ex){
-            getLog().error(ex);
+            logger.error(ex);
         }
     }
 
@@ -107,14 +111,14 @@ public abstract class SuperMojo extends AbstractMojo {
         if (projectModel != null){
             if (projectModel.getVersion().startsWith("${")){
                 projectModel.setVersion(artifactInfo.getVersion());
-                getLog().info("------ 42 is not true ------");
-                getLog().info("------ Upsi! ProjectModel doesn't seems to be complete! The Maven God is mad today!");
-                getLog().info("------ projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
-                getLog().info("------ 42 is not true ------");
+                logger.info("------ 42 is not true ------");
+                logger.info("------ Upsi! ProjectModel doesn't seems to be complete! The Maven God is mad today!");
+                logger.info("------ projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
+                logger.info("------ 42 is not true ------");
             }
             mavenProjectProcessor.updateProject( projectModel, releasedAt );
         } else {
-            getLog().error("projectModel is null. Try 2nd way!");
+            logger.error("projectModel is null. Try 2nd way!");
             mavenPomProcessor.updateNode(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion(), releasedAt);
         }
     }
@@ -129,7 +133,7 @@ public abstract class SuperMojo extends AbstractMojo {
             request.setRepositories( repos );
             return repoSystem.resolveArtifact( session, request );
         } catch ( ArtifactResolutionException e ) {
-            getLog().error("resolveArtifact failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
+            logger.error("resolveArtifact failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoExecutionException( e.getMessage(), e );
         }
     }
@@ -138,7 +142,7 @@ public abstract class SuperMojo extends AbstractMojo {
         if (artifact == null)
             return null;
         try {
-            getLog().info( "Resolving dependencies for " + artifact + " from " + repos );
+            logger.info("Resolving dependencies for " + artifact + " from " + repos);
             ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
             descriptorRequest.setArtifact( artifact );
             descriptorRequest.setRepositories( repos );
@@ -150,7 +154,7 @@ public abstract class SuperMojo extends AbstractMojo {
             }
             return descriptorResult;
         } catch (Exception ex) {
-            getLog().error("resolveDependencies failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
+            logger.error("resolveDependencies failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoFailureException( ex.getMessage(), ex );
         }
     }
@@ -187,7 +191,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
     protected MavenProject getProject(Artifact artifact) throws MojoExecutionException, MojoFailureException {
         try {
-            getLog().info("build project from file: " + artifact.getFile());
+            logger.info("build project from file: " + artifact.getFile());
 
             ProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
             projectBuildingRequest.setLocalRepository(localRepository);
@@ -200,7 +204,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
             return project;
         } catch (Exception ex) {
-            getLog().error("getProject failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
+            logger.error("getProject failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoFailureException( ex.getMessage(), ex );
         }
     }
@@ -300,7 +304,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
         RemoteRepository remoteRepository = builder.build();
         repos.add(remoteRepository);
-        getLog().info("There are " + repos.size() + " remote repositories in the list");
+        logger.info("There are " + repos.size() + " remote repositories in the list");
     }
 
     protected void addAllRepos() {
@@ -314,7 +318,7 @@ public abstract class SuperMojo extends AbstractMojo {
             RemoteRepository remoteRepository = builder.build();
             repos.add(remoteRepository);
         }
-        getLog().info("There are " + repos.size() + " remote repositories in the list");
+        logger.info("There are " + repos.size() + " remote repositories in the list");
     }
 
 }

@@ -1,5 +1,7 @@
 package versioneye.mojo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -11,6 +13,8 @@ import java.util.Date;
 
 @Mojo( name = "aether", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class AetherMojo extends SuperMojo {
+
+    static final Logger logger = LogManager.getLogger(AetherMojo.class.getName());
 
     /**
      * The {@code <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>} of the artifact to resolve.

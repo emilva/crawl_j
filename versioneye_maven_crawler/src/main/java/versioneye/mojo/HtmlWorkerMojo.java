@@ -3,6 +3,8 @@ package versioneye.mojo;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.QueueingConsumer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -13,6 +15,8 @@ import java.util.Properties;
 
 @Mojo( name = "html_worker", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class HtmlWorkerMojo extends HtmlMojo {
+
+    static final Logger logger = LogManager.getLogger(HtmlWorkerMojo.class.getName());
 
     private final static String QUEUE_NAME = "html_worker";
 
@@ -27,7 +31,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             Channel channel = connection.createChannel();
 
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-            getLog().info(" [*] Waiting for messages. To exit press CTRL+C");
+            logger.info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
             channel.basicConsume(QUEUE_NAME, true, consumer);
@@ -35,13 +39,13 @@ public class HtmlWorkerMojo extends HtmlMojo {
             while (true) {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
                 String message = new String(delivery.getBody());
-                getLog().info(" [x] Received '" + message + "'");
+                logger.info(" [x] Received '" + message + "'");
                 processMessage( message );
-                getLog().info(" [x] Job done for '" + message + "'");
+                logger.info(" [x] Job done for '" + message + "'");
             }
         } catch( Exception exception ){
             exception.printStackTrace();
-            getLog().error(exception);
+            logger.error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
@@ -57,7 +61,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             processPom( pomUrl );
         } catch (Exception exception) {
             exception.printStackTrace();
-            getLog().error(exception);
+            logger.error(exception);
         }
     }
 

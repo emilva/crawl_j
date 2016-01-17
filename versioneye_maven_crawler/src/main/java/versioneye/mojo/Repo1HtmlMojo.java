@@ -1,5 +1,7 @@
 package versioneye.mojo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -10,6 +12,8 @@ import versioneye.domain.Repository;
 @Mojo( name = "repo1html", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class Repo1HtmlMojo extends HtmlMojo {
 
+    static final Logger logger = LogManager.getLogger(Repo1HtmlMojo.class.getName());
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try{
             super.execute();
@@ -17,7 +21,7 @@ public class Repo1HtmlMojo extends HtmlMojo {
             String env = System.getenv("RAILS_ENV");
             GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1_type");
             if (!gs.getValue().equals("html")){
-                getLog().info("Skip repo1html because mvn_repo_1_type is not html");
+                logger.info("Skip repo1html because mvn_repo_1_type is not html");
                 return ;
             }
 
@@ -35,18 +39,18 @@ public class Repo1HtmlMojo extends HtmlMojo {
 
             crawl();
         } catch( Exception exception ){
-            getLog().error(exception);
+            logger.error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
 
     private String fetchBaseUrl(){
         String env = System.getenv("RAILS_ENV");
-        getLog().info("fetchBaseUrl for env: " + env );
+        logger.info("fetchBaseUrl for env: " + env);
         try{
             GlobalSetting gs = globalSettingDao.getBy(env, "mvn_repo_1");
             String url = gs.getValue();
-            getLog().info(" - mvn_repo_1: " + url);
+            logger.info(" - mvn_repo_1: " + url);
             return url;
         } catch( Exception ex){
             ex.printStackTrace();

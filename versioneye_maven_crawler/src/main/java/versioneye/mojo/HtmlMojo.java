@@ -2,6 +2,8 @@ package versioneye.mojo;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -16,6 +18,8 @@ import versioneye.utils.MavenCentralUtils;
 import java.util.*;
 
 public class HtmlMojo extends SuperMojo {
+
+    static final Logger logger = LogManager.getLogger(HtmlMojo.class.getName());
 
     protected String split1Pattern = "(?i)href=\"";
     protected String split2Pattern = "\".*";
@@ -94,7 +98,7 @@ public class HtmlMojo extends SuperMojo {
                 links.add(link);
             }
         } catch (Exception ex) {
-            getLog().error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
+            logger.error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
             return new ArrayList<String>();
         }
         return links;
@@ -124,8 +128,8 @@ public class HtmlMojo extends SuperMojo {
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         } catch (Exception exception) {
-            getLog().error("urlToPom: " + urlToPom);
-            getLog().error(exception);
+            logger.error("urlToPom: " + urlToPom);
+            logger.error(exception);
         }
     }
 
@@ -152,32 +156,32 @@ public class HtmlMojo extends SuperMojo {
             }
 
             if (groupId == null || artifactId == null || versionNumber == null){
-                getLog().error("ERROR: could not fetch GAV for " + urlToPom);
+                logger.error("ERROR: could not fetch GAV for " + urlToPom);
                 return ;
             }
 
             boolean existAlreadyLowerCase = productDao.doesVersionExistAlreadyByGA( groupId.toLowerCase(), artifactId.toLowerCase(), versionNumber );
             boolean existAlready          = productDao.doesVersionExistAlreadyByGA( groupId, artifactId, versionNumber );
             if (existAlreadyLowerCase || existAlready){
-                getLog().info(" --- Exists already: " + groupId + "/" + artifactId + ":" + versionNumber);
+                logger.info(" --- Exists already: " + groupId + "/" + artifactId + ":" + versionNumber);
                 pomDao.create(urlToPom);
                 return ;
             }
 
             if (packaging != null && packaging.equalsIgnoreCase("pom")){
-                getLog().info(" --- Skipp parent pom " + urlToPom);
+                logger.info(" --- Skipp parent pom " + urlToPom);
                 return ;
             }
 
-            getLog().info(" --- Process: " + groupId + "/" + artifactId + ":" + versionNumber);
+            logger.info(" --- Process: " + groupId + "/" + artifactId + ":" + versionNumber);
             Artifact artifact = getArtifact(groupId + ":" + artifactId + ":pom:" + versionNumber);
             ArtifactResult result = resolveArtifact(artifact);
             resolveDependencies(artifact);
             parseArtifact(result.getArtifact(), null);
             pomDao.create(urlToPom);
         } catch (Exception exception) {
-            getLog().error("urlToPom: " + urlToPom);
-            getLog().error(exception);
+            logger.error("urlToPom: " + urlToPom);
+            logger.error(exception);
         }
     }
 
@@ -196,7 +200,7 @@ public class HtmlMojo extends SuperMojo {
             connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
             channel = connection.createChannel();
         } catch (Exception exception){
-            getLog().error(exception);
+            logger.error(exception);
         }
     }
 
@@ -205,7 +209,7 @@ public class HtmlMojo extends SuperMojo {
             channel.close();
             connection.close();
         } catch (Exception exception){
-            getLog().error(exception);
+            logger.error(exception);
         }
     }
 
