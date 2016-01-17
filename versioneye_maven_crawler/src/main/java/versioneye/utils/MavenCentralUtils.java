@@ -1,5 +1,7 @@
 package versioneye.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.codehaus.jackson.map.ObjectMapper;
 import versioneye.domain.Crawle;
@@ -19,6 +21,8 @@ import java.io.Reader;
  * Time: 8:30 PM
  */
 public class MavenCentralUtils {
+
+    static final Logger logger = LogManager.getLogger(MavenCentralUtils.class.getName());
 
     public static final String LINK_FILE = "http://search.maven.org/remotecontent?filepath=";
     private MavenUrlProcessor mavenUrlProcessor;
@@ -68,7 +72,7 @@ public class MavenCentralUtils {
             Reader reader = httpUtils.getResultReader( urlToPom, username, password );
             return PomReader.readSinglePom(reader);
         } catch (Exception ex) {
-            System.out.println("ERROR in fetchModelFromUrl: " + urlToPom);
+            logger.info("ERROR in fetchModelFromUrl: " + urlToPom);
             ex.printStackTrace();
             return null;
         }

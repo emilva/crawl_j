@@ -1,5 +1,7 @@
 package versioneye.crawler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import versioneye.domain.Crawle;
 import versioneye.domain.Repository;
 import versioneye.maven.MavenUrlProcessor;
@@ -32,8 +34,10 @@ public class CrawlerMavenDefaultHtml implements ICrawl {
     private String startPoint;
     private boolean threadable = true;
 
+    static final Logger logger = LogManager.getLogger(CrawlerMavenDefaultHtml.class.getName());
+
     public CrawlerMavenDefaultHtml(){
-        System.out.println("new CrawlerMavenDefaultHtml");
+        logger.info("new CrawlerMavenDefaultHtml");
     }
 
     public void run() {

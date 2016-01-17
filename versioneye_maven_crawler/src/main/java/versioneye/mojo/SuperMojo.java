@@ -150,7 +150,7 @@ public abstract class SuperMojo extends AbstractMojo {
             ArtifactDescriptorResult descriptorResult = repoSystem.readArtifactDescriptor( session, descriptorRequest );
 
             for ( Dependency dependency : descriptorResult.getDependencies() ) {
-                System.out.println( " - dependency: " + dependency );
+                logger.info(" - dependency: " + dependency);
             }
             return descriptorResult;
         } catch (Exception ex) {
@@ -169,7 +169,7 @@ public abstract class SuperMojo extends AbstractMojo {
         try {
             List<ArtifactResult> artifactResults = repoSystem.resolveDependencies(session, dependencyRequest).getArtifactResults();
             for (ArtifactResult artifactResult : artifactResults) {
-                System.out.println(" - " + artifactResult.getArtifact() + " resolved to " + artifactResult.getArtifact().getFile());
+                logger.info(" - " + artifactResult.getArtifact() + " resolved to " + artifactResult.getArtifact().getFile());
             }
         } catch (DependencyResolutionException e1) {
             e1.printStackTrace();

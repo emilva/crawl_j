@@ -1,5 +1,7 @@
 package versioneye.crawler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import versioneye.domain.Crawle;
 import versioneye.domain.Repository;
@@ -23,6 +25,8 @@ import java.util.List;
  * Time: 6:31 PM
  */
 public class CrawlerMavenDefaultJson implements ICrawl {
+
+    static final Logger logger = LogManager.getLogger(CrawlerMavenDefaultJson.class.getName());
 
     private String name = "crawlerSearchMavenOrg";
     private String version = "0.2";
@@ -54,7 +58,7 @@ public class CrawlerMavenDefaultJson implements ICrawl {
         Date start = new Date();
         logUtils.logStart(start, name, getRepository().getSrc());
 
-        System.out.println("Start with " + parentId);
+        logger.info("Start with " + parentId);
         follow(parentId, "");
 
         logUtils.logStop(start, name, getRepository().getSrc());

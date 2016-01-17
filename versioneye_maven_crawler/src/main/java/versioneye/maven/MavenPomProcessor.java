@@ -1,5 +1,7 @@
 package versioneye.maven;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.License;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
@@ -24,6 +26,8 @@ import java.util.LinkedHashMap;
  * Time: 9:49 PM
  */
 public class MavenPomProcessor {
+
+    static final Logger logger = LogManager.getLogger(MavenPomProcessor.class.getName());
 
     private IProductDao productDao;
     private ProductService productService;
@@ -100,7 +104,7 @@ public class MavenPomProcessor {
             versionLinkService.createLinkIfNotExist( product.getLanguage(), product.getProd_key(), null, "Link to Repository", urlToProduct);
 
             if (model == null){
-                System.out.println("model is null!!");
+                logger.info("model is null!!");
                 return false;
             }
 
@@ -131,7 +135,7 @@ public class MavenPomProcessor {
             parentVersion = version;
         Model  parentModel  = mavenCentralUtils.fetchModel(parent.getGroupId(), parent.getArtifactId(), parentVersion );
         if (parentModel == null){
-            System.out.println("parentModel is null -> " + parent.getGroupId() + "/" + parent.getArtifactId() + ":" + parentVersion);
+            logger.info("parentModel is null -> " + parent.getGroupId() + "/" + parent.getArtifactId() + ":" + parentVersion);
             return model;
         }
         Model newHappyModel = PomReader.merge(parentModel, model);

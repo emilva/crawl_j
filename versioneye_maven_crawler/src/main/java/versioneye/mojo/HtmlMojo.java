@@ -126,7 +126,7 @@ public class HtmlMojo extends SuperMojo {
             String message = repository.getName() + "::" + urlToPom;
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            System.out.println(" [x] Sent '" + message + "'");
+            logger.info(" [x] Sent '" + message + "'");
         } catch (Exception exception) {
             logger.error("urlToPom: " + urlToPom);
             logger.error(exception);
@@ -195,7 +195,7 @@ public class HtmlMojo extends SuperMojo {
                 rabbitmqAddr = System.getenv("RM_PORT_5672_TCP_ADDR");
                 rabbitmqPort = System.getenv("RM_PORT_5672_TCP_PORT");
             }
-            System.out.println("RM_PORT_5672_TCP_ADDR: " + rabbitmqAddr + " RM_PORT_5672_TCP_PORT: " + rabbitmqPort);
+            logger.info("RM_PORT_5672_TCP_ADDR: " + rabbitmqAddr + " RM_PORT_5672_TCP_PORT: " + rabbitmqPort);
 
             connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
             channel = connection.createChannel();
