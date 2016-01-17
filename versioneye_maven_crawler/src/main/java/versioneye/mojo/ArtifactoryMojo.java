@@ -44,7 +44,7 @@ public class ArtifactoryMojo extends HtmlMojo {
             ArtifactoryRepoDescription[] repositories = fetchRepoList();
             addCustomRepos(repositories);
             collectPoms(repositories);
-            processPoms();
+//            processPoms();
 
             getLog().info("The End");
         } catch( Exception exception ){
@@ -85,6 +85,7 @@ public class ArtifactoryMojo extends HtmlMojo {
     private void collectPoms(ArtifactoryRepoDescription[] repos){
         for (ArtifactoryRepoDescription repo: repos ){
             if (!repo.getType().equals("LOCAL")){
+                getLog().info("continue because repo type is LOCAL");
                 continue;
             }
             getLog().info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
@@ -92,14 +93,14 @@ public class ArtifactoryMojo extends HtmlMojo {
         }
     }
 
-    private void processPoms(){
-        getLog().info(" ---");
-        getLog().info(" --- " + poms.size() + " unique pom files found");
-        getLog().info(" ---");
-        for (String pom : poms){
-            processPom(pom);
-        }
-    }
+//    private void processPoms(){
+//        getLog().info(" ---");
+//        getLog().info(" --- " + poms.size() + " unique pom files found");
+//        getLog().info(" ---");
+//        for (String pom : poms){
+//            processPom(pom);
+//        }
+//    }
 
     private void addAsRepo(String name, String url, boolean withAuth){
         RemoteRepository.Builder builder = new RemoteRepository.Builder(name, "default", url);
