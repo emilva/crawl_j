@@ -1,6 +1,8 @@
 package versioneye.mojo;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -22,6 +24,8 @@ import java.io.File;
  */
 @Mojo( name = "group1", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class Group1Mojo extends AetherMojo {
+
+    static final Logger logger = LogManager.getLogger(Group1Mojo.class.getName());
 
     @Parameter( defaultValue = "lamina", property = "groupIdC")
     protected String groupIdC;
@@ -45,14 +49,14 @@ public class Group1Mojo extends AetherMojo {
 
             setRepository("CloJars", "http://clojars.org/repo");
 
-            getLog().info("run for " + groupIdC + ":" + artifactIdC + ":pom:" + versionC);
+            logger.info("run for " + groupIdC + ":" + artifactIdC + ":pom:" + versionC);
             Artifact artifactInfo = getArtifact( groupIdC + ":" + artifactIdC + ":pom:" + versionC);
 
             ArtifactResult artifactResult = resolveArtifact(artifactInfo);
             resolveDependencies(artifactInfo);
             parseArtifact(artifactResult.getArtifact(), null);
         } catch( Exception exception ){
-            getLog().error(exception);
+            logger.error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }

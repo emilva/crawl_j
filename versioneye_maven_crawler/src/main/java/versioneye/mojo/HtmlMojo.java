@@ -60,7 +60,6 @@ public class HtmlMojo extends SuperMojo {
     }
 
     public void follow(String currentUrl){
-//        getLog().info("follow: " + currentUrl);
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
             if (href.startsWith(":")){
@@ -120,7 +119,7 @@ public class HtmlMojo extends SuperMojo {
     protected void sendPom(String urlToPom){
         try{
             if (pomDao.existsAlready(urlToPom)){
-                getLog().info("Skip pom, because it was already parsed! " + urlToPom);
+                logger.info("Skip pom, because it was already parsed! " + urlToPom);
                 return ;
             }
             String message = repository.getName() + "::" + urlToPom;

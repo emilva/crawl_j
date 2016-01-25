@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Appenders>
-        <RollingFile name="RollingFile" fileName="/mnt/logs/maven_crawler.log"
+        <RollingFile name="RollingFile" fileName="/mnt/logs/jcrawler.log"
                      filePattern="/mnt/logs/${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n" />
             <Policies>

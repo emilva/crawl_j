@@ -24,7 +24,7 @@ public class AdobeMojo extends HtmlMojo {
 
             crawl();
         } catch( Exception exception ){
-            getLog().error(exception);
+            logger.error(exception);
             throw new MojoExecutionException("Oh no! Something went wrong. Get in touch with the VersionEye guys and give them feedback.", exception);
         }
     }
