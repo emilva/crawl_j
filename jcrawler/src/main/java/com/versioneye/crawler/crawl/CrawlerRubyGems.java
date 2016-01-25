@@ -133,6 +133,7 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     }
 
     private Integer getPageCountForLetter(String letter) throws Exception{
+        logger.info("get packages for letter: " + letter);
         String resource = "https://rubygems.org/gems?letter=" + letter;
         TagNode page = httpUtils.getPageForResource(resource);
         Object[] objects = page.evaluateXPath("//div[@class=\"pagination\"]/a");
