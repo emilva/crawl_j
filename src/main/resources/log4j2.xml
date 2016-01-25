@@ -2,7 +2,7 @@
 <Configuration status="INFO">
     <Appenders>
         <RollingFile name="RollingFile" fileName="/mnt/logs/crawlj.log"
-                     filePattern="/mnt/logs/$${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.log.gz">
+                     filePattern="/mnt/logs/${date:yyyy-MM}/%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="%d{DEFAULT} [%t] %-5level %logger{36} - %msg%n" />
             <Policies>
                 <!--<TimeBasedTriggeringPolicy />&lt;!&ndash; Rotated everyday &ndash;&gt;-->
