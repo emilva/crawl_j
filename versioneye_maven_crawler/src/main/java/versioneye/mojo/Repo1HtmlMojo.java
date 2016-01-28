@@ -30,7 +30,7 @@ public class Repo1HtmlMojo extends HtmlMojo {
 
             mavenRepository = mavenRepositoryDao.findByName("custom");
             mavenRepository.setUrl(fetchBaseUrl());
-            Repository repository = repositoryUtils.convertRepository(mavenRepository);
+            repository = repositoryUtils.convertRepository(mavenRepository);
 
             mavenProjectProcessor.setRepository(repository);
             mavenPomProcessor.setRepository(repository);
