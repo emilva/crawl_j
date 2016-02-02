@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
-            <version>3.0.3</version>
+            <version>3.2.1</version>
         </dependency>
 
     </dependencies>
