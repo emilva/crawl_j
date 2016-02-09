@@ -123,7 +123,7 @@ public class HtmlMojo extends SuperMojo {
                 return ;
             }
             String message = repository.getName() + "::" + urlToPom;
-            channel.queueDeclare(QUEUE_NAME, false, false, true, null);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
             logger.info(" [x] Sent '" + message + "'");
         } catch (Exception exception) {

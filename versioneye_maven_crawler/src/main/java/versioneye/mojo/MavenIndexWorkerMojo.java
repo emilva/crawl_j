@@ -34,7 +34,7 @@ public class MavenIndexWorkerMojo extends AetherMojo {
             Connection connection = initConnection();
             Channel channel = connection.createChannel();
 
-            channel.queueDeclare(QUEUE_NAME, false, false, true, null);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             logger.info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
