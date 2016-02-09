@@ -30,7 +30,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             Connection connection = initConnection();
             Channel channel = connection.createChannel();
 
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, true, false, true, null);
             logger.info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
