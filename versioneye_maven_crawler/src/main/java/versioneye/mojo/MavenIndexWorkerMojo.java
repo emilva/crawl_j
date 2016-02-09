@@ -100,6 +100,9 @@ public class MavenIndexWorkerMojo extends AetherMojo {
             rabbitmqAddr = properties.getProperty("rabbitmq_addr");
             rabbitmqPort = properties.getProperty("rabbitmq_port");
         }
+        String msg = "Connect to RabbitMQ: " + rabbitmqAddr + ":" + rabbitmqPort;
+        logger.info(msg);
+        System.out.println(msg);
         return RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
     }
 
