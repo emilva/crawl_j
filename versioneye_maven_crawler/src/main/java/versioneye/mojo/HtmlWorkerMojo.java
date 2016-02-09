@@ -34,14 +34,19 @@ public class HtmlWorkerMojo extends HtmlMojo {
             logger.info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
-            channel.basicConsume(QUEUE_NAME, true, consumer);
+            channel.basicConsume(QUEUE_NAME, false, consumer);
+            channel.basicQos(1);
 
             while (true) {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-                String message = new String(delivery.getBody());
-                logger.info(" [x] Received '" + message + "'");
-                processMessage( message );
-                logger.info(" [x] Job done for '" + message + "'");
+
+                if(delivery != null) {
+                    String message = new String(delivery.getBody());
+                    logger.info(" [x] Received '" + message + "'");
+                    processMessage( message );
+                    logger.info(" [x] Job done for '" + message + "'");
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+                }
             }
         } catch( Exception exception ){
             exception.printStackTrace();
