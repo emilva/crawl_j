@@ -165,7 +165,7 @@
     </bean>
 
     <bean id="springMilestone" class="versioneye.domain.Repository" >
-        <property name="name"     value="SpringMilestone" />
+        <property name="name"     value="springMilestone" />
         <property name="src"      value="http://maven.springframework.org/milestone/" />
         <property name="repoType" value="Maven2" />
     </bean>
