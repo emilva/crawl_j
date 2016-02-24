@@ -111,10 +111,6 @@
                   <configuration>
                       <apiKey>b7f7c65e66d38f511fb2</apiKey>
                       <organisation>versioneye</organisation>
-                      <!--<licenseCheckBreakByUnknown>false</licenseCheckBreakByUnknown>-->
-                      <!--<projectId>553408179927cd1ed6010593</projectId>-->
-                      <!--<baseUrl>http://localhost:3000</baseUrl>-->
-                      <!--<apiKey>b7f7c65e66d38f511fb2</apiKey>-->
                   </configuration>
               </plugin>
           </plugins>

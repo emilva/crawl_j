@@ -58,7 +58,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
     private void processMessage(String message){
         try{
             String[] sps = message.split("::");
-            String repoName = sps[0].toLowerCase();
+            String repoName = sps[0];
             String pomUrl = sps[1];
 
             setRepository( repoName );
