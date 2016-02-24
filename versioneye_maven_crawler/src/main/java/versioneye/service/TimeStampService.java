@@ -14,7 +14,7 @@ public class TimeStampService {
 
     public Date getTimeStampFor(String g, String a, String v){
         try{
-            String url = "http://search.maven.org/solrsearch/select?q=g:%22" + g + "%22+AND+a:%22" + a + "%22+AND+v:%22" + v + "%22&rows=20&wt=json";
+            String url = "https://search.maven.org/solrsearch/select?q=g:%22" + g + "%22+AND+a:%22" + a + "%22+AND+v:%22" + v + "%22&rows=20&wt=json";
             Reader resultReader = httpUtils.getResultReader( url );
             ObjectMapper mapper = new ObjectMapper();
             ResponseJson json = mapper.readValue(resultReader, ResponseJson.class);
