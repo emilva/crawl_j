@@ -3,6 +3,9 @@ package versioneye.utils;
 import org.apache.maven.model.Model;
 import org.testng.annotations.Test;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -27,6 +30,15 @@ public class MavenCentralUtilsTest {
 
         System.out.println(System.getenv("PATH"));
         System.out.println(System.getenv("LC_ALL"));
+    }
+
+    @Test
+    public void doTest2(){
+
+        Timestamp stamp = new Timestamp( 1455243639000L );
+        Date date = new Date(stamp.getTime());
+        System.out.println("date: " + date);
+
     }
 
 //    @Test

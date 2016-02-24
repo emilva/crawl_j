@@ -40,7 +40,7 @@ public class HtmlWorkerMojo extends HtmlMojo {
             while (true) {
                 QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 
-                if(delivery != null) {
+                if (delivery != null) {
                     String message = new String(delivery.getBody());
                     logger.info(" [x] Received '" + message + "'");
                     processMessage( message );

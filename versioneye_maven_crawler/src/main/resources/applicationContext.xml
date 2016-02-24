@@ -29,6 +29,7 @@
 
     <bean id="dependencyModelService" class="versioneye.service.DependencyModelService" />
     <bean id="developerModelService"  class="versioneye.service.DeveloperModelService" />
+    <bean id="timeStampService"       class="versioneye.service.TimeStampService" />
 
     <bean id="mavenCentralUtils"     class="versioneye.utils.MavenCentralUtils" />
 

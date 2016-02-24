@@ -34,6 +34,7 @@ import versioneye.maven.MavenUrlProcessor;
 import versioneye.persistence.IGlobalSettingDao;
 import versioneye.persistence.IMavenRepostoryDao;
 import versioneye.persistence.IProductDao;
+import versioneye.service.TimeStampService;
 import versioneye.utils.HttpUtils;
 import versioneye.utils.PropertiesUtils;
 import versioneye.utils.RepositoryUtils;
@@ -87,6 +88,7 @@ public abstract class SuperMojo extends AbstractMojo {
     protected IGlobalSettingDao globalSettingDao;
     protected RepositoryUtils repositoryUtils = new RepositoryUtils();
     protected HttpUtils httpUtils;
+    protected TimeStampService timeStampService;
     protected ApplicationContext context;
 
 
@@ -100,6 +102,7 @@ public abstract class SuperMojo extends AbstractMojo {
             productDao = (IProductDao) context.getBean("productDao");
             globalSettingDao = (IGlobalSettingDao) context.getBean("globalSettingDao");
             httpUtils = (HttpUtils) context.getBean("httpUtils");
+            timeStampService = (TimeStampService) context.getBean("timeStampService");
         } catch (Exception ex){
             logger.error(ex);
         }
@@ -107,6 +110,9 @@ public abstract class SuperMojo extends AbstractMojo {
 
 
     protected void parseArtifact(Artifact artifactInfo, Date releasedAt) throws Exception {
+        if (releasedAt == null){
+            releasedAt = timeStampService.getTimeStampFor(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion());
+        }
         MavenProject projectModel = buildProjectModel( artifactInfo );
         if (projectModel != null){
             if (projectModel.getVersion().startsWith("${")){
@@ -320,5 +326,7 @@ public abstract class SuperMojo extends AbstractMojo {
         }
         logger.info("There are " + repos.size() + " remote repositories in the list");
     }
+
+
 
 }

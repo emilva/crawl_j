@@ -17,7 +17,7 @@ public class Document {
     private String a;
     private String v;
     private String p;
-    private Integer timestamp;
+    private Long timestamp;
     private String name;
     private String type;
     private String lastModified;
@@ -27,11 +27,11 @@ public class Document {
     private String sha1;
 
 
-    public Integer getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Integer timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
