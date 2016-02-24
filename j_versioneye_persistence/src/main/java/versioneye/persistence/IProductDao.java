@@ -54,6 +54,8 @@ public interface IProductDao {
 
     List<Product> getAllNpmProducts();
 
+    List<Product> fetchProductsFromRepo(String language, String repoSrc);
+
     List<Product> fetchProductsWithEmptyReleaseString(String language);
 
     void remove(DBObject object);

@@ -230,6 +230,21 @@ public class ProductDao implements IProductDao {
         return cur.hasNext();
     }
 
+    public List<Product> fetchProductsFromRepo(String language, String repoSrc){
+        BasicDBObject match = new BasicDBObject();
+        match.put(Product.LANGUAGE, language);
+        match.put("repositories.src", repoSrc);
+        DBCursor cur = getCollection().find(match);
+        List<Product> products = new ArrayList<Product>();
+        while (cur.hasNext()){
+            DBObject productDB = cur.next();
+            Product product = new Product();
+            product.updateFromDbObject(productDB);
+            products.add(product);
+        }
+        return products;
+    }
+
     public List<Product> fetchProductsWithEmptyReleaseString(String language){
         BasicDBObject match = new BasicDBObject();
         match.put(Product.LANGUAGE, language);
