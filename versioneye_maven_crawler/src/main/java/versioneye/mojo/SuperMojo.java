@@ -110,17 +110,18 @@ public abstract class SuperMojo extends AbstractMojo {
 
 
     protected void parseArtifact(Artifact artifactInfo, Date releasedAt) throws Exception {
-        if (releasedAt == null){
+        if ( releasedAt == null && repository != null &&
+           ( repository.getName().equalsIgnoreCase("MavenCentral") || repository.getName().equalsIgnoreCase("central") ) ) {
             releasedAt = timeStampService.getTimeStampFor(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion());
         }
         MavenProject projectModel = buildProjectModel( artifactInfo );
         if (projectModel != null){
             if (projectModel.getVersion().startsWith("${")){
                 projectModel.setVersion(artifactInfo.getVersion());
-                logger.info("------ 42 is not true ------");
+                logger.info("------ 42 is not the answer! ------");
                 logger.info("------ Upsi! ProjectModel doesn't seems to be complete! The Maven God is mad today!");
                 logger.info("------ projectModels key is " + projectModel.getGroupId() + "/" + projectModel.getArtifactId() + " : " + projectModel.getVersion());
-                logger.info("------ 42 is not true ------");
+                logger.info("------ 42 is not the answer! ------");
             }
             mavenProjectProcessor.updateProject( projectModel, releasedAt );
         } else {
