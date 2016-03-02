@@ -228,6 +228,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="central" class="versioneye.domain.Repository" >
+        <property name="name"     value="MavenCentral" />
+        <property name="src"      value="http://repo.maven.apache.org/maven2" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <bean id="jbossPublic" class="versioneye.domain.Repository" >
         <property name="name"     value="JBossPublic" />
         <property name="src"      value="http://repository.jboss.org/nexus/content/groups/public-jboss/" />
