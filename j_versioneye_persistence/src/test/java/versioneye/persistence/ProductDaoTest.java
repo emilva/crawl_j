@@ -75,7 +75,7 @@ public class ProductDaoTest {
 
     @Test(dependsOnMethods = {"doCreate1"})
     public void doExistAlready(){
-        Assert.assertTrue( productDao.existAlready(LANGUAGE, KEY) );
+        Assert.assertTrue(productDao.existAlready(LANGUAGE, KEY));
     }
 
     @Test(dependsOnMethods = {"doExistAlready"})
@@ -129,20 +129,7 @@ public class ProductDaoTest {
         productDao.remove(javaProd.getDBObject());
     }
 
-    @Test(dependsOnMethods = {"getUniqueFollowedJavaIds"} )
-    public void doUpdate() throws Exception {
-        String link = "www.server.de/group/arti/a";
-        Version version = new Version();
-        version.setProduct_key(KEY);
-        version.setVersion("1.1");
-        version.setLink(link);
-        productDao.updateVersionInfosInProduct(product.getLanguage(), KEY, version);
-        Product productUpdated = productDao.getByKey(LANGUAGE, KEY);
-//        assertEquals(productUpdated.getVersion(), "1.1");
-        assertEquals(productUpdated.getVersion_link(), link);
-    }
-
-    @Test(dependsOnMethods = {"doUpdate"})
+    @Test(dependsOnMethods = {"getByKey"})
     public void addVersion() throws Exception {
         Version version = new Version();
         version.setVersion("1.0");
@@ -153,17 +140,8 @@ public class ProductDaoTest {
         Product product = productDao.getByKey(LANGUAGE, KEY);
         assertNotNull(product);
         assertEquals(product.getVersions().size(), 1);
-
-        productDao.updateVersionInfosInProduct(product.getLanguage(), product.getProd_key(), version);
-
-        assertTrue(productDao.doesVersionExistAlready(LANGUAGE, KEY, "1.0"));
-
-        Product prod = productDao.getByKey(LANGUAGE, KEY);
-        Assert.assertNotNull(prod);
-        assertEquals(prod.getVersions().size(), 1);
-        System.out.println(prod.getVersion());
-
-        assertEquals(prod.getVersions().get("1.0").getVersion(), "1.0");
+        assertEquals(product.getVersions().get("1.0").getVersion(), "1.0");
+        assertEquals(product.getReindex(), Boolean.TRUE);
     }
 
     @Test(dependsOnMethods = {"addVersion"})
@@ -177,16 +155,7 @@ public class ProductDaoTest {
         Product product = productDao.getByKey(LANGUAGE, KEY);
         assertNotNull(product);
         assertEquals(product.getVersions().size(), 2);
-
-        productDao.updateVersionInfosInProduct(product.getLanguage(), product.getProd_key(), version);
-
-        assertTrue(productDao.doesVersionExistAlready(LANGUAGE, KEY, "2.0"));
-
-        Product prod = productDao.getByKey(LANGUAGE, KEY);
-        Assert.assertNotNull(prod);
-        assertEquals(prod.getVersions().size(), 2);
-        System.out.println(prod.getVersion());
-        assertEquals(prod.getVersions().get("2.0").getVersion(), "2.0");
+        assertEquals(product.getVersions().get("2.0").getVersion(), "2.0");
     }
 
     @Test(dependsOnMethods = {"addVersion"})

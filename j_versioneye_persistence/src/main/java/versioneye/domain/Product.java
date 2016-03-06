@@ -67,6 +67,8 @@ public class Product {
     private String version;
     private String version_link;
 
+    private Boolean reindex;
+
     private Date createdAt = new Date();
     private Date changedAt = new Date();
 
@@ -105,8 +107,8 @@ public class Product {
 
     public void updateFromDbObject(DBObject object){
         setId( (object.get(Product.ID)).toString() );
-        setProductId( (ObjectId) object.get(Product.ID) );
-        setLanguage( (String) object.get( Product.LANGUAGE ) );
+        setProductId((ObjectId) object.get(Product.ID));
+        setLanguage((String) object.get(Product.LANGUAGE));
         setName((String) object.get(Product.NAME));
         setProd_key((String) object.get(Product.PROD_KEY));
         setProd_type((String) object.get(Product.PROD_TYPE));
@@ -122,6 +124,7 @@ public class Product {
         setFollowers((Integer) object.get(FOLLOWERS));
         setVersion((String) object.get(Product.VERSION));
         setVersion_link((String) object.get(Product.VERSION_LINK));
+        setReindex((Boolean) object.get(Product.REINDEX));
         BasicDBList userIdObjects = (BasicDBList) object.get(USER_IDS);
         if (userIdObjects != null && userIdObjects.size() > 0){
             for (String userId : userIdObjects.keySet()){
@@ -176,6 +179,14 @@ public class Product {
         urlKey = urlKey.replaceAll("/", "--");
         urlKey = urlKey.replaceAll("\\.", "~");
         return urlKey;
+    }
+
+    public Boolean getReindex() {
+        return reindex;
+    }
+
+    public void setReindex(Boolean reindex) {
+        this.reindex = reindex;
     }
 
     public List<ObjectId> getUser_ids() {

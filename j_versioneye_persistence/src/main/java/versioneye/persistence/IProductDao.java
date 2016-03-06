@@ -16,8 +16,6 @@ public interface IProductDao {
 
     List<ObjectId> getUniqueFollowedJavaIds();
 
-    void updateVersionInfosInProduct(String language, String prodKey, Version version);
-
     void updateDescription(String language, String prodKey, String desciption);
 
     Product create(final Product product);

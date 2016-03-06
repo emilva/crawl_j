@@ -54,7 +54,6 @@ public class ProductService {
         }
 
         productDao.addNewVersion(product.getLanguage(), product.getProd_key(), version);
-        productDao.updateVersionInfosInProduct(product.getLanguage(), product.getProd_key(), version);
         System.out.println("product: " + product.getProd_key() + " has new version: " + version.getVersion());
 
         writeNotifications(product, version);

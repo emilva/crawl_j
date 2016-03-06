@@ -44,20 +44,6 @@ public class ProductDao implements IProductDao {
         return result;
     }
 
-    public void updateVersionInfosInProduct(String language, String prodKey, Version version){
-        BasicDBObject match = new BasicDBObject();
-        match.put(Product.LANGUAGE, language);
-        match.put(Product.PROD_KEY, prodKey);
-
-        BasicDBObject newValues = new BasicDBObject();
-        newValues.put(Product.REINDEX, true);
-        newValues.put(Product.UPDATED_AT, new Date());
-
-        BasicDBObject set = new BasicDBObject("$set", newValues);
-
-        getCollection().update(match, set, false, false, WriteConcern.FSYNC_SAFE);
-    }
-
     public void updateDescription(String language, String prodKey, String desciption){
         BasicDBObject match = new BasicDBObject();
         match.put(Product.LANGUAGE, language);
@@ -267,10 +253,15 @@ public class ProductDao implements IProductDao {
 
         BasicDBObject versionObj = version.getDBObject();
         versionObj.put(Version.VERSION, version.getVersion());
-
         BasicDBObject versionsUpdate = new BasicDBObject();
         versionsUpdate.put("$push", new BasicDBObject(Version.VERSIONS, versionObj));
         getCollection().update(productMatch, versionsUpdate, true, true, WriteConcern.FSYNC_SAFE);
+
+        BasicDBObject newValues = new BasicDBObject();
+        newValues.put(Product.REINDEX, true);
+        newValues.put(Product.UPDATED_AT, new Date());
+        BasicDBObject set = new BasicDBObject("$set", newValues);
+        getCollection().update(productMatch, set, false, false, WriteConcern.FSYNC_SAFE);
     }
 
     // TODO test
