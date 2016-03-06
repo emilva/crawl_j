@@ -32,13 +32,8 @@ public class CrawlerMavenDefaultHtmlTest {
         CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
         List<String> links = htmlCrawler.getLinksFromPage("http://jcenter.bintray.com/");
 
-        for ( String link : links ){
-            System.out.println( "Link: " + link );
-        }
-
         assert !links.isEmpty();
         assert links.get(6).equals(":ColumnPack/");
-
         System.out.println("THIS IS THE END");
     }
 
@@ -50,14 +45,9 @@ public class CrawlerMavenDefaultHtmlTest {
         CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
         List<String> links = htmlCrawler.getFirstLevelList();
 
-        for (String link: links){
-            System.out.println( "Link: " + link );
-        }
-
         assert !links.isEmpty();
         System.out.println("Link6: " + links.get(6));
         assert links.get(6).equals("http://jcenter.bintray.com/:CustomHistory/");
-
         System.out.println("THIS IS THE END");
     }
 
@@ -65,10 +55,8 @@ public class CrawlerMavenDefaultHtmlTest {
     public void follow(){
         Repository repository = (Repository) context.getBean("jcenter");
         crawler.setRepository(repository);
-
         CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
         htmlCrawler.follow("http://jcenter.bintray.com/ColumnPack/", "");
-
         System.out.println("THIS IS THE END");
     }
 
