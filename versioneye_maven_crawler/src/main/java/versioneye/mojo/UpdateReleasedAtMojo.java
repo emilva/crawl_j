@@ -19,21 +19,21 @@ public class UpdateReleasedAtMojo extends SuperMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         super.execute();
-        List<Product> products = productDao.fetchProductsFromRepo("Java", "http://repo.maven.apache.org/maven2");
-        for (Product product : products){
-            for (String versionString : product.getVersions().keySet()){
-                Date date = timeStampService.getTimeStampFor(product.getGroupId(), product.getArtifactId(), versionString);
-                if (date == null){
-                    continue;
-                }
-                String logLine = product.getGroupId() + "/" + product.getArtifactId() + ":" + versionString + " - " + date.toString();
-                System.out.println(logLine);
-                logger.info(logLine);
-                Version version = product.getVersions().get(versionString);
-                version.setReleased_at(date);
-                productDao.updateVersionReleaseTime(version);
-            }
-        }
+//        List<Product> products = productDao.fetchProductsFromRepo("Java", "http://repo.maven.apache.org/maven2");
+//        for (Product product : products){
+//            for (String versionString : product.getVersions().keySet()){
+//                Date date = timeStampService.getTimeStampFor(product.getGroupId(), product.getArtifactId(), versionString);
+//                if (date == null){
+//                    continue;
+//                }
+//                String logLine = product.getGroupId() + "/" + product.getArtifactId() + ":" + versionString + " - " + date.toString();
+//                System.out.println(logLine);
+//                logger.info(logLine);
+//                Version version = product.getVersions().get(versionString);
+//                version.setReleased_at(date);
+//                productDao.updateVersionReleaseTime(version);
+//            }
+//        }
     }
 
 }

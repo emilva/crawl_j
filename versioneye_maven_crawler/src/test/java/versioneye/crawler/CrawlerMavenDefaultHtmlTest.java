@@ -32,12 +32,12 @@ public class CrawlerMavenDefaultHtmlTest {
         CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
         List<String> links = htmlCrawler.getLinksFromPage("http://jcenter.bintray.com/");
 
-        assert !links.isEmpty();
-        assert links.get(0).equals("ColumnPack/");
-
-        for (String link: links){
-            System.out.println( link );
+        for ( String link : links ){
+            System.out.println( "Link: " + link );
         }
+
+        assert !links.isEmpty();
+        assert links.get(6).equals(":ColumnPack/");
 
         System.out.println("THIS IS THE END");
     }
@@ -50,12 +50,13 @@ public class CrawlerMavenDefaultHtmlTest {
         CrawlerMavenDefaultHtml htmlCrawler = (CrawlerMavenDefaultHtml) crawler;
         List<String> links = htmlCrawler.getFirstLevelList();
 
-        assert !links.isEmpty();
-        assert links.get(0).equals("http://jcenter.bintray.com/ColumnPack/");
-
         for (String link: links){
-            System.out.println( link );
+            System.out.println( "Link: " + link );
         }
+
+        assert !links.isEmpty();
+        System.out.println("Link6: " + links.get(6));
+        assert links.get(6).equals("http://jcenter.bintray.com/:CustomHistory/");
 
         System.out.println("THIS IS THE END");
     }

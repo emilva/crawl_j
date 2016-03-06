@@ -58,4 +58,6 @@ public interface IProductDao {
 
     void remove(DBObject object);
 
+    void drop();
+
 }

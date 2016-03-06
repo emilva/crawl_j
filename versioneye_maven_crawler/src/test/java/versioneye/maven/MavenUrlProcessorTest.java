@@ -33,7 +33,7 @@ public class MavenUrlProcessorTest {
 
     @Test(dependsOnMethods = {"init"})
     public void getProperties() throws Exception {
-        String  url = "http://mirrors.ibiblio.org/pub/mirrors/maven2/org/ploin/web/ploinFaces/2.2.1/ploinFaces-2.2.1.pom";
+        String  url = "http://repo.maven.apache.org/maven2/org/ploin/web/ploinFaces/2.2.1/ploinFaces-2.2.1.pom";
         TagNode pom = httpUtils.getPageForResource(url);
         HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom ,null);
         assert properties.size() == 1;
@@ -41,23 +41,15 @@ public class MavenUrlProcessorTest {
 
     @Test(dependsOnMethods = {"init"})
     public void updateNode_1(){
-        String urlToPom = "http://repository.codehaus.org/org/codehaus/sonar-plugins/l10n/sonar-l10n-el-plugin/1.3/sonar-l10n-el-plugin-1.3.pom";
-        String urlToVersion = "http://repository.codehaus.org/org/codehaus/sonar-plugins/l10n/sonar-l10n-el-plugin/1.3/";
-        String urlToProduct = "http://repository.codehaus.org/org/codehaus/sonar-plugins/l10n/sonar-l10n-el-plugin/";
+        String urlToPom     = "http://repo.maven.apache.org/maven2/org/ploin/web/ploinFaces/2.2.1/ploinFaces-2.2.1.pom";
+        String urlToVersion = "http://repo.maven.apache.org/maven2/org/ploin/web/ploinFaces/2.2.1/";
+        String urlToProduct = "http://repo.maven.apache.org/maven2/org/ploin/web/ploinFaces/";
         Repository repo = new Repository();
         repo.setName("repp");
         repo.setSrc("http://asgfasfg.de");
         Crawle crawle = new Crawle();
         crawle.setCrawlerName("NameCrawler");
         mavenUrlProcessor.updateNode(urlToPom, urlToVersion, urlToProduct, repo, crawle);
-    }
-
-    @Test(dependsOnMethods = {"init"})
-    public void updateNode_2(){
-        String urlToPom =     "http://gradle.artifactoryonline.com/gradle/libs/org/zkoss/zk/zkplus/6.0.0/zkplus-6.0.0.pom";
-        String urlToProduct = "http://gradle.artifactoryonline.com/gradle/libs/org/zkoss/zk/zkplus/";
-        String urlToVersion = "http://gradle.artifactoryonline.com/gradle/libs/org/zkoss/zk/zkplus/6.0.0/";
-        mavenUrlProcessor.updateNode(urlToPom, urlToVersion, urlToProduct, mavenCentral, null);
     }
 
 }

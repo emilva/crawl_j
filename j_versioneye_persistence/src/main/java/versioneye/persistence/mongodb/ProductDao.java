@@ -353,6 +353,10 @@ public class ProductDao implements IProductDao {
         getCollection().remove(object);
     }
 
+    public void drop(){
+        getCollection().drop();
+    }
+
     public void setMongoDB(MongoDB mongoDB) {
         this.mongoDB = mongoDB;
     }

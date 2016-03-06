@@ -3,6 +3,8 @@ package com.versioneye.crawler.crawl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
+import versioneye.domain.Product;
+import versioneye.persistence.IProductDao;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,17 +15,28 @@ import org.testng.annotations.Test;
 public class CrawlerPythonPipTest {
 
     private ICrawl crawlerPythonPip;
+    private IProductDao productDao;
     private static ApplicationContext context;
 
     @Test
-    public void init(){
+    public void init() throws Exception {
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        productDao = (IProductDao) context.getBean("productDao");
         crawlerPythonPip = (ICrawl) context.getBean("crawlerPythonPip");
+
+        productDao.drop();
     }
 
     @Test(dependsOnMethods = {"init"})
-    public void runForDebug(){
+    public void runForDebug() throws Exception {
+        Product product = productDao.getByKey("Python", "tweepy");
+        assert product == null;
+
         crawlerPythonPip.crawlePackage("tweepy");
+
+        product = productDao.getByKey("Python", "tweepy");
+        assert product != null;
+        assert product.getVersions().size() > 1;
         System.out.println("THIS IS THE END");
     }
 
@@ -36,4 +49,3 @@ public class CrawlerPythonPipTest {
     }
 
 }
-
