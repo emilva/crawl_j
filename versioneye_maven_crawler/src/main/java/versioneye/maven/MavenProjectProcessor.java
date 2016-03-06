@@ -35,7 +35,6 @@ public class MavenProjectProcessor {
     private DependencyService dependencyService;
     private IProductDao productDao;
     private IDeveloperDao developerDao;
-    private IDependencyDao dependencyDao;
     private ILicenseDao licenseDao;
     private MavenUrlUtils mavenUrlUtils = new MavenUrlUtils();
     private Repository repository;
@@ -233,10 +232,6 @@ public class MavenProjectProcessor {
 
     public void setDeveloperDao(IDeveloperDao developerDao) {
         this.developerDao = developerDao;
-    }
-
-    public void setDependencyDao(IDependencyDao dependencyDao) {
-        this.dependencyDao = dependencyDao;
     }
 
     public void setLicenseDao(ILicenseDao licenseDao) {
