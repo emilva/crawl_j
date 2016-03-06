@@ -25,10 +25,9 @@ public class PomReaderTest {
     public void doRead_1() throws Exception {
         String home = System.getProperty("user.home");
         File repoDir = new File( home + "/.m2/repository");
-        Model model = PomReader.readModel (repoDir, "org.apache.maven", "maven-core", "3.0.5");
+        Model model = PomReader.readModel (repoDir, "junit", "junit", "3.8.2");
         assert model != null;
-        System.out.println(model.getArtifactId());
-        System.out.println(model.getParent().getArtifactId());
+        assert model.getArtifactId().equals("junit");
     }
 
 }
