@@ -26,7 +26,7 @@ public class MavenUrlProcessorTest {
     @Test
     public void init(){
         context   = new ClassPathXmlApplicationContext("applicationContext.xml");
-        httpUtils = (HttpUtils)  context.getBean("httpUtiles");
+        httpUtils = (HttpUtils)  context.getBean("httpUtils");
         mavenUrlProcessor = (MavenUrlProcessor) context.getBean("mavenUrlProcessor");
         mavenCentral = (Repository) context.getBean("mavenCentral");
     }
@@ -34,7 +34,7 @@ public class MavenUrlProcessorTest {
     @Test(dependsOnMethods = {"init"})
     public void getProperties() throws Exception {
         String  url = "http://mirrors.ibiblio.org/pub/mirrors/maven2/org/ploin/web/ploinFaces/2.2.1/ploinFaces-2.2.1.pom";
-        TagNode pom = httpUtils.getPageForResource( url );
+        TagNode pom = httpUtils.getPageForResource(url);
         HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom ,null);
         assert properties.size() == 1;
     }
