@@ -12,7 +12,6 @@ import versioneye.persistence.IProductDao;
  * Date: 5/3/12
  * Time: 9:12 AM
  */
-
 public class CrawleRTest{
 
     private ICrawl crawlerR;

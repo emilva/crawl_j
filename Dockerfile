@@ -14,6 +14,10 @@ RUN mkdir -p /opt; \
     cd /opt/; tar -xzf apache-maven-3.3.9-bin.tar.gz; \
     ln -f -s /opt/apache-maven-3.3.9 /opt/mvn; \
     mkdir -p /mnt/crawl_j; \
+    cp mongo.properties    /mnt/crawl_j/j_versioneye_persistence/src/test/resources/mongo.properties; \
+    cp mongo.properties    /mnt/crawl_j/j_versioneye_service/src/test/resources/mongo.properties; \
+    cp mongo.properties    /mnt/crawl_j/jcrawler/src/test/resources/mongo.properties; \
+    cp mongo.properties    /mnt/crawl_j/versioneye_maven_crawler/src/test/resources/mongo.properties; \
     cp mongo.properties    /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/mongo.properties; \
     cp settings.properties /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/settings.properties; \
     cd /mnt/crawl_j; /opt/mvn/bin/mvn clean install -Dmaven.test.skip=true; \
