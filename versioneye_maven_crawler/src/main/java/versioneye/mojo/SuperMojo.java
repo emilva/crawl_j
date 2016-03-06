@@ -140,7 +140,7 @@ public abstract class SuperMojo extends AbstractMojo {
             request.setRepositories( repos );
             return repoSystem.resolveArtifact( session, request );
         } catch ( ArtifactResolutionException e ) {
-            logger.error("resolveArtifact failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);
+            logger.error("resolveArtifact failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() + " with repos: " + repos);
             throw new MojoExecutionException( e.getMessage(), e );
         }
     }
