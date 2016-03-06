@@ -389,15 +389,6 @@
 
     <!-- END Maven Repositories -->
 
-    <!-- TODO without repository! -->
-    <bean id="crawlerSearchMavenOrg" class="versioneye.crawler.CrawlerMavenDefaultJson" scope="prototype" >
-        <property name="threadable"  value="true" />
-        <property name="repositories">
-            <list>
-                <ref bean="mavenCentral" />
-            </list>
-        </property>
-    </bean>
     <bean id="crawlerMavenDefaultHtml" class="versioneye.crawler.CrawlerMavenDefaultHtml" scope="prototype" >
         <property name="threadable"  value="true" />
         <property name="repositories">
@@ -469,15 +460,6 @@
         <property name="repositories">
             <list>
                 <ref bean="ibiblio" /> <!--  MIRROR in CALIFORNIA -->
-            </list>
-        </property>
-    </bean>
-
-    <bean id="crawlerClojure" class="versioneye.crawler.CrawlerClojure" scope="prototype" >
-        <property name="threadable"  value="true" />
-        <property name="repositories">
-            <list>
-                <ref bean="clojars" />
             </list>
         </property>
     </bean>
