@@ -25,4 +25,6 @@ RUN mkdir -p /opt; \
     mkdir -p /var/log/supervisor; \
     cp supervisord.conf /etc/supervisor/conf.d/supervisord.conf;
 
+WORKDIR /mnt/crawl_j
+
 CMD ["/usr/bin/supervisord"]

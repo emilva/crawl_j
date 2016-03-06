@@ -20,4 +20,4 @@ dependencies:
 test:
   override:
     - docker build -t versioneye/crawlj:1.0.0 .
-    - docker run --env RAILS_ENV=test --link mongodb:db --link elasticsearch:es --link memcached:mc --link rabbitmq:rm -v $CIRCLE_TEST_REPORTS:$CIRCLE_TEST_REPORTS versioneye/crawlj:1.0.0 mvn clean test
+    - docker run --env RAILS_ENV=test --link mongodb:db --link elasticsearch:es --link memcached:mc --link rabbitmq:rm -v $CIRCLE_TEST_REPORTS:$CIRCLE_TEST_REPORTS versioneye/crawlj:1.0.0 /opt/mvn/bin/mvn clean test
