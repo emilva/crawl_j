@@ -20,13 +20,11 @@ public class ProductServiceTest {
 
     private static ApplicationContext context;
     private DomainFactory domainFactory;
-    private IProductDao productDao;
     private ProductService productService;
 
     @Test
     public void init(){
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        productDao = (IProductDao) context.getBean("productDao");
         productService = (ProductService) context.getBean("productService");
         domainFactory = (DomainFactory) context.getBean("domainFactory");
     }

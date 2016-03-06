@@ -20,7 +20,6 @@ public class LicenseServiceTest {
 
     private static ApplicationContext context;
     private LicenseService licenseService;
-    private IProductDao productDao;
     private ILicenseDao licenseDao;
     private DomainFactory domainFactory;
 
@@ -29,7 +28,6 @@ public class LicenseServiceTest {
     public void init(){
         context   = new ClassPathXmlApplicationContext("applicationContext.xml");
         licenseService = (LicenseService) context.getBean("licenseService");
-        productDao = (IProductDao) context.getBean("productDao");
         licenseDao = (ILicenseDao) context.getBean("licenseDao");
         domainFactory = (DomainFactory) context.getBean("domainFactory");
     }
