@@ -69,6 +69,10 @@ public class VersionarchiveDao implements IVersionarchiveDao {
         return true;
     }
 
+    public void drop(){
+        getCollection().drop();
+    }
+
     public void setMongoDB(MongoDB mongoDB) {
         this.mongoDB = mongoDB;
     }

@@ -20,4 +20,6 @@ public interface IVersionarchiveDao {
 
     boolean removeArchive(String language, String prod_key, String version, String name);
 
+    void drop();
+
 }
