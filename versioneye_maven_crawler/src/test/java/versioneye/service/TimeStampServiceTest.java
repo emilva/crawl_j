@@ -26,6 +26,7 @@ public class TimeStampServiceTest {
     public void test(){
         Date date = timeStampService.getTimeStampFor("org.apache.kafka", "kafka_2.11", "0.9.0.1");
         assert date != null;
+        System.out.println("Date for org.apache.kafka/kafka_2.11:0.9.0.1 is " +  date.toString());
         assert date.toString().equals("Fri Feb 12 03:20:39 CET 2016");
     }
 
