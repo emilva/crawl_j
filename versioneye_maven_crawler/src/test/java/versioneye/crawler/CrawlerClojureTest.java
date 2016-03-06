@@ -3,7 +3,9 @@ package versioneye.crawler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
+import versioneye.domain.Product;
 import versioneye.domain.Repository;
+import versioneye.persistence.IProductDao;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,20 +16,29 @@ import versioneye.domain.Repository;
 public class CrawlerClojureTest {
 
     private ICrawl crawler;
+    private IProductDao productDao;
     private static ApplicationContext context;
 
     @Test
-    public void init(){
+    public void init() throws Exception {
         context = new ClassPathXmlApplicationContext("applicationContext.xml");
         crawler = (ICrawl) context.getBean("crawlerClojure");
+        productDao = (IProductDao) context.getBean("productDao");
+        productDao.drop();
     }
 
     @Test(dependsOnMethods = {"init"})
-    public void test(){
+    public void test() throws Exception {
+        Product product = productDao.getByGA("actors", "gen");
+        assert product == null;
+
         Repository repository = (Repository) context.getBean("clojars");
         crawler.setRepository(repository);
         String current = "http://clojars.org/repo/actors/";
         crawler.crawlePackage(current);
+
+        product = productDao.getByGA("actors", "gen");
+        assert product != null;
     }
 
 }
