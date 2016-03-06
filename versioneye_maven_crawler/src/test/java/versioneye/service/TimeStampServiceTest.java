@@ -3,14 +3,9 @@ package versioneye.service;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
-import versioneye.crawler.ICrawl;
-import versioneye.domain.Repository;
 
 import java.util.Date;
 
-/**
- * Created by reiz on 24/02/16.
- */
 public class TimeStampServiceTest {
 
     private TimeStampService timeStampService;
