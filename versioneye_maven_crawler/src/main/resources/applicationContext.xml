@@ -448,7 +448,7 @@
             </list>
         </property>
     </bean>
-    <bean id="crawlerGradle" class="com.versioneye.crawler.crawl.CrawlerMavenDefaultHtml" scope="prototype" >
+    <bean id="crawlerGradle" class="versioneye.crawler.CrawlerMavenDefaultHtml" scope="prototype" >
         <property name="threadable"  value="true" />
         <property name="repositories">
             <list>
@@ -456,7 +456,7 @@
             </list>
         </property>
     </bean>
-    <bean id="crawlerAntelink" class="com.versioneye.crawler.crawl.CrawlerMavenDefaultHtml" scope="prototype" >
+    <bean id="crawlerAntelink" class="versioneye.crawler.CrawlerMavenDefaultHtml" scope="prototype" >
         <property name="threadable"  value="true" />
         <property name="repositories">
             <list>
@@ -464,7 +464,7 @@
             </list>
         </property>
     </bean>
-    <bean id="crawlerIbiblio" class="com.versioneye.crawler.crawl.CrawlerMavenDefaultHtml" scope="prototype" >
+    <bean id="crawlerIbiblio" class="versioneye.crawler.CrawlerMavenDefaultHtml" scope="prototype" >
         <property name="threadable"  value="true" />
         <property name="repositories">
             <list>
@@ -473,7 +473,7 @@
         </property>
     </bean>
 
-    <bean id="crawlerClojure" class="com.versioneye.crawler.crawl.CrawlerClojure" scope="prototype" >
+    <bean id="crawlerClojure" class="versioneye.crawler.CrawlerClojure" scope="prototype" >
         <property name="threadable"  value="true" />
         <property name="repositories">
             <list>
