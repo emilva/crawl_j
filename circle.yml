@@ -13,10 +13,6 @@ dependencies:
     - docker run --name elasticsearch -d reiz/elasticsearch:0.9.1-1
     - docker run --name rabbitmq      -d reiz/rabbitmq:3.4.2
 
-# database:
-#   override:
-#     - cp config/mongoid.yml.ci config/mongoid.yml
-
 test:
   override:
     - docker build -t versioneye/crawlj:1.0.0 .
