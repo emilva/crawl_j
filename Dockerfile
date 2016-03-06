@@ -1,0 +1,24 @@
+FROM        java:8
+MAINTAINER  Robert Reiz <reiz@versioneye.com>
+
+ENV RAILS_ENV enterprise
+ENV M2_HOME /opt/mvn
+ENV M2 /opt/mvn/bin
+ENV PATH $PATH:/opt/mvn/bin
+ENV MAVEN_OPTS -Djava.net.preferIPv4Stack=true
+
+ADD . /mnt/crawl_j
+
+RUN mkdir -p /opt; \
+    wget -O /opt/apache-maven-3.3.9-bin.tar.gz http://apache.lauf-forum.at/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz; \
+    cd /opt/; tar -xzf apache-maven-3.3.9-bin.tar.gz; \
+    ln -f -s /opt/apache-maven-3.3.9 /opt/mvn; \
+    mkdir -p /mnt/crawl_j; \
+    cp mongo.properties    /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/mongo.properties; \
+    cp settings.properties /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/settings.properties; \
+    cd /mnt/crawl_j; /opt/mvn/bin/mvn clean install -Dmaven.test.skip=true; \
+    apt-get update && apt-get install -y supervisor; \
+    mkdir -p /var/log/supervisor; \
+    cp supervisord.conf /etc/supervisor/conf.d/supervisord.conf;
+
+CMD ["/usr/bin/supervisord"]
