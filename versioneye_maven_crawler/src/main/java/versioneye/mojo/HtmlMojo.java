@@ -98,6 +98,7 @@ public class HtmlMojo extends SuperMojo {
             }
         } catch (Exception ex) {
             logger.error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
+            logger.error(ex.getStackTrace());
             return new ArrayList<String>();
         }
         return links;
@@ -127,8 +128,8 @@ public class HtmlMojo extends SuperMojo {
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
             logger.info(" [x] Sent '" + message + "'");
         } catch (Exception exception) {
-            logger.error("urlToPom: " + urlToPom);
-            logger.error(exception);
+            logger.error("urlToPom: " + urlToPom + " - " + exception.toString() );
+            logger.error(exception.getStackTrace());
         }
     }
 
@@ -179,8 +180,8 @@ public class HtmlMojo extends SuperMojo {
             parseArtifact(result.getArtifact(), null);
             pomDao.create(urlToPom);
         } catch (Exception exception) {
-            logger.error("urlToPom: " + urlToPom);
-            logger.error(exception);
+            logger.error("urlToPom: " + urlToPom + " - " + exception.toString());
+            logger.error(exception.getStackTrace());
         }
     }
 
@@ -199,7 +200,8 @@ public class HtmlMojo extends SuperMojo {
             connection = RabbitMqService.getConnection(rabbitmqAddr, new Integer(rabbitmqPort));
             channel = connection.createChannel();
         } catch (Exception exception){
-            logger.error(exception);
+            logger.error("ERROR in initTheRabbit - " + exception.toString());
+            logger.error(exception.getStackTrace());
         }
     }
 
@@ -208,7 +210,8 @@ public class HtmlMojo extends SuperMojo {
             channel.close();
             connection.close();
         } catch (Exception exception){
-            logger.error(exception);
+            logger.error("ERROR in closeTheRabbit - " + exception.toString());
+            logger.error(exception.getStackTrace());
         }
     }
 
