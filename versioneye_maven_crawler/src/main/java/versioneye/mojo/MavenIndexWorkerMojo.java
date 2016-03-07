@@ -38,8 +38,8 @@ public class MavenIndexWorkerMojo extends AetherMojo {
             logger.info(" [*] Waiting for messages. To exit press CTRL+C");
 
             QueueingConsumer consumer = new QueueingConsumer(channel);
-            channel.basicConsume(QUEUE_NAME, false, consumer);
             channel.basicQos(1);
+            channel.basicConsume(QUEUE_NAME, false, consumer);
 
             System.out.println("[*] waiting for messages. To exit press CTRL+C");
 
