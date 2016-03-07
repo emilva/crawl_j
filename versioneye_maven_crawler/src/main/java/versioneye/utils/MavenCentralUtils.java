@@ -72,8 +72,8 @@ public class MavenCentralUtils {
             Reader reader = httpUtils.getResultReader( urlToPom, username, password );
             return PomReader.readSinglePom(reader);
         } catch (Exception ex) {
-            logger.info("ERROR in fetchModelFromUrl: " + urlToPom);
-            ex.printStackTrace();
+            logger.error("ERROR in fetchModelFromUrl: " + urlToPom + " - " + ex.toString());
+            logger.error(ex.getStackTrace());
             return null;
         }
     }
