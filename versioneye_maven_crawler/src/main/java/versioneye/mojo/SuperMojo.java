@@ -111,7 +111,8 @@ public abstract class SuperMojo extends AbstractMojo {
 
     protected void parseArtifact(Artifact artifactInfo, Date releasedAt) throws Exception {
         if ( releasedAt == null && repository != null &&
-           ( repository.getName().equalsIgnoreCase("MavenCentral") || repository.getName().equalsIgnoreCase("central") ) ) {
+           ( repository.getName().equalsIgnoreCase("MavenCentral") ||
+             repository.getName().equalsIgnoreCase("central")   ) ) {
             releasedAt = timeStampService.getTimeStampFor(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion());
         }
         MavenProject projectModel = buildProjectModel( artifactInfo );

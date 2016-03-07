@@ -104,13 +104,7 @@
 
     <bean id="licenseChecker"       class="versioneye.utils.LicenseChecker" />
 
-    <!-- STARt Maven Repositories -->
-
-    <bean id="codeHaus" class="versioneye.domain.Repository" >
-        <property name="name"     value="Codehaus" />
-        <property name="src"      value="http://repository.codehaus.org/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
+    <!-- START Maven Repositories -->
 
     <bean id="typesafe" class="versioneye.domain.Repository" >
         <property name="name"     value="typesafe" />
@@ -120,13 +114,13 @@
 
     <bean id="akka" class="versioneye.domain.Repository" >
         <property name="name"     value="akka" />
-        <property name="src"      value="http://repo.akka.io/releases" />
+        <property name="src"      value="http://repo.akka.io/releases/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <!-- MIRROR in California -->
     <bean id="ibiblio" class="versioneye.domain.Repository" >
-        <property name="name"     value="Ibiblio" />
+        <property name="name"     value="ibiblio" />
         <property name="src"      value="http://mirrors.ibiblio.org/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
@@ -172,7 +166,7 @@
     </bean>
 
     <bean id="springRelease" class="versioneye.domain.Repository" >
-        <property name="name"     value="SpringRelease" />
+        <property name="name"     value="springRelease" />
         <property name="src"      value="http://maven.springframework.org/release/" />
         <property name="repoType" value="Maven2" />
     </bean>
@@ -189,14 +183,8 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
-    <bean id="glassfish" class="versioneye.domain.Repository" >
-        <property name="name"     value="Glassfish" />
-        <property name="src"      value="http://download.java.net/maven/glassfish/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
-
     <bean id="gradle" class="versioneye.domain.Repository" >
-        <property name="name"     value="Gradle" />
+        <property name="name"     value="gradle" />
         <property name="src"      value="http://gradle.artifactoryonline.com/gradle/libs/" />
         <property name="repoType" value="Maven2" />
     </bean>
@@ -209,76 +197,69 @@
     </bean>
 
     <bean id="atlassian" class="versioneye.domain.Repository" >
-        <property name="name"     value="Atlassian" />
+        <property name="name"     value="atlassian" />
         <property name="src"      value="https://maven.atlassian.com/content/repositories/atlassian-public/" />
         <property name="repoType" value="Maven2" />
         <property name="followType"  value="text" />
     </bean>
 
-    <bean id="atlassianContrib" class="versioneye.domain.Repository" >
-        <property name="name"     value="AtlassianContrib" />
-        <property name="src"      value="https://maven.atlassian.com/content/repositories/atlassian-contrib/" />
-        <property name="repoType" value="Maven2" />
-        <property name="followType"  value="text" />
-    </bean>
-
     <bean id="mavenCentral" class="versioneye.domain.Repository" >
-        <property name="name"     value="MavenCentral" />
+        <property name="name"     value="mavenCentral" />
         <property name="src"      value="http://search.maven.org/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="central" class="versioneye.domain.Repository" >
-        <property name="name"     value="MavenCentral" />
+        <property name="name"     value="central" />
         <property name="src"      value="http://repo.maven.apache.org/maven2" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="jbossPublic" class="versioneye.domain.Repository" >
-        <property name="name"     value="JBossPublic" />
+        <property name="name"     value="jbossPublic" />
         <property name="src"      value="http://repository.jboss.org/nexus/content/groups/public-jboss/" />
         <property name="repoType" value="Maven2" />
         <property name="followType" value="text" />
     </bean>
 
     <bean id="appFuse" class="versioneye.domain.Repository" >
-        <property name="name"     value="AppFuse" />
+        <property name="name"     value="appFuse" />
         <property name="src"      value="http://static.appfuse.org/repository/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="fuse" class="versioneye.domain.Repository" >
-        <property name="name"     value="Fuse" />
+        <property name="name"     value="fuse" />
         <property name="src"      value="http://repo.fusesource.com/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="dojo" class="versioneye.domain.Repository" >
-        <property name="name"     value="Dojo" />
+        <property name="name"     value="dojo" />
         <property name="src"      value="http://download.dojotoolkit.org/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="ejb3unit" class="versioneye.domain.Repository" >
-        <property name="name"     value="EJB3Unit" />
+        <property name="name"     value="ejb3unit" />
         <property name="src"      value="http://ejb3unit.sourceforge.net/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="freehep" class="versioneye.domain.Repository" >
-        <property name="name"     value="FreeHep" />
+        <property name="name"     value="freehep" />
         <property name="src"      value="http://java.freehep.org/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="geotools" class="versioneye.domain.Repository" >
-        <property name="name"     value="GeoTools" />
+        <property name="name"     value="geotools" />
         <property name="src"      value="http://download.osgeo.org/webdav/geotools/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="clojars" class="versioneye.domain.Repository" >
-        <property name="name"     value="CloJars" />
+        <property name="name"     value="clojars" />
         <property name="src"      value="https://clojars.org/repo" />
         <property name="repoType" value="Maven2" />
         <property name="language" value="Clojure" />
@@ -297,62 +278,38 @@
     </bean>
 
     <bean id="guiceyFruit" class="versioneye.domain.Repository" >
-        <property name="name"     value="GuiceyFruit" />
+        <property name="name"     value="guiceyFruit" />
         <property name="src"      value="http://guiceyfruit.googlecode.com/svn/repo/releases/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="jasig" class="versioneye.domain.Repository" >
-        <property name="name"     value="JA-SIG" />
+        <property name="name"     value="jasig" />
         <property name="src"      value="http://developer.jasig.org/repo/content/groups/m2-legacy/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
-    <bean id="javanet" class="versioneye.domain.Repository" >
-        <property name="name"     value="JavaNet" />
-        <property name="src"      value="http://download.java.net/maven/2/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
-
     <bean id="objectweb" class="versioneye.domain.Repository" >
-        <property name="name"     value="ObjectWeb" />
+        <property name="name"     value="objectweb" />
         <property name="src"      value="http://repository.ow2.org/nexus/content/repositories/releases/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="restlet" class="versioneye.domain.Repository" >
-        <property name="name"     value="Restlet" />
+        <property name="name"     value="restlet" />
         <property name="src"      value="http://maven.restlet.org/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
     <bean id="seasar" class="versioneye.domain.Repository" >
-        <property name="name"     value="Seasar" />
+        <property name="name"     value="seasar" />
         <property name="src"      value="http://maven.seasar.org/maven2/" />
         <property name="repoType" value="Maven2" />
     </bean>
 
-    <bean id="slick" class="versioneye.domain.Repository" >
-        <property name="name"     value="Slick" />
-        <property name="src"      value="http://slick.cokeandcode.com/mavenrepo/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
-
     <bean id="smartclient" class="versioneye.domain.Repository" >
-        <property name="name"     value="SmartClient" />
+        <property name="name"     value="smartclient" />
         <property name="src"      value="http://www.smartclient.com/maven2/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
-
-    <bean id="abl" class="versioneye.domain.Repository" >
-        <property name="name"     value="abl" />
-        <property name="src"      value="http://resources.automatedbusinesslogic.com/maven2/" />
-        <property name="repoType" value="Maven2" />
-    </bean>
-
-    <bean id="carbonfive" class="versioneye.domain.Repository" >
-        <property name="name"     value="carbonfive" />
-        <property name="src"      value="http://mvn.carbonfive.com/nexus/content/groups/public/" />
         <property name="repoType" value="Maven2" />
     </bean>
 

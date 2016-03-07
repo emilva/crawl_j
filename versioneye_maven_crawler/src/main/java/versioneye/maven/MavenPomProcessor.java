@@ -46,7 +46,7 @@ public class MavenPomProcessor {
         try{
             String urlToProduct = null;
             String urlToPom     = null;
-            if (repository.getName().equals("central")){
+            if (repository.getName().equalsIgnoreCase("central") || repository.getName().equalsIgnoreCase("MavenCentral") ){
                 urlToProduct = mavenUrlUtils.getProductUrl( groupId, artifactId          );
                 urlToPom     = mavenUrlUtils.getPomUrl(     groupId, artifactId, version );
             } else {
@@ -77,7 +77,7 @@ public class MavenPomProcessor {
             String urlToProduct = null;
             String urlToVersion = null;
             String urlToPom     = null;
-            if (repository.getName().equals("central")){
+            if (repository.getName().equalsIgnoreCase("central") || repository.getName().equalsIgnoreCase("MavenCentral") ){
                 urlToProduct = mavenUrlUtils.getProductUrl( groupId, artifactId          );
                 urlToVersion = mavenUrlUtils.getVersionUrl( groupId, artifactId, version );
                 urlToPom     = mavenUrlUtils.getPomUrl(     groupId, artifactId, version );

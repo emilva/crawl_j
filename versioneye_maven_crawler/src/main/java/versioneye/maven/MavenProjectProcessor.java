@@ -56,7 +56,7 @@ public class MavenProjectProcessor {
 
             String urlToPom = "";
             String urlToProduct = "";
-            if (repository.getName().equals("central")){
+            if (repository.getName().equals("central") || repository.getName().equalsIgnoreCase("MavenCentral") ){
                 urlToPom = mavenUrlUtils.getPomUrl( project.getGroupId(), project.getArtifactId(), project.getVersion() );
                 urlToProduct = mavenUrlUtils.getProductUrl( project.getGroupId(), project.getArtifactId() );
             } else {
