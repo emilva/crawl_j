@@ -49,7 +49,6 @@ public class ArtifactoryMojo extends HtmlMojo {
             ArtifactoryRepoDescription[] repositories = fetchRepoList();
             addCustomRepos(repositories);
             collectPoms(repositories);
-//            processPoms();
 
             logger.info("The End");
         } catch( Exception exception ){
@@ -71,6 +70,7 @@ public class ArtifactoryMojo extends HtmlMojo {
 
     private ArtifactoryRepoDescription[] fetchRepoList() throws Exception {
         String url = baseUrl + "/api/repositories";
+        logger.info("fetch Repo list from: " + url);
         Reader resultReader = httpUtils.getResultReader( url, username, password );
         ObjectMapper mapper = new ObjectMapper();
         ArtifactoryRepoDescription[] repos = mapper.readValue(resultReader, ArtifactoryRepoDescription[].class);
@@ -97,15 +97,6 @@ public class ArtifactoryMojo extends HtmlMojo {
             listFiles( repo.getKey() );
         }
     }
-
-//    private void processPoms(){
-//        logger.info(" ---");
-//        logger.info(" --- " + poms.size() + " unique pom files found");
-//        logger.info(" ---");
-//        for (String pom : poms){
-//            processPom(pom);
-//        }
-//    }
 
     private void addAsRepo(String name, String url, boolean withAuth){
         RemoteRepository.Builder builder = new RemoteRepository.Builder(name, "default", url);
