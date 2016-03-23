@@ -119,17 +119,24 @@ public class MavenProjectProcessor {
             return ;
         }
 
-//      dependencyDao.deleteDependencies(product.getLanguage(), product.getProd_key(), project.getVersion() );  // this is temp.
         for (org.apache.maven.model.Dependency dep : project.getDependencies() ){
-            String key = dep.getGroupId() + "/" + dep.getArtifactId();
-            Dependency dependency = new Dependency(product.getLanguage(), product.getProd_key(), project.getVersion(),
-                    dep.getArtifactId(), dep.getVersion(), key);
-            dependency.setScope(dep.getScope());
-            dependency.setGroupId(dep.getGroupId());
-            dependency.setArtifactId(dep.getArtifactId());
-            dependency.setProdType("Maven2");
-            dependencyService.createDependencyIfNotExist(dependency);
+            createDepIfNotExist(project, product, dep);
         }
+
+        for (org.apache.maven.model.Dependency dep : project.getDependencyManagement().getDependencies() ){
+            createDepIfNotExist(project, product, dep);
+        }
+    }
+
+    private void createDepIfNotExist(MavenProject project, Product product, org.apache.maven.model.Dependency dep){
+        String key = dep.getGroupId() + "/" + dep.getArtifactId();
+        Dependency dependency = new Dependency(product.getLanguage(), product.getProd_key(), project.getVersion(),
+                dep.getArtifactId(), dep.getVersion(), key);
+        dependency.setScope(dep.getScope());
+        dependency.setGroupId(dep.getGroupId());
+        dependency.setArtifactId(dep.getArtifactId());
+        dependency.setProdType("Maven2");
+        dependencyService.createDependencyIfNotExist(dependency);
     }
 
     private void createDeveloperIfNotExist(Product product, MavenProject project){
