@@ -68,7 +68,6 @@ public class MavenIndexWorkerMojo extends AetherMojo {
             String repoName     = sps[0].toLowerCase();
             String repoUrl      = sps[1];
             String gav          = sps[2];
-            String lastModified = sps[3];
 
             fetchUserAndPassword();
 
@@ -83,7 +82,7 @@ public class MavenIndexWorkerMojo extends AetherMojo {
             MavenRepository mrepo = repositoryUtils.convertMavenRepository(repoName, repoUrl, language);
             setMavenRepository(mrepo, true);
 
-            Date releasedAt = getReleasedDate(lastModified);
+            Date releasedAt = getReleasedDate(sps);
 
             processGav(gav, releasedAt);
         } catch (Exception exception) {
@@ -107,9 +106,10 @@ public class MavenIndexWorkerMojo extends AetherMojo {
     }
 
 
-    private Date getReleasedDate(String lastModified){
+    private Date getReleasedDate(String[] sps){
         Date releasedAt = null;
         try{
+            String lastModified = sps[3];
             if (lastModified != null && !lastModified.trim().isEmpty()){
                 releasedAt = new Date(new Long(lastModified));
             }
