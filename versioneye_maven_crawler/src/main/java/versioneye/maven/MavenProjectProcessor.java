@@ -127,8 +127,10 @@ public class MavenProjectProcessor {
             createDepIfNotExist(project, product, dep);
         }
 
-        for (org.apache.maven.model.Dependency dep : project.getDependencyManagement().getDependencies() ){
-            createDepIfNotExist(project, product, dep);
+        if (project.getDependencyManagement() != null){
+            for ( org.apache.maven.model.Dependency dep : project.getDependencyManagement().getDependencies() ){
+                createDepIfNotExist(project, product, dep);
+            }
         }
     }
 
