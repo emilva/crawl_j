@@ -157,9 +157,6 @@ public abstract class SuperMojo extends AbstractMojo {
 
             ArtifactDescriptorResult descriptorResult = repoSystem.readArtifactDescriptor( session, descriptorRequest );
 
-            for ( Dependency dependency : descriptorResult.getDependencies() ) {
-                logger.info(" - dependency: " + dependency);
-            }
             return descriptorResult;
         } catch (Exception ex) {
             logger.error("resolveDependencies failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + "" + artifact.getVersion() + " with repos: " + repos);

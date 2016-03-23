@@ -1,5 +1,7 @@
 package versioneye.maven;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.License;
 import org.apache.maven.model.Organization;
@@ -38,6 +40,8 @@ public class MavenProjectProcessor {
     private ILicenseDao licenseDao;
     private MavenUrlUtils mavenUrlUtils = new MavenUrlUtils();
     private Repository repository;
+
+    static final Logger logger = LogManager.getLogger(MavenProjectProcessor.class.getName());
 
     public void updateLicense(MavenProject project){
         try{
@@ -137,6 +141,7 @@ public class MavenProjectProcessor {
         dependency.setArtifactId(dep.getArtifactId());
         dependency.setProdType("Maven2");
         dependencyService.createDependencyIfNotExist(dependency);
+        logger.info(" - dependency: " + dependency.getGroupId() + "/" + dependency.getArtifactId());
     }
 
     private void createDeveloperIfNotExist(Product product, MavenProject project){
