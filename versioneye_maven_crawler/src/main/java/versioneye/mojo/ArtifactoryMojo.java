@@ -111,6 +111,8 @@ public class ArtifactoryMojo extends HtmlMojo {
         repos.add(remoteRepository);
     }
 
+    // https://www.jfrog.com/confluence/display/RTF3X/Artifactory+REST+API#ArtifactoryRESTAPI-FileInfo
+    //  -> File List
     private void listFiles(String repo){
         try{
             String url = baseUrl + "/api/storage/" + repo + "?list&deep=1&listFolders=0&mdTimestamps=1";
