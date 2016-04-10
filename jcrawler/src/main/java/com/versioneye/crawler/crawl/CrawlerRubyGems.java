@@ -64,9 +64,6 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     }
 
     public void crawl() {
-        Date start = new Date();
-        String src = getRepository().getSrc();
-
         Set<String> gemNames = getFirstLevelList();
         for (String gemName: gemNames){
             crawlePackage(gemName);
