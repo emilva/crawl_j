@@ -51,7 +51,7 @@
     <surefireVersion>2.19.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
     <spring.version>4.2.5.RELEASE</spring.version>
-    <testngVersion>6.9.10</testngVersion>
+    <testngVersion>6.9.11</testngVersion>
   </properties>
 
   <modules>
