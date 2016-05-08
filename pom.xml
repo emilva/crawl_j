@@ -50,7 +50,7 @@
     <encoding>UTF-8</encoding>
     <surefireVersion>2.19.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
-    <spring.version>4.2.5.RELEASE</spring.version>
+    <spring.version>4.2.6.RELEASE</spring.version>
     <testngVersion>6.9.11</testngVersion>
   </properties>
 
@@ -106,7 +106,7 @@
               <plugin>
                   <groupId>com.versioneye</groupId>
                   <artifactId>versioneye-maven-plugin</artifactId>
-                  <version>3.9.1</version>
+                  <version>3.9.2</version>
                   <configuration>
                       <organisation>versioneye</organisation>
                   </configuration>

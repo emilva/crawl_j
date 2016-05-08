@@ -11,6 +11,7 @@ public class ArtifactoryRepoDescription {
     private String type;
     private String url;
 
+
     public String getKey() {
         return key;
     }

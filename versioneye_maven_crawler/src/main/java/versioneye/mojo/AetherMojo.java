@@ -31,7 +31,7 @@ public class AetherMojo extends SuperMojo {
     protected void processGav(String artifactCoords, Date lastModified) throws MojoExecutionException, MojoFailureException {
         Artifact artifact = getArtifact(artifactCoords);
 
-        ArtifactResult artifactResult   = resolveArtifact(artifact);
+        ArtifactResult artifactResult = resolveArtifact(artifact);
         resolveDependencies(artifact);
 
         try {

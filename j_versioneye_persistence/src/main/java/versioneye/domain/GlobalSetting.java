@@ -1,6 +1,5 @@
 package versioneye.domain;
 
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
