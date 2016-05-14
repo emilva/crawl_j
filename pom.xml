@@ -11,14 +11,27 @@
   <name>crawl_j</name>
   <description>VersionEye parent for java projects</description>
 
-  <developers>
-    <developer>
-      <name>Robert Reiz</name>
-      <id>reiz</id>
-      <organization>VersionEye</organization>
-      <organizationUrl>http://www.VersionEye.com</organizationUrl>
-    </developer>
-  </developers>
+    <scm>
+        <connection>scm:git:https://github.com/versioneye/crawl_j.git</connection>
+        <developerConnection>scm:git:https://github.com/versioneye/crawl_j.git</developerConnection>
+        <url>https://github.com/versioneye/crawl_j.git</url>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>http://choosealicense.com/licenses/mit/</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Robert Reiz</name>
+            <id>reiz</id>
+            <organization>VersionEye</organization>
+            <organizationUrl>https://www.VersionEye.com</organizationUrl>
+        </developer>
+    </developers>
 
     <repositories>
         <repository>
