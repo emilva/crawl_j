@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/versioneye/crawl_j.svg?style=svg)](https://circleci.com/gh/versioneye/crawl_j)
+[![Dependency Status](https://www.versioneye.com/user/projects/56d6a5e1fa908e000a35f415/badge.svg?style=flat)](https://www.versioneye.com/user/projects/56d6a5e1fa908e000a35f415)
 
 # Crawl_J
 
