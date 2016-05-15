@@ -4,6 +4,10 @@
 
 This repository contains the Maven crawlers for [VersionEye](https://www.VersionEye.com). It is a Maven multi module project. Persistence and Services are separate modules in this project.  
 
+## Support
+
+For commercial support send a message to `support@versioneye.com`.
+
 ## License
 
 this project is licensed under the MIT license!
