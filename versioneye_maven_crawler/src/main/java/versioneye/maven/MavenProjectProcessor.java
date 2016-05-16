@@ -141,15 +141,19 @@ public class MavenProjectProcessor {
     }
 
     private void createDepIfNotExist(MavenProject project, Product product, org.apache.maven.model.Dependency dep){
-        String key = dep.getGroupId() + "/" + dep.getArtifactId();
-        Dependency dependency = new Dependency(product.getLanguage(), product.getProd_key(), project.getVersion(),
-                dep.getArtifactId(), dep.getVersion(), key);
-        dependency.setScope(dep.getScope());
-        dependency.setGroupId(dep.getGroupId());
-        dependency.setArtifactId(dep.getArtifactId());
-        dependency.setProdType("Maven2");
-        dependencyService.createDependencyIfNotExist(dependency);
-        logger.info(" - dependency: " + dependency.getGroupId() + "/" + dependency.getArtifactId());
+        try{
+            String key = dep.getGroupId() + "/" + dep.getArtifactId();
+            Dependency dependency = new Dependency(product.getLanguage(), product.getProd_key(), project.getVersion(),
+                    dep.getArtifactId(), dep.getVersion(), key);
+            dependency.setScope(dep.getScope());
+            dependency.setGroupId(dep.getGroupId());
+            dependency.setArtifactId(dep.getArtifactId());
+            dependency.setProdType("Maven2");
+            dependencyService.createDependencyIfNotExist(dependency);
+            logger.info(" - dependency: " + dependency.getGroupId() + "/" + dependency.getArtifactId());
+        } catch (Exception ex){
+            logger.error("ERROR in createDepIfNotExist ", ex);
+        }
     }
 
     private void createDeveloperIfNotExist(Product product, MavenProject project){
@@ -180,9 +184,9 @@ public class MavenProjectProcessor {
             license1.setDistributions(license.getDistribution());
             license1.setLanguage(product.getLanguage());
             license1.setProd_key(product.getProd_key());
-            license1.setVersion( product.getVersion() );
+            license1.setVersion(product.getVersion());
             licenseDao.create(license1);
-            logger.info("new license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion());
+            logger.info("new license " + license.getName() + " for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion());
         }
     }
 
