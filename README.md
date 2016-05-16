@@ -11,7 +11,7 @@ and requires Maven 3.3.9. This project contains:
 There is always 1 crawler which walks ever through a maven index or it's HTML representation
 but doesn't download and parse any pom.xml files. It only sends the coordinates to a Queue (RabbitMQ).
 There can be N consumers/workers which do the heavy lifting, the downloading and parsing of
-the pom.xml files.
+the pom.xml files. That way it's relatively easy to scale the crawling processes.
 
 ## MongoDB Config
 
