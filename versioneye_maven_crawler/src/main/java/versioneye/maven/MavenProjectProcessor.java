@@ -166,6 +166,7 @@ public class MavenProjectProcessor {
             versioneye.domain.License license1 = new versioneye.domain.License();
             if (licenseDao.existAlready(product.getLanguage(), product.getProd_key(), product.getVersion(), license.getName(), license.getUrl()))
                 return ;
+            logger.info("Add new license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion());
             license1.setName( license.getName() );
             license1.setUrl(license.getUrl());
             license1.setComments(license.getName());
