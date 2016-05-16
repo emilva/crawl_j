@@ -82,14 +82,18 @@ public class MavenProjectProcessor {
     }
 
     private void addVersionIfNotExist(Product product, MavenProject project, Date lastModified){
-        Version version = new Version();
-        version.setVersion( project.getVersion() );
-        version.setProduct_key( product.getProd_key() );
-        if (lastModified != null){
-            version.setReleased_at(lastModified);
-            setReleasedDateString(version, lastModified);
+        try{
+            Version version = new Version();
+            version.setVersion( project.getVersion() );
+            version.setProduct_key( product.getProd_key() );
+            if (lastModified != null){
+                version.setReleased_at(lastModified);
+                setReleasedDateString(version, lastModified);
+            }
+            productService.createVersionIfNotExist(product, version, repository);
+        } catch (Exception ex) {
+            logger.error("ERROR in addVersionIfNotExist ", ex);
         }
-        productService.createVersionIfNotExist(product, version, repository);
     }
 
     private void setReleasedDateString(Version version, Date lastModified){
@@ -178,6 +182,7 @@ public class MavenProjectProcessor {
             license1.setProd_key(product.getProd_key());
             license1.setVersion( product.getVersion() );
             licenseDao.create(license1);
+            logger.info("new license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion());
         }
     }
 
