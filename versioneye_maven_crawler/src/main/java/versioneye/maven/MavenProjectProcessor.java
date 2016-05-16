@@ -48,7 +48,7 @@ public class MavenProjectProcessor {
             Product product = fetchOrCreateProduct(project);
             updateLicenseInfo(product, project);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex.getStackTrace());
             return ;
         }
     }
@@ -57,6 +57,8 @@ public class MavenProjectProcessor {
         try{
             Product product = fetchOrCreateProduct(project);
             addVersionIfNotExist(product, project, lastModified);
+
+            logger.info(project.getGroupId() + "/" + project.getArtifactId() + ":" + project.getVersion() + " has " + project.getLicenses().size() + " licenses");
 
             String urlToPom = "";
             String urlToProduct = "";
@@ -74,7 +76,7 @@ public class MavenProjectProcessor {
             createDeveloperIfNotExist(product, project);
             updateLicenseInfo(product, project);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(ex.getStackTrace());
             return ;
         }
     }
@@ -94,8 +96,8 @@ public class MavenProjectProcessor {
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             version.setReleased_string(sdf.format(lastModified));
-        } catch (Exception ex){
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            logger.error(ex.getStackTrace());
         }
     }
 
@@ -164,9 +166,10 @@ public class MavenProjectProcessor {
     private void updateLicenseInfo(Product product, MavenProject project){
         for ( License license : project.getLicenses() ) {
             versioneye.domain.License license1 = new versioneye.domain.License();
-            if (licenseDao.existAlready(product.getLanguage(), product.getProd_key(), product.getVersion(), license.getName(), license.getUrl()))
+            if (licenseDao.existAlready(product.getLanguage(), product.getProd_key(), product.getVersion(), license.getName(), license.getUrl())){
+                logger.info("license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion() + " exist already");
                 return ;
-            logger.info("Add new license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion());
+            }
             license1.setName( license.getName() );
             license1.setUrl(license.getUrl());
             license1.setComments(license.getName());
