@@ -48,7 +48,7 @@ public class MavenProjectProcessor {
             Product product = fetchOrCreateProduct(project);
             updateLicenseInfo(product, project);
         } catch (Exception ex) {
-            logger.error(ex.getStackTrace());
+            logger.error("ERROR in updateLicense ", ex);
             return ;
         }
     }
@@ -76,7 +76,7 @@ public class MavenProjectProcessor {
             createDeveloperIfNotExist(product, project);
             updateLicenseInfo(product, project);
         } catch (Exception ex) {
-            logger.error(ex.getStackTrace());
+            logger.error("ERROR in updateProject ", ex);
             return ;
         }
     }
@@ -97,7 +97,7 @@ public class MavenProjectProcessor {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             version.setReleased_string(sdf.format(lastModified));
         } catch (Exception ex) {
-            logger.error(ex.getStackTrace());
+            logger.error("ERROR in setReleasedDateString ", ex);
         }
     }
 
@@ -184,9 +184,12 @@ public class MavenProjectProcessor {
     private Product fetchOrCreateProduct(MavenProject project) {
         Product product = null;
         try {
-            product = productDao.getByGA(project.getGroupId().toLowerCase(), project.getArtifactId().toLowerCase());
+            product = productDao.getByGA(project.getGroupId(), project.getArtifactId());
+            if (product == null){
+                product = productDao.getByGA(project.getGroupId().toLowerCase(), project.getArtifactId().toLowerCase());
+            }
         } catch (Exception ex){
-            ex.printStackTrace();
+            logger.error("ERROR in fetchOrCreateProduct ", ex);
         }
         if (product == null){
             product = newProduct( project );
