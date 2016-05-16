@@ -141,18 +141,18 @@ public class HtmlMojo extends SuperMojo {
             String packaging     = null;
 
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
-            if (pom != null){
+            if (pom == null){
+                Model model   = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
+                groupId       = model.getGroupId();
+                artifactId    = model.getArtifactId();
+                versionNumber = model.getVersion();
+                packaging     = model.getPackaging();
+            } else {
                 HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
                 groupId       = mavenUrlProcessor.getGroupId(    pom, properties);
                 artifactId    = mavenUrlProcessor.getArtifactId( pom, properties);
                 versionNumber = mavenUrlProcessor.getVersion(    pom, properties);
                 packaging     = mavenUrlProcessor.getPackaging(  pom, properties);
-            } else {
-                Model model = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
-                groupId       = model.getGroupId();
-                artifactId    = model.getArtifactId();
-                versionNumber = model.getVersion();
-                packaging     = model.getPackaging();
             }
 
             if (groupId == null || artifactId == null || versionNumber == null){
