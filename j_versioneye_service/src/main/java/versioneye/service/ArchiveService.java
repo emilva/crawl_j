@@ -24,10 +24,10 @@ public class ArchiveService {
             return ;
         }
         try {
-            int code = httpUtils.getResponseCode(urlToArchive);
-            if (code != 200){
-                return ;
-            }
+//            int code = httpUtils.getResponseCode(urlToArchive);
+//            if (code != 200){
+//                return ;
+//            }
             versionarchiveDao.removeArchive(product.getLanguage(), product.getProd_key(), product.getVersion(), archiveName);
             Versionarchive archive = new Versionarchive(product.getLanguage(), product.getProd_key(),
                     archiveName, urlToArchive);
