@@ -140,6 +140,7 @@ public class HtmlMojo extends SuperMojo {
             String versionNumber = null;
             String packaging     = null;
 
+            urlToPom = urlToPom.replaceAll("/:", "/");
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
             if (pom == null){
                 Model model   = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
