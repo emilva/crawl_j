@@ -116,7 +116,10 @@ public abstract class SuperMojo extends AbstractMojo {
             releasedAt = timeStampService.getTimeStampFor(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion());
         }
         MavenProject projectModel = buildProjectModel( artifactInfo );
-        if (projectModel != null){
+        if (projectModel == null){
+            logger.error("projectModel is null. Try 2nd way!");
+            mavenPomProcessor.updateNode(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion(), releasedAt);
+        } else {
             if (projectModel.getVersion().startsWith("${")){
                 projectModel.setVersion(artifactInfo.getVersion());
                 logger.info("------ 42 is not the answer! ------");
@@ -125,9 +128,6 @@ public abstract class SuperMojo extends AbstractMojo {
                 logger.info("------ 42 is not the answer! ------");
             }
             mavenProjectProcessor.updateProject( projectModel, releasedAt );
-        } else {
-            logger.error("projectModel is null. Try 2nd way!");
-            mavenPomProcessor.updateNode(artifactInfo.getGroupId(), artifactInfo.getArtifactId(), artifactInfo.getVersion(), releasedAt);
         }
     }
 
