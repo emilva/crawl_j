@@ -58,7 +58,7 @@ public class MavenProjectProcessor {
             Product product = fetchOrCreateProduct(project);
             addVersionIfNotExist(product, project, lastModified);
 
-            logger.info(project.getGroupId() + "/" + project.getArtifactId() + ":" + project.getVersion() + " has " + project.getLicenses().size() + " licenses");
+            logger.info("gavLicenses: " + project.getGroupId() + "/" + project.getArtifactId() + ":" + project.getVersion() + " has " + project.getLicenses().size() + " licenses");
 
             String urlToPom = "";
             String urlToProduct = "";
