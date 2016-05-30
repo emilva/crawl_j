@@ -4,9 +4,9 @@ import org.htmlcleaner.TagNode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
-import versioneye.domain.Crawle;
-import versioneye.domain.Repository;
-import versioneye.utils.HttpUtils;
+import com.versioneye.domain.Crawle;
+import com.versioneye.domain.Repository;
+import com.versioneye.utils.HttpUtils;
 
 import java.util.HashMap;
 

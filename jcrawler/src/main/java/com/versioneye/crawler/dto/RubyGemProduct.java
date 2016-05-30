@@ -1,7 +1,7 @@
 package com.versioneye.crawler.dto;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import versioneye.domain.Versionlink;
+import com.versioneye.domain.Versionlink;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,16 +3,16 @@ package com.versioneye.crawler.crawl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.htmlcleaner.TagNode;
-import versioneye.domain.*;
-import versioneye.persistence.IProductDao;
-import versioneye.persistence.IVersionarchiveDao;
-import versioneye.persistence.IVersionlinkDao;
-import versioneye.service.ArchiveService;
-import versioneye.service.LicenseService;
-import versioneye.service.ProductService;
-import versioneye.service.VersionLinkService;
-import versioneye.utils.HttpUtils;
-import versioneye.utils.LogUtils;
+import com.versioneye.domain.*;
+import com.versioneye.persistence.IProductDao;
+import com.versioneye.persistence.IVersionarchiveDao;
+import com.versioneye.persistence.IVersionlinkDao;
+import com.versioneye.service.ArchiveService;
+import com.versioneye.service.LicenseService;
+import com.versioneye.service.ProductService;
+import com.versioneye.service.VersionLinkService;
+import com.versioneye.utils.HttpUtils;
+import com.versioneye.utils.LogUtils;
 
 import java.util.*;
 

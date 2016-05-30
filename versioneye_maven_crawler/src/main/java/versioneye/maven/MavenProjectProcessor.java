@@ -6,18 +6,17 @@ import org.apache.maven.model.Developer;
 import org.apache.maven.model.License;
 import org.apache.maven.model.Organization;
 import org.apache.maven.project.MavenProject;
-import versioneye.domain.Dependency;
-import versioneye.domain.Product;
-import versioneye.domain.Repository;
-import versioneye.domain.Version;
-import versioneye.persistence.IDependencyDao;
-import versioneye.persistence.IDeveloperDao;
-import versioneye.persistence.ILicenseDao;
-import versioneye.persistence.IProductDao;
-import versioneye.service.ArchiveService;
-import versioneye.service.DependencyService;
-import versioneye.service.ProductService;
-import versioneye.service.VersionLinkService;
+import com.versioneye.domain.Dependency;
+import com.versioneye.domain.Product;
+import com.versioneye.domain.Repository;
+import com.versioneye.domain.Version;
+import com.versioneye.persistence.IDeveloperDao;
+import com.versioneye.persistence.ILicenseDao;
+import com.versioneye.persistence.IProductDao;
+import com.versioneye.service.ArchiveService;
+import com.versioneye.service.DependencyService;
+import com.versioneye.service.ProductService;
+import com.versioneye.service.VersionLinkService;
 import versioneye.utils.MavenUrlUtils;
 
 import java.text.SimpleDateFormat;
@@ -162,7 +161,7 @@ public class MavenProjectProcessor {
             if (developer.getRoles() != null && !developer.getRoles().isEmpty()){
                 role = developer.getRoles().get(0);
             }
-            versioneye.domain.Developer dev = new versioneye.domain.Developer(product.getLanguage(), product.getProd_key(),
+            com.versioneye.domain.Developer dev = new com.versioneye.domain.Developer(product.getLanguage(), product.getProd_key(),
                     product.getVersion(), developer.getId(), developer.getName(), developer.getEmail(),
                     developer.getUrl(), role, developer.getOrganization(), developer.getOrganizationUrl(),
                     developer.getTimezone());
@@ -173,7 +172,7 @@ public class MavenProjectProcessor {
 
     private void updateLicenseInfo(Product product, MavenProject project){
         for ( License license : project.getLicenses() ) {
-            versioneye.domain.License license1 = new versioneye.domain.License();
+            com.versioneye.domain.License license1 = new com.versioneye.domain.License();
             if (licenseDao.existAlready(product.getLanguage(), product.getProd_key(), product.getVersion(), license.getName(), license.getUrl())){
                 logger.info("license "+ license.getName() +" for " + product.getLanguage() + ":" + product.getProd_key() + ":" + product.getVersion() + " exist already");
                 return ;

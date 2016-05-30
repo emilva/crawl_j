@@ -9,8 +9,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.resolution.ArtifactResult;
-import versioneye.domain.Repository;
-import versioneye.service.ProductService;
+import com.versioneye.domain.Repository;
+import com.versioneye.service.ProductService;
 
 /**
  * Crawles all repositories in group1.

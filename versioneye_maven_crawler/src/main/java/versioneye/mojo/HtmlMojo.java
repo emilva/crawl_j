@@ -11,7 +11,7 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.htmlcleaner.TagNode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import versioneye.persistence.IPomDao;
+import com.versioneye.persistence.IPomDao;
 import versioneye.service.RabbitMqService;
 import versioneye.utils.MavenCentralUtils;
 

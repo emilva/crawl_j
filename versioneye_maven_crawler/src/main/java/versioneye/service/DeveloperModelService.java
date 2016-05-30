@@ -1,10 +1,10 @@
 package versioneye.service;
 
 import org.apache.maven.model.Model;
-import versioneye.domain.Developer;
-import versioneye.domain.Product;
-import versioneye.persistence.IDeveloperDao;
-import versioneye.utils.LogUtils;
+import com.versioneye.domain.Developer;
+import com.versioneye.domain.Product;
+import com.versioneye.persistence.IDeveloperDao;
+import com.versioneye.utils.LogUtils;
 
 /**
  * Created with IntelliJ IDEA.

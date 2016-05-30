@@ -6,8 +6,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import versioneye.domain.GlobalSetting;
-import versioneye.domain.Repository;
+import com.versioneye.domain.GlobalSetting;
+import com.versioneye.domain.Repository;
 
 @Mojo( name = "repo1html", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
 public class Repo1HtmlMojo extends HtmlMojo {

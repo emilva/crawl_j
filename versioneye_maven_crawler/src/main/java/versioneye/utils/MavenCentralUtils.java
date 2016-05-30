@@ -1,16 +1,18 @@
 package versioneye.utils;
 
+import com.versioneye.utils.HttpUtils;
+import com.versioneye.utils.LogUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.codehaus.jackson.map.ObjectMapper;
-import versioneye.domain.Crawle;
-import versioneye.domain.Repository;
+import com.versioneye.domain.Crawle;
+import com.versioneye.domain.Repository;
 import versioneye.dto.Document;
 import versioneye.dto.ResponseJson;
 import versioneye.maven.MavenUrlProcessor;
 import versioneye.maven.PomReader;
-import versioneye.persistence.IProductDao;
+import com.versioneye.persistence.IProductDao;
 
 import java.io.Reader;
 

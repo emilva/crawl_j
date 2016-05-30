@@ -9,8 +9,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import versioneye.domain.MavenRepository;
-import versioneye.domain.Repository;
+import com.versioneye.domain.MavenRepository;
+import com.versioneye.domain.Repository;
 import versioneye.service.RabbitMqService;
 
 import java.util.Date;

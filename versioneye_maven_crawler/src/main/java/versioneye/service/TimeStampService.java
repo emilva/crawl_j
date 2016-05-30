@@ -2,7 +2,7 @@ package versioneye.service;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import versioneye.dto.ResponseJson;
-import versioneye.utils.HttpUtils;
+import com.versioneye.utils.HttpUtils;
 
 import java.io.Reader;
 import java.util.Date;

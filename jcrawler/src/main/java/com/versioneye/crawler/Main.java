@@ -5,9 +5,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import versioneye.domain.Repository;
-import versioneye.persistence.mongodb.MongoDB;
-import versioneye.utils.LogUtils;
+import com.versioneye.domain.Repository;
+import com.versioneye.persistence.mongodb.MongoDB;
+import com.versioneye.utils.LogUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.versioneye.crawler.dto;
 
-import versioneye.domain.Versionarchive;
-import versioneye.domain.Versionlink;
+import com.versioneye.domain.Versionarchive;
+import com.versioneye.domain.Versionlink;
 
 import java.util.ArrayList;
 import java.util.HashMap;

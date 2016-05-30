@@ -4,7 +4,7 @@ import com.versioneye.crawler.dto.PipProduct;
 import com.versioneye.crawler.dto.RubyGemsVersion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import versioneye.domain.Version;
+import com.versioneye.domain.Version;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

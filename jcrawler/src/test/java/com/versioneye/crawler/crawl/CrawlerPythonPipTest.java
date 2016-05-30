@@ -3,8 +3,8 @@ package com.versioneye.crawler.crawl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.Test;
-import versioneye.domain.Product;
-import versioneye.persistence.IProductDao;
+import com.versioneye.domain.Product;
+import com.versioneye.persistence.IProductDao;
 
 /**
  * Created by IntelliJ IDEA.

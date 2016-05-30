@@ -1,9 +1,10 @@
 package versioneye.service;
 
+import com.versioneye.service.DependencyService;
 import org.apache.maven.model.Model;
-import versioneye.domain.Dependency;
-import versioneye.domain.Product;
-import versioneye.utils.HttpUtils;
+import com.versioneye.domain.Dependency;
+import com.versioneye.domain.Product;
+import com.versioneye.utils.HttpUtils;
 
 import java.util.HashMap;
 import java.util.Properties;

@@ -6,8 +6,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
-import versioneye.domain.Product;
-import versioneye.domain.Version;
+import com.versioneye.domain.Product;
+import com.versioneye.domain.Version;
 
 import java.util.Date;
 import java.util.List;

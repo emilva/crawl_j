@@ -1,7 +1,7 @@
 package com.versioneye.crawler.crawl;
 
-import versioneye.domain.Crawle;
-import versioneye.domain.Repository;
+import com.versioneye.domain.Crawle;
+import com.versioneye.domain.Repository;
 
 import java.util.List;
 import java.util.Set;

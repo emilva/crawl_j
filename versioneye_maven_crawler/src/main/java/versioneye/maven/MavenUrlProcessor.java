@@ -1,14 +1,14 @@
 package versioneye.maven;
 
 import org.htmlcleaner.TagNode;
-import versioneye.domain.Crawle;
-import versioneye.domain.Product;
-import versioneye.domain.Repository;
-import versioneye.domain.Version;
-import versioneye.persistence.IProductDao;
-import versioneye.service.*;
-import versioneye.utils.HttpUtils;
-import versioneye.utils.LogUtils;
+import com.versioneye.domain.Crawle;
+import com.versioneye.domain.Product;
+import com.versioneye.domain.Repository;
+import com.versioneye.domain.Version;
+import com.versioneye.persistence.IProductDao;
+import com.versioneye.service.*;
+import com.versioneye.utils.HttpUtils;
+import com.versioneye.utils.LogUtils;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -4,8 +4,8 @@ import com.versioneye.crawler.dto.GitHubRepo;
 import com.versioneye.crawler.dto.PipProduct;
 import com.versioneye.crawler.dto.PipProductInfo;
 import com.versioneye.crawler.dto.RubyGemProduct;
-import versioneye.domain.Product;
-import versioneye.domain.Repository;
+import com.versioneye.domain.Product;
+import com.versioneye.domain.Repository;
 
 /**
  * Created with IntelliJ IDEA.

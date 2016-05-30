@@ -1,5 +1,6 @@
 package versioneye.utils;
 
+import com.versioneye.utils.HttpUtils;
 import org.apache.maven.model.Model;
 import org.testng.annotations.Test;
 

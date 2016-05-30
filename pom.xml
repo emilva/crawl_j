@@ -68,8 +68,6 @@
   </properties>
 
   <modules>
-    <module>j_versioneye_persistence</module>
-    <module>j_versioneye_service</module>
     <module>jcrawler</module>
     <module>versioneye_maven_crawler</module>
   </modules>
@@ -83,6 +81,19 @@
           <scope>test</scope>
       </dependency>
       <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>${spring.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>com.versioneye</groupId>
+          <artifactId>versioneye-core-j</artifactId>
+          <version>1.1.1</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-core</artifactId>
           <version>2.5</version>
@@ -91,13 +102,6 @@
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-api</artifactId>
           <version>2.5</version>
-      </dependency>
-
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-test</artifactId>
-          <version>${spring.version}</version>
-          <scope>test</scope>
       </dependency>
 
       <dependency>
