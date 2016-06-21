@@ -36,7 +36,6 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
     private String crawlerVersion = "0.1";
     private List<Repository> repositories;
     private Repository repository;
-    private LogUtils logUtils;
     private HttpUtils httpUtils;
     private ProductService productService;
     private VersionLinkService versionLinkService;
@@ -54,8 +53,6 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
     }
 
     public void crawl() {
-        Date start = new Date();
-
         Set<String> pipNames = getFirstLevelList();
         for (String pipName : pipNames){
             crawlePackage(pipName);
@@ -226,10 +223,6 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
     public void setProductDao(IProductDao productDao) {
         this.productDao = productDao;
-    }
-
-    public void setLogUtils(LogUtils logUtils) {
-        this.logUtils = logUtils;
     }
 
     public void setHttpUtils(HttpUtils httpUtils) {
