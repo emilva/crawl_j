@@ -20,7 +20,7 @@ RUN mkdir -p /opt; \
     cp mongo.properties    /mnt/crawl_j/versioneye_maven_crawler/src/test/resources/mongo.properties; \
     cp mongo.properties    /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/mongo.properties; \
     cp settings.properties /mnt/crawl_j/versioneye_maven_crawler/src/main/resources/settings.properties; \
-    cd /mnt/crawl_j; /opt/mvn/bin/mvn clean install -Dmaven.test.skip=true; \
+    cd /mnt/crawl_j; /opt/mvn/bin/mvn clean install -Dmaven.test.skip=true -Dgpg.skip; \
     apt-get update && apt-get install -y supervisor; \
     mkdir -p /var/log/supervisor; \
     cp supervisord.conf /etc/supervisor/conf.d/supervisord.conf;
