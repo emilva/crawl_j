@@ -57,13 +57,5 @@ public class MavenCentralUtilsTest {
 //        System.out.println("VersionEye!");
 //    }
 
-    @Test
-    public void fetchModelFromUrl() throws Exception {
-        HttpUtils httpUtils = new HttpUtils();
-        MavenCentralUtils mcu = new MavenCentralUtils();
-        mcu.setHttpUtils(httpUtils);
-        Model model = mcu.fetchModelFromUrl("http://jcenter.bintray.com/au/com/permeance/permeance-parent/0.9/permeance-parent-0.9.pom", null, null);
-        assert model != null;
-    }
 
 }
