@@ -125,7 +125,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.6</version>
+        <version>3.7</version>
         <configuration>
           <linkXref>false</linkXref>
           <sourceEncoding>${encoding}</sourceEncoding>

@@ -1,4 +1,4 @@
-[![Dependency Status](https://www.versioneye.com/user/projects/574c2f5586b2d6001130f89d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/574c2f5586b2d6001130f89d)
+[![Dependency Status](https://www.versioneye.com/user/projects/580a2d46ba9252000e2b6fd0/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/580a2d46ba9252000e2b6fd0)
 
 # Crawl_J
 
