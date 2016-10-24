@@ -14,7 +14,9 @@ import versioneye.dto.ArtifactoryRepoDescription;
 import versioneye.dto.ArtifactoryRepoFileList;
 
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -88,9 +90,38 @@ public class ArtifactoryMojo extends HtmlMojo {
     }
 
     private void collectPoms(ArtifactoryRepoDescription[] repos){
+        String env = System.getenv("RAILS_ENV");
+        String ignoreRemote  = "true";
+        String ignoreVirtual = "false";
+        String ignoreLocal   = "false";
+        String artKeys = "";
+        try{
+            ignoreRemote  = globalSettingDao.getBy(env, "mvn_art_ignore_remote_repos").getValue();
+            ignoreLocal   = globalSettingDao.getBy(env, "mvn_art_ignore_local_repos").getValue();
+            ignoreVirtual = globalSettingDao.getBy(env, "mvn_art_ignore_virtual_repos").getValue();
+            artKeys       = globalSettingDao.getBy(env, "mvn_art_ignore_keys").getValue();
+            logger.info("ignoreRemote: " + ignoreRemote + " ignoreLocal: " + ignoreLocal + " ignoreVirtual: " + ignoreVirtual + " KeysToIgnore: " + artKeys);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String[] keys = artKeys.split(",");
+        List<String> list = Arrays.asList(keys);
         for (ArtifactoryRepoDescription repo: repos ){
-            if (!repo.getType().equals("LOCAL")){
+            String repoType = repo.getType();
+            if (repoType.equals("LOCAL") && ignoreLocal.equals("true")){
                 logger.info("continue because repo type is LOCAL");
+                continue;
+            }
+            if (repoType.equals("REMOTE") && ignoreRemote.equals("true")){
+                logger.info("continue because repo type is REMOTE");
+                continue;
+            }
+            if (repoType.equals("VIRTUAL") && ignoreVirtual.equals("true")){
+                logger.info("continue because repo type is VIRTUAL");
+                continue;
+            }
+            if (list.contains(repo.getKey())){
+                logger.info("skip repo with key " + repo.getKey() + " because it is on ignore list.");
                 continue;
             }
             logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
