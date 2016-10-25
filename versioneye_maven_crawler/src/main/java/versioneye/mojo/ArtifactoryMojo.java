@@ -95,11 +95,20 @@ public class ArtifactoryMojo extends HtmlMojo {
         String ignoreVirtual = "false";
         String ignoreLocal   = "false";
         String artKeys = "";
+        GlobalSetting gs = null;
         try{
-            ignoreRemote  = globalSettingDao.getBy(env, "mvn_art_ignore_remote_repos").getValue();
-            ignoreLocal   = globalSettingDao.getBy(env, "mvn_art_ignore_local_repos").getValue();
-            ignoreVirtual = globalSettingDao.getBy(env, "mvn_art_ignore_virtual_repos").getValue();
-            artKeys       = globalSettingDao.getBy(env, "mvn_art_ignore_keys").getValue();
+            gs = globalSettingDao.getBy(env, "mvn_art_ignore_remote_repos");
+            if (gs != null)
+                ignoreRemote = gs.getValue();
+            gs = globalSettingDao.getBy(env, "mvn_art_ignore_local_repos");
+            if (gs != null)
+                ignoreLocal = gs.getValue();
+            gs = globalSettingDao.getBy(env, "mvn_art_ignore_virtual_repos");
+            if (gs != null)
+                ignoreVirtual = gs.getValue();
+            gs = globalSettingDao.getBy(env, "mvn_art_ignore_keys");
+            if (gs != null)
+                artKeys = gs.getValue();
             logger.info("ignoreRemote: " + ignoreRemote + " ignoreLocal: " + ignoreLocal + " ignoreVirtual: " + ignoreVirtual + " KeysToIgnore: " + artKeys);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -109,19 +118,19 @@ public class ArtifactoryMojo extends HtmlMojo {
         for (ArtifactoryRepoDescription repo: repos ){
             String repoType = repo.getType();
             if (repoType.equals("LOCAL") && ignoreLocal.equals("true")){
-                logger.info("continue because repo type is LOCAL");
+                logger.info("skip repo " + repo.getKey() + " because repo type is LOCAL");
                 continue;
             }
             if (repoType.equals("REMOTE") && ignoreRemote.equals("true")){
-                logger.info("continue because repo type is REMOTE");
+                logger.info("skip repo " + repo.getKey() + " because repo type is REMOTE");
                 continue;
             }
             if (repoType.equals("VIRTUAL") && ignoreVirtual.equals("true")){
-                logger.info("continue because repo type is VIRTUAL");
+                logger.info("skip repo " + repo.getKey() + " because repo type is VIRTUAL");
                 continue;
             }
             if (list.contains(repo.getKey())){
-                logger.info("skip repo with key " + repo.getKey() + " because it is on ignore list.");
+                logger.info("skip repo " + repo.getKey() + " because it is on ignore list.");
                 continue;
             }
             logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
@@ -151,6 +160,8 @@ public class ArtifactoryMojo extends HtmlMojo {
             ObjectMapper mapper = new ObjectMapper();
             ArtifactoryRepoFileList fileList = mapper.readValue(resultReader, ArtifactoryRepoFileList.class);
             resultReader.close();
+
+            logger.info("Found " + fileList.getFiles().length + " files in repo " + repo );
 
             String repoUrl = baseUrl + "/" + repo;
             setCurrentRepo(repo, repoUrl);
