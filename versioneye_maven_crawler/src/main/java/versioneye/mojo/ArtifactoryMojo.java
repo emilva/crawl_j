@@ -84,7 +84,7 @@ public class ArtifactoryMojo extends HtmlMojo {
         for (ArtifactoryRepoDescription repo: repos ){
             String url = baseUrl + "/" + repo.getKey();
             addAsRepo(repo.getKey(), url, true);
-            logger.info("Add custom repo: " + repo.getKey() + " url: " + url + " type: " + repo.getType());
+            logger.info("Add custom repo key: " + repo.getKey() + " repo url: " + url + " type: " + repo.getType());
         }
         logger.info("There are " + this.repos.size() + " remote repositories in the list");
     }
