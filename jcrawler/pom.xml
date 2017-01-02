@@ -197,7 +197,6 @@
       <scope>runtime</scope>
     </dependency>
 
-
     <!-- *** Log4J *** -->
     <dependency>
       <groupId>log4j</groupId>
