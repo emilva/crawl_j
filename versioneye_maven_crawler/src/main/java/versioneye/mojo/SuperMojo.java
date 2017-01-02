@@ -159,7 +159,12 @@ public abstract class SuperMojo extends AbstractMojo {
 
             return descriptorResult;
         } catch (Exception ex) {
-            logger.error("resolveDependencies failed for " + artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion() + " with repos: " + repos);
+            logger.error("resolveDependencies failed for " +
+                    artifact.getGroupId() + ":" +
+                    artifact.getArtifactId() + ":" +
+                    artifact.getVersion() + " with repos: " +
+                    repos + " ex: " +
+                    ex.getMessage());
             throw new MojoFailureException( ex.getMessage(), ex );
         }
     }
