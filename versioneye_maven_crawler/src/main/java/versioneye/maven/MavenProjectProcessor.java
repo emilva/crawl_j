@@ -83,13 +83,16 @@ public class MavenProjectProcessor {
     private void addVersionIfNotExist(Product product, MavenProject project, Date lastModified){
         try{
             Version version = new Version();
-            version.setVersion( project.getVersion() );
+            version.setVersion(project.getVersion());
             version.setProduct_key( product.getProd_key() );
             if (lastModified != null){
                 version.setReleased_at(lastModified);
                 setReleasedDateString(version, lastModified);
             }
-            productService.createVersionIfNotExist(product, version, repository);
+            boolean new_version = productService.createVersionIfNotExist(product, version, repository);
+            if (new_version){
+                logger.info("New Artifact: " + product.getProd_key() + " : " + version.getVersion());
+            }
         } catch (Exception ex) {
             logger.error("ERROR in addVersionIfNotExist ", ex);
         }
@@ -149,7 +152,7 @@ public class MavenProjectProcessor {
             dependency.setArtifactId(dep.getArtifactId());
             dependency.setProdType("Maven2");
             dependencyService.createDependencyIfNotExist(dependency);
-            logger.info(" - dependency: " + dependency.getGroupId() + "/" + dependency.getArtifactId());
+            logger.info(" - new dependency: " + dependency.getGroupId() + "/" + dependency.getArtifactId());
         } catch (Exception ex){
             logger.error("ERROR in createDepIfNotExist ", ex);
         }
@@ -224,8 +227,10 @@ public class MavenProjectProcessor {
         product.setName(project.getArtifactId());
         product.setVersion(project.getVersion());
         product.setDescription( project.getDescription() );
-
-        productService.createProductIfNotExist(product, repository);
+        boolean newProduct = productService.createProductIfNotExist(product, repository);
+        if (newProduct){
+            logger.info("New product: " + product.getProd_key() + " : " + product.getVersion() );
+        }
         return product;
     }
 
