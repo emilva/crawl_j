@@ -63,7 +63,7 @@
     <encoding>UTF-8</encoding>
     <surefireVersion>2.19.1</surefireVersion>
     <javaVersion>1.6</javaVersion>
-    <spring.version>4.3.4.RELEASE</spring.version>
+    <spring.version>4.3.5.RELEASE</spring.version>
     <testngVersion>6.10</testngVersion>
   </properties>
 
@@ -123,7 +123,7 @@
               <plugin>
                   <groupId>com.versioneye</groupId>
                   <artifactId>versioneye-maven-plugin</artifactId>
-                  <version>3.11.0</version>
+                  <version>3.11.1</version>
                   <configuration>
                       <organisation>versioneye</organisation>
                   </configuration>
