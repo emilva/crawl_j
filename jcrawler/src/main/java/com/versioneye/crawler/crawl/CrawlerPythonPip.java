@@ -76,7 +76,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                 pipNames.add(name);
             }
         } catch (Exception ex) {
-            logger.error("ERROR in CrawlerPythonPip.getFirstLevelList()", ex.toString());
+            logger.error("ERROR in CrawlerPythonPip.getFirstLevelList() " + ex.toString());
         }
         return pipNames;
     }
@@ -97,7 +97,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                 crawlePackageVersion(pipName, version_string);
             }
         } catch (Exception ex) {
-            logger.error("ERROR in CrawlerPython.crawlePackage(" + pipName + ")", ex.toString());
+            logger.error("ERROR in CrawlerPython.crawlePackage(" + pipName + ") " + ex.toString());
         }
     }
 
@@ -125,7 +125,8 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
             addVersionIfNotExist(product, pip);
             createLicenses( product, pip);
         } catch (Exception ex) {
-            logger.error("ERROR in CrawlerPython.crawlePackageVersion(" + pipName + ", "+ version +")", ex.toString());
+            logger.error("ERROR in CrawlerPython.crawlePackageVersion(" + pipName + ", "+ version +") " + ex.toString());
+            logger.error(ex.getStackTrace().toString());
         }
     }
 
@@ -207,7 +208,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
             art.setFile(artefact.getFilename());
             artefactDao.create(art);
         } catch (Exception ex){
-            logger.error("ERROR in CrawlerPython.createArtefacts " + pipName + ", "+ version_string +")", ex.toString());
+            logger.error("ERROR in CrawlerPython.createArtefacts " + pipName + ", "+ version_string +") " + ex.toString());
         }
     }
 
