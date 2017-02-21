@@ -2,8 +2,10 @@ package com.versioneye.crawler.crawl;
 
 import com.versioneye.crawler.dto.PipProduct;
 import com.versioneye.crawler.dto.PipProductInfo;
+import com.versioneye.crawler.dto.PipRelease;
 import com.versioneye.crawler.service.ProductTransferService;
 import com.versioneye.crawler.service.VersionTransferService;
+import com.versioneye.persistence.IArtefactDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -15,11 +17,10 @@ import com.versioneye.service.LicenseService;
 import com.versioneye.service.ProductService;
 import com.versioneye.service.VersionLinkService;
 import com.versioneye.utils.HttpUtils;
-import com.versioneye.utils.LogUtils;
+
+
 
 import java.io.Reader;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -46,7 +47,9 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
     private String execGroup;
     private IVersionarchiveDao versionarchiveDao;
     private IProductDao productDao;
+    private IArtefactDao artefactDao;
     private boolean threadable = false;
+    private static String LANGUAGE = "Python";
 
     public void run() {
         crawl();
@@ -88,6 +91,7 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
             Set<String> versions = pip.getReleases().keySet();
             for (String version_string : versions){
+                handleArtefacts(pip, pipName, version_string);
                 if (productDao.doesVersionExistAlready("Python", pipName.toLowerCase(), version_string))
                     continue;
                 crawlePackageVersion(pipName, version_string);
@@ -164,6 +168,46 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
                 }
                 licenseService.createLicenseIfNotExist(product, license, null, null, null);
             }
+        }
+    }
+
+    private void handleArtefacts(PipProduct pip, String pipName, String version_string){
+        ArrayList<PipRelease> artefacts = pip.getReleases().get(version_string);
+        for( PipRelease artefact : artefacts){
+            createArchive(artefact, pipName, version_string);
+            createArtefacts(artefact, pipName, version_string);
+        }
+    }
+
+    private void createArchive(PipRelease artefact, String pipName, String version_string){
+        try{
+            Versionarchive archive = new Versionarchive(LANGUAGE, pipName.toLowerCase(), artefact.getFilename(), artefact.getUrl());
+            archive.setVersion_id(version_string);
+            if (!versionarchiveDao.doesLinkExistArleady(LANGUAGE, archive.getProduct_key(), archive.getVersion_id(), archive.getLink())){
+                versionarchiveDao.create(archive);
+            }
+        } catch (Exception ex) {
+            logger.error("ERROR in CrawlerPython.createArchive " + pipName + ", "+ version_string +")", ex.toString());
+        }
+
+    }
+
+    private void createArtefacts(PipRelease artefact, String pipName, String version_string){
+        try{
+            if (artefactDao.getBySha(artefact.getMd5_digest()) != null){
+                return ;
+            }
+            Artefact art = new Artefact();
+            art.setLanguage(LANGUAGE);
+            art.setProd_key(pipName.toLowerCase());
+            art.setVersion(version_string);
+            art.setProd_type("PIP");
+            art.setSha_value(artefact.getMd5_digest());
+            art.setSha_method("md5");
+            art.setFile(artefact.getFilename());
+            artefactDao.create(art);
+        } catch (Exception ex){
+            logger.error("ERROR in CrawlerPython.createArtefacts " + pipName + ", "+ version_string +")", ex.toString());
         }
     }
 
@@ -247,5 +291,13 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
 
     public void setLicenseService(LicenseService licenseService) {
         this.licenseService = licenseService;
+    }
+
+    public IArtefactDao getArtefactDao() {
+        return artefactDao;
+    }
+
+    public void setArtefactDao(IArtefactDao artefactDao) {
+        this.artefactDao = artefactDao;
     }
 }

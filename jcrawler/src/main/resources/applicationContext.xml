@@ -123,6 +123,9 @@
     <bean id="productDao"          class="com.versioneye.persistence.mongodb.ProductDao" >
         <property name="mongoDB" ref="mongoDb" />
     </bean>
+    <bean id="artefactDao"          class="com.versioneye.persistence.mongodb.ArtefactDao" >
+        <property name="mongoDB" ref="mongoDb" />
+    </bean>
     <bean id="productResourceDao"          class="com.versioneye.persistence.mongodb.ProductResourceDao" >
         <property name="mongoDB" ref="mongoDb" />
     </bean>
