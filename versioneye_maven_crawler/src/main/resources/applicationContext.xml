@@ -332,6 +332,12 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="seventu" class="com.versioneye.domain.Repository" >
+        <property name="name"     value="seventu" />
+        <property name="src"      value="http://sevntu-checkstyle.github.io/sevntu.checkstyle/maven2/" />
+        <property name="repoType" value="Maven2" />
+    </bean>
+
     <!-- END Maven Repositories -->
 
     <bean id="crawlerMavenDefaultHtml" class="com.versioneye.crawler.CrawlerMavenDefaultHtml" scope="prototype" >
