@@ -1,7 +1,8 @@
 # VersionEye Maven Crawler
 
-This is one of VersionEyes Crawlers implemented as maven plugin. This crawler is crawling Maven Repositories. 
-Install it like this: 
+This project contains different crawlers which are mostly running as microservices. Most of the goals here are running as RabbitMQ workers on the VersionEye infrastructure! 
+
+Install the project like this: 
 
 ```
 mvn clean install 
@@ -13,22 +14,18 @@ To get a list of all possible goals type in:
 mvn crawl:help
 ```
 
-To crawl the maven central repository run this:
+To run the process which can crawl a specific Artefact via it's Maven HTML representation run this command: 
 
 ```
-mvn crawl:central
+mvn crawl:html_worker
 ```
 
-To crawl only the popular projects in the database run this:
+The process to crawl a specific Artefact via the Aether project can be started like this:
 
 ```
-mvn crawl:popular
-```
-
-And to crawl only one specific project, you specified in your pom in the configuration section, run this:
-
-```
-mvn crawl:single
+mvn crawl:maven_index_worker
 ```
 
 Easy! Right? 
+
+For commercial support contact `support [at] versioneye.com`. 
