@@ -48,13 +48,20 @@ public class ArtifactoryMojo extends HtmlMojo {
             addRepo(mavenRepository);
             setCurrentRepo(mavenRepository.getName(), mavenRepository.getUrl());
 
-            ArtifactoryRepoDescription[] repositories = fetchRepoList();
-            if (repositories == null){
-                logger.info("No repositories found to scan.");
-                return ;
+            gs = globalSettingDao.getBy(env, "mvn_art_single_repo");
+            if (gs != null && !gs.getValue().trim().isEmpty()){
+                // Crawl a single repository
+                parseFilesFromRepo(gs.getValue());
+            } else {
+                // Crawl all repositories
+                ArtifactoryRepoDescription[] repositories = fetchRepoList();
+                if (repositories == null){
+                    logger.info("No repositories found to scan.");
+                    return ;
+                }
+                addCustomRepos(repositories);
+                collectPoms(repositories);
             }
-            addCustomRepos(repositories);
-            collectPoms(repositories);
 
             logger.info("The End");
         } catch( Exception exception ){
@@ -125,7 +132,7 @@ public class ArtifactoryMojo extends HtmlMojo {
             return;
         }
         logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
-        listFiles( repo.getKey() );
+        parseFilesFromRepo(repo.getKey());
     }
 
     private void addAsRepo(String name, String url, boolean withAuth){
@@ -143,8 +150,9 @@ public class ArtifactoryMojo extends HtmlMojo {
 
     // https://www.jfrog.com/confluence/display/RTF3X/Artifactory+REST+API#ArtifactoryRESTAPI-FileInfo
     //  -> File List
-    private void listFiles(String repo){
+    private void parseFilesFromRepo(String repo){
         try{
+            logger.info("Fetch files for repo: " + repo);
             String url = baseUrl + "/api/storage/" + repo + "?list&deep=1&listFolders=0&mdTimestamps=1";
             Reader resultReader = httpUtils.getResultReader( url, username, password );
             ObjectMapper mapper = new ObjectMapper();
@@ -164,6 +172,7 @@ public class ArtifactoryMojo extends HtmlMojo {
                 processPom( pomUrl );
             }
         } catch (Exception ex) {
+            logger.error("ERROR in parseFilesFromRepo " + ex.getMessage());
             logger.error(ex);
         }
     }
