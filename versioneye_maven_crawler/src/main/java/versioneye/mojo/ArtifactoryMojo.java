@@ -49,6 +49,10 @@ public class ArtifactoryMojo extends HtmlMojo {
             setCurrentRepo(mavenRepository.getName(), mavenRepository.getUrl());
 
             ArtifactoryRepoDescription[] repositories = fetchRepoList();
+            if (repositories == null){
+                logger.info("No repositories found to scan.");
+                return ;
+            }
             addCustomRepos(repositories);
             collectPoms(repositories);
 
@@ -70,14 +74,20 @@ public class ArtifactoryMojo extends HtmlMojo {
     }
 
 
-    private ArtifactoryRepoDescription[] fetchRepoList() throws Exception {
-        String url = baseUrl + "/api/repositories";
-        logger.info("fetch Repo list from: " + url);
-        Reader resultReader = httpUtils.getResultReader( url, username, password );
-        ObjectMapper mapper = new ObjectMapper();
-        ArtifactoryRepoDescription[] repos = mapper.readValue(resultReader, ArtifactoryRepoDescription[].class);
-        resultReader.close();
-        return repos;
+    private ArtifactoryRepoDescription[] fetchRepoList() {
+        try {
+            String url = baseUrl + "/api/repositories";
+            logger.info("fetch Repo list from: " + url);
+            Reader resultReader = httpUtils.getResultReader( url, username, password );
+            ObjectMapper mapper = new ObjectMapper();
+            ArtifactoryRepoDescription[] repos = mapper.readValue(resultReader, ArtifactoryRepoDescription[].class);
+            resultReader.close();
+            return repos;
+        } catch (Exception exception) {
+            logger.error("ERROR in fetchRepoList " + exception.getMessage());
+            logger.error(exception);
+            return null;
+        }
     }
 
     private void addCustomRepos(ArtifactoryRepoDescription[] repos){
@@ -90,52 +100,32 @@ public class ArtifactoryMojo extends HtmlMojo {
     }
 
     private void collectPoms(ArtifactoryRepoDescription[] repos){
-        String env = System.getenv("RAILS_ENV");
-        String ignoreRemote  = "true";
-        String ignoreVirtual = "false";
-        String ignoreLocal   = "false";
-        String artKeys = "";
-        GlobalSetting gs = null;
-        try{
-            gs = globalSettingDao.getBy(env, "mvn_art_ignore_remote_repos");
-            if (gs != null)
-                ignoreRemote = gs.getValue();
-            gs = globalSettingDao.getBy(env, "mvn_art_ignore_local_repos");
-            if (gs != null)
-                ignoreLocal = gs.getValue();
-            gs = globalSettingDao.getBy(env, "mvn_art_ignore_virtual_repos");
-            if (gs != null)
-                ignoreVirtual = gs.getValue();
-            gs = globalSettingDao.getBy(env, "mvn_art_ignore_keys");
-            if (gs != null)
-                artKeys = gs.getValue();
-            logger.info("ignoreRemote: " + ignoreRemote + " ignoreLocal: " + ignoreLocal + " ignoreVirtual: " + ignoreVirtual + " KeysToIgnore: " + artKeys);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        String[] keys = artKeys.split(",");
-        List<String> list = Arrays.asList(keys);
         for (ArtifactoryRepoDescription repo: repos ){
-            String repoType = repo.getType();
-            if (repoType.equals("LOCAL") && ignoreLocal.equals("true")){
-                logger.info("skip repo " + repo.getKey() + " because repo type is LOCAL");
-                continue;
-            }
-            if (repoType.equals("REMOTE") && ignoreRemote.equals("true")){
-                logger.info("skip repo " + repo.getKey() + " because repo type is REMOTE");
-                continue;
-            }
-            if (repoType.equals("VIRTUAL") && ignoreVirtual.equals("true")){
-                logger.info("skip repo " + repo.getKey() + " because repo type is VIRTUAL");
-                continue;
-            }
-            if (list.contains(repo.getKey())){
-                logger.info("skip repo " + repo.getKey() + " because it is on ignore list.");
-                continue;
-            }
-            logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
-            listFiles( repo.getKey() );
+            crawlRepo(repo);
         }
+    }
+
+    private void crawlRepo(ArtifactoryRepoDescription repo){
+        String repoType = repo.getType();
+        if (repoType.equals("LOCAL") && getIgnoreLocale().equals("true")){
+            logger.info("skip repo " + repo.getKey() + " because repo type is LOCAL");
+            return;
+        }
+        if (repoType.equals("REMOTE") && getIgnoreRemote().equals("true")){
+            logger.info("skip repo " + repo.getKey() + " because repo type is REMOTE");
+            return;
+        }
+        if (repoType.equals("VIRTUAL") && getIgnoreVirtual().equals("true")){
+            logger.info("skip repo " + repo.getKey() + " because repo type is VIRTUAL");
+            return;
+        }
+        List<String> ignoreKeys = Arrays.asList( getIgnoreRepoKeys().split(",") );
+        if (ignoreKeys.contains(repo.getKey())){
+            logger.info("skip repo " + repo.getKey() + " because it is on ignore list.");
+            return;
+        }
+        logger.info("Collect poms for: " + repo.getKey() + " url: " + repo.getUrl() + " type: " + repo.getType());
+        listFiles( repo.getKey() );
     }
 
     private void addAsRepo(String name, String url, boolean withAuth){
@@ -184,6 +174,54 @@ public class ArtifactoryMojo extends HtmlMojo {
         repository.setPassword(password);
         mavenProjectProcessor.setRepository(repository);
         mavenPomProcessor.setRepository(repository);
+    }
+
+    private String getIgnoreRemote(){
+        try{
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_art_ignore_remote_repos");
+            if (gs != null)
+                return gs.getValue();
+        } catch (Exception ex) {
+            logger.error(ex);
+        }
+        return "true";
+    }
+
+    private String getIgnoreLocale(){
+        try{
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_art_ignore_local_repos");
+            if (gs != null)
+                return gs.getValue();
+        } catch (Exception ex) {
+            logger.error(ex);
+        }
+        return "false";
+    }
+
+    private String getIgnoreVirtual(){
+        try{
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_art_ignore_virtual_repos");
+            if (gs != null)
+                return gs.getValue();
+        } catch (Exception ex) {
+            logger.error(ex);
+        }
+        return "false";
+    }
+
+    private String getIgnoreRepoKeys(){
+        try{
+            String env = System.getenv("RAILS_ENV");
+            GlobalSetting gs = globalSettingDao.getBy(env, "mvn_art_ignore_keys");
+            if (gs != null)
+                return gs.getValue();
+        } catch (Exception ex) {
+            logger.error(ex);
+        }
+        return "";
     }
 
 }
