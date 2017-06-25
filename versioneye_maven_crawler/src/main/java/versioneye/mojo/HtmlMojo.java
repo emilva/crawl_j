@@ -165,7 +165,9 @@ public class HtmlMojo extends SuperMojo {
             boolean existAlready          = productDao.doesVersionExistAlreadyByGA( groupId, artifactId, versionNumber );
             if (existAlreadyLowerCase || existAlready){
                 logger.info(" --- Exists already: " + groupId + "/" + artifactId + ":" + versionNumber);
-                pomDao.create(urlToPom);
+                if (pomDao.existsAlready(urlToPom) == false) {
+                    pomDao.create(urlToPom);
+                }
                 return ;
             }
 
