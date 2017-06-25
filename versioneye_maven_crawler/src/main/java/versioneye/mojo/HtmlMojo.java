@@ -143,6 +143,7 @@ public class HtmlMojo extends SuperMojo {
             urlToPom = urlToPom.replaceAll("/:", "/");
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
             if (pom == null){
+                logger.info(" - TagNode pom is null for " + urlToPom);
                 Model model   = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
                 groupId       = model.getGroupId();
                 artifactId    = model.getArtifactId();
@@ -157,7 +158,7 @@ public class HtmlMojo extends SuperMojo {
             }
 
             if (groupId == null || artifactId == null || versionNumber == null){
-                logger.error("ERROR: could not fetch GAV for " + urlToPom);
+                logger.error("ERROR: could not fetch GAV ("+groupId+":"+artifactId+":"+versionNumber+") for " + urlToPom);
                 return ;
             }
 
