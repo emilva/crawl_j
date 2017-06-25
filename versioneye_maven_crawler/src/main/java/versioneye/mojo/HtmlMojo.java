@@ -142,28 +142,32 @@ public class HtmlMojo extends SuperMojo {
 
             urlToPom = urlToPom.replaceAll("/:", "/");
             TagNode pom = httpUtils.getPageForResource(urlToPom, username, password);
-            if (pom == null){
-                logger.info(" - TagNode pom is null for " + urlToPom);
+            if (pom != null){
+                HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
+                groupId       = mavenUrlProcessor.getGroupId(    pom, properties);
+                artifactId    = mavenUrlProcessor.getArtifactId( pom, properties);
+                versionNumber = mavenUrlProcessor.getVersion(    pom, properties);
+                packaging     = mavenUrlProcessor.getPackaging(  pom, properties);
+            } else {
+                logger.info(" - TagNode object is null for " + urlToPom);
                 Model model   = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
                 groupId       = model.getGroupId();
                 artifactId    = model.getArtifactId();
                 versionNumber = model.getVersion();
                 packaging     = model.getPackaging();
-            } else {
-                HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
-                logger.info(" - pom " + pom.getText() + " with properties " + properties.keySet().size() + " " + properties.toString());
-                groupId       = mavenUrlProcessor.getGroupId(    pom, properties);
-                artifactId    = mavenUrlProcessor.getArtifactId( pom, properties);
-                versionNumber = mavenUrlProcessor.getVersion(    pom, properties);
-                packaging     = mavenUrlProcessor.getPackaging(  pom, properties);
+            }
+
+            if (groupId == null || artifactId == null || versionNumber == null) {
+                logger.info(" - Couldnt fetch GAV from TagNode. Now trying mavenCentralUtils.fetchModelFromUrl for " + urlToPom);
+                Model model   = mavenCentralUtils.fetchModelFromUrl(urlToPom, username, password);
+                groupId       = model.getGroupId();
+                artifactId    = model.getArtifactId();
+                versionNumber = model.getVersion();
+                packaging     = model.getPackaging();
             }
 
             if (groupId == null || artifactId == null || versionNumber == null){
-                logger.error("ERROR: could not fetch GAV (" + groupId + ":" + artifactId + ":" + versionNumber + ") for " + urlToPom + " " + pom.getText() );
-                Object[] obs = pom.evaluateXPath("//project/groupId");
-                logger.error(" - obs.length " + obs.length);
-                String gId = httpUtils.getSingleValue(obs , null );
-                logger.error(" - gId " + gId);
+                logger.error("ERROR: could not fetch GAV (" + groupId + ":" + artifactId + ":" + versionNumber + ") for " + urlToPom );
                 return ;
             }
 

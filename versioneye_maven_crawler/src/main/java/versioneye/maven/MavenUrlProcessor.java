@@ -184,7 +184,7 @@ public class MavenUrlProcessor {
     }
 
     public String getGroupId(TagNode pom, HashMap<String, String> properties) throws Exception {
-        String groupId = httpUtils.getSingleValue(pom.evaluateXPath("//project/groupId"), properties);
+        String groupId = httpUtils.getSingleValue( pom.evaluateXPath("//project/groupId"), properties );
         if (groupId == null)
             groupId = httpUtils.getSingleValue(pom.evaluateXPath("//project/parent/groupId"), properties);
         return groupId;
