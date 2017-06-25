@@ -164,13 +164,16 @@ public class ArtifactoryMojo extends HtmlMojo {
             String repoUrl = baseUrl + "/" + repo;
             setCurrentRepo(repo, repoUrl);
 
+            int pomCount = 0;
             for (ArtifactoryFile file: fileList.getFiles() ){
                 if (!file.getUri().endsWith(".pom")){
                     continue;
                 }
                 String pomUrl = baseUrl + "/" + repo + file.getUri();
                 processPom( pomUrl );
+                pomCount = pomCount + 1;
             }
+            logger.info("pom files found in " + repo + ": " + pomCount);
         } catch (Exception ex) {
             logger.error("ERROR in parseFilesFromRepo " + ex.getMessage());
             logger.error(ex);
