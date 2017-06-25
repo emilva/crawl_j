@@ -50,10 +50,10 @@ public class ArtifactoryMojo extends HtmlMojo {
 
             gs = globalSettingDao.getBy(env, "mvn_art_single_repo");
             if (gs != null && !gs.getValue().trim().isEmpty()){
-                // Crawl a single repository
+                logger.info("Crawl a single repo: " + gs.getValue());
                 parseFilesFromRepo(gs.getValue());
             } else {
-                // Crawl all repositories
+                logger.info("Crawl all repos");
                 ArtifactoryRepoDescription[] repositories = fetchRepoList();
                 if (repositories == null){
                     logger.info("No repositories found to scan.");
