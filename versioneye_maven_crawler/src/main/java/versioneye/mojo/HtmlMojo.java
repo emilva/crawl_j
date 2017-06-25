@@ -151,6 +151,7 @@ public class HtmlMojo extends SuperMojo {
                 packaging     = model.getPackaging();
             } else {
                 HashMap<String, String> properties = mavenUrlProcessor.getProperties(pom, null);
+                logger.info(" - pom " + pom.toString() + " wiht properties " + properties.keySet().size() + " " + properties.toString());
                 groupId       = mavenUrlProcessor.getGroupId(    pom, properties);
                 artifactId    = mavenUrlProcessor.getArtifactId( pom, properties);
                 versionNumber = mavenUrlProcessor.getVersion(    pom, properties);
@@ -158,7 +159,7 @@ public class HtmlMojo extends SuperMojo {
             }
 
             if (groupId == null || artifactId == null || versionNumber == null){
-                logger.error("ERROR: could not fetch GAV ("+groupId+":"+artifactId+":"+versionNumber+") for " + urlToPom);
+                logger.error("ERROR: could not fetch GAV ("+groupId+":"+artifactId+":"+versionNumber+") for " + urlToPom + " " + pom.toString());
                 return ;
             }
 
