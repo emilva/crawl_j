@@ -221,8 +221,7 @@ public abstract class SuperMojo extends AbstractMojo {
 
     protected Artifact getArtifact(String artifactCoords) throws MojoExecutionException, MojoFailureException {
         try {
-            Artifact artifact = new DefaultArtifact( artifactCoords );
-            return artifact;
+            return new DefaultArtifact( artifactCoords );
         } catch ( IllegalArgumentException e ) {
             throw new MojoFailureException( e.getMessage(), e );
         }
