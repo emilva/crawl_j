@@ -49,7 +49,7 @@ public class ArtifactoryMojo extends HtmlMojo {
             setCurrentRepo(mavenRepository.getName(), mavenRepository.getUrl());
 
             gs = globalSettingDao.getBy(env, "mvn_art_single_repo");
-            if (gs != null && !gs.getValue().trim().isEmpty()){
+            if (gs != null && gs.getValue() != null && !gs.getValue().trim().isEmpty()){
                 logger.info("Crawl a single repo: " + gs.getValue());
                 parseFilesFromRepo(gs.getValue());
             } else {
