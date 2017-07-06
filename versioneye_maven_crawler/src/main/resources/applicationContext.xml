@@ -342,6 +342,7 @@
         <property name="name"     value="redhat" />
         <property name="src"      value="https://maven.repository.redhat.com/ga/" />
         <property name="repoType" value="Maven2" />
+        <property name="replaceWithRepoSrc" value="false" />
     </bean>
 
     <bean id="oracle" class="com.versioneye.domain.Repository" >

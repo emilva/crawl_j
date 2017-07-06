@@ -60,19 +60,24 @@ public class HtmlMojo extends SuperMojo {
     }
 
     public void follow(String currentUrl){
+        logger.info("follow " + currentUrl);
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
             if (href.startsWith(":")){
                 href = href.replaceFirst(":", "");
             }
-            if (isFollowable(href) && !urls.contains(href)){
-                String newUrl = currentUrl + href;
+            if (isFollowable(href, currentUrl) && !urls.contains(href)){
+                String newUrl = "";
+                if (href.startsWith("http")){
+                    newUrl = href;
+                } else {
+                    newUrl = currentUrl + href;
+                }
                 urls.add(newUrl);
                 follow(newUrl);
             } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
                 String newUrl = currentUrl + href;
                 sendPom(newUrl);
-//                processPom(newUrl);
                 return ;
             }
         }
@@ -86,15 +91,24 @@ public class HtmlMojo extends SuperMojo {
 
             for (String element: firstS){
                 String link = element.replaceAll(split2Pattern, "");
-                if (repository.isReplaceWithRepoSrc())
+                if (repository.isReplaceWithRepoSrc()){
                     link = link.replaceFirst(repository.getSrc(), "");
-                else
+                } else {
                     link = link.replaceFirst(src, "");
+                }
 
                 if (link.startsWith("#")){
                     link = link.replaceFirst("#", "");
                 }
+
+                if (link.endsWith("md5") || link.endsWith("sha1") || link.endsWith("png") || link.endsWith("jar") ||
+                        link.endsWith("ico") || link.endsWith("css") || link.startsWith("?") ||
+                        link.endsWith("maven-metadata.xml") || link.startsWith("<") || link.contains(".css?") ||
+                        link.equals("../"))
+                    continue;
+
                 links.add(link);
+                logger.info(" - " + src + " add link: " + link);
             }
         } catch (Exception ex) {
             logger.error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
@@ -104,17 +118,22 @@ public class HtmlMojo extends SuperMojo {
         return links;
     }
 
-    private boolean isFollowable(String url){
-        return url.length() > 1 && url.endsWith("/") &&
+    private boolean isFollowable(String url, String currentUrl){
+        boolean goodUrl = url.length() > 1 && url.endsWith("/") &&
                 !url.startsWith("Parent Directory") &&
                 !url.endsWith("../") &&
                 !url.startsWith(".") &&
                 !url.startsWith("www.") &&
                 !url.startsWith("<") &&
                 !url.startsWith("?") &&
-                !url.startsWith("/") &&
-                !url.startsWith("http://") &&
-                !url.startsWith("https://");
+                !url.startsWith("/");
+        if (goodUrl && !url.startsWith("http")){
+            return true;
+        }
+        if (goodUrl && url.startsWith(currentUrl)){
+            return true;
+        }
+        return false;
     }
 
     protected void sendPom(String urlToPom){
