@@ -60,25 +60,29 @@ public class HtmlMojo extends SuperMojo {
     }
 
     public void follow(String currentUrl){
-        logger.info("follow " + currentUrl);
+        logger.debug("follow " + currentUrl);
         List<String> links = getLinksFromPage(currentUrl);
         for (String href : links){
             if (href.startsWith(":")){
                 href = href.replaceFirst(":", "");
             }
-            if (isFollowable(href, currentUrl) && !urls.contains(href)){
-                String newUrl = "";
-                if (href.startsWith("http")){
-                    newUrl = href;
+
+            if (isFollowable(href, currentUrl)){
+                String newUrl = createNewUrl(href, currentUrl);
+                if (!urls.contains(newUrl)){
+                    urls.add(newUrl);
+                    follow(newUrl);
                 } else {
-                    newUrl = currentUrl + href;
+                    logger.info(" already in cache, skip " + newUrl);
+                    continue;
                 }
-                urls.add(newUrl);
-                follow(newUrl);
-            } else if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
-                String newUrl = currentUrl + href;
+            } else {
+                logger.info(" - NOT followable: " + href);
+            }
+
+            if (href.endsWith(".pom") && !href.contains("SNAPSHOT")) {
+                String newUrl = createNewUrl(href, currentUrl);
                 sendPom(newUrl);
-                return ;
             }
         }
     }
@@ -108,7 +112,6 @@ public class HtmlMojo extends SuperMojo {
                     continue;
 
                 links.add(link);
-                logger.info(" - " + src + " add link: " + link);
             }
         } catch (Exception ex) {
             logger.error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
@@ -126,6 +129,19 @@ public class HtmlMojo extends SuperMojo {
                 !url.startsWith("www.") &&
                 !url.startsWith("<") &&
                 !url.startsWith("?") &&
+                !url.startsWith(")") &&
+                !url.startsWith(").sha1") &&
+                !url.startsWith("-") &&
+                !url.startsWith("-.sha1") &&
+                !url.startsWith("IvyPattern") &&
+                !url.startsWith("IvyPattern.sha1") &&
+                !url.startsWith("LAST_BUILD_OK_release_--scheduler-only") &&
+                !url.startsWith("LAST_BUILD_OK_release_--scheduler-only.sha1") &&
+                !url.startsWith("archetype-catalog.xml") &&
+                !url.startsWith("archetype-catalog.xml.md5") &&
+                !url.startsWith("archetype-catalog.xml.sha1") &&
+                !url.startsWith("com.everbridge.notification.md5") &&
+                !url.startsWith("com.everbridge.notification.sha1") &&
                 !url.startsWith("/");
         if (goodUrl && !url.startsWith("http")){
             return true;
@@ -134,6 +150,16 @@ public class HtmlMojo extends SuperMojo {
             return true;
         }
         return false;
+    }
+
+    protected String createNewUrl(String href, String currentUrl){
+        String newUrl = "";
+        if (href.startsWith("http")){
+            newUrl = href;
+        } else {
+            newUrl = currentUrl + href;
+        }
+        return newUrl;
     }
 
     protected void sendPom(String urlToPom){

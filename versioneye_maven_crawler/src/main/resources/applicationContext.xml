@@ -338,6 +338,13 @@
         <property name="repoType" value="Maven2" />
     </bean>
 
+    <bean id="thenewmotion" class="com.versioneye.domain.Repository" >
+        <property name="name"     value="thenewmotion" />
+        <property name="src"      value="http://nexus.thenewmotion.com/content/groups/public/" />
+        <property name="repoType" value="Maven2" />
+        <property name="replaceWithRepoSrc" value="false" />
+    </bean>
+
     <bean id="redhat" class="com.versioneye.domain.Repository" >
         <property name="name"     value="redhat" />
         <property name="src"      value="https://maven.repository.redhat.com/ga/" />
