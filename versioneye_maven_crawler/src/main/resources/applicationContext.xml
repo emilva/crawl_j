@@ -345,6 +345,13 @@
         <property name="replaceWithRepoSrc" value="false" />
     </bean>
 
+    <bean id="everpeace" class="com.versioneye.domain.Repository" >
+        <property name="name"     value="everpeace" />
+        <property name="src"      value="http://dl.bintray.com/everpeace/maven/com/github/everpeace/" />
+        <property name="repoType" value="Maven2" />
+        <property name="replaceWithRepoSrc" value="true" />
+    </bean>
+
     <bean id="redhat" class="com.versioneye.domain.Repository" >
         <property name="name"     value="redhat" />
         <property name="src"      value="https://maven.repository.redhat.com/ga/" />
