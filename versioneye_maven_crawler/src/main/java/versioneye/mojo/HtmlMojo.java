@@ -114,7 +114,7 @@ public class HtmlMojo extends SuperMojo {
                 links.add(link);
             }
         } catch (Exception ex) {
-            logger.error("ERROR in CrawlerMavenDefaultHhtml.follow(.,.) " + ex.toString());
+            logger.error("ERROR in HtmlMojo.getLinksFromPage(..) " + ex.toString());
             logger.error(ex.getStackTrace());
             return new ArrayList<String>();
         }

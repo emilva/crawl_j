@@ -38,7 +38,6 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     private String crawlerVersion = "0.1";
     private List<Repository> repositories;
     private Repository repository;
-    private LogUtils logUtils;
     private HttpUtils httpUtils;
     private ProductService productService;
     private ProductTransferService productTransferService;
@@ -52,7 +51,6 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
     private Crawle crawle;
     private String execGroup;
     private String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-//    private String[] alphabet = {"Z"};
     private boolean threadable = false;
 
     private IVersionlinkDao versionlinkDao;
@@ -303,10 +301,6 @@ public class CrawlerRubyGems extends SuperCrawler implements ICrawl {
 
     public void setLicenseChecker(LicenseChecker licenseChecker) {
         this.licenseChecker = licenseChecker;
-    }
-
-    public void setLogUtils(LogUtils logUtils) {
-        this.logUtils = logUtils;
     }
 
     public void setHttpUtils(HttpUtils httpUtils) {
