@@ -65,9 +65,11 @@ public class CrawlerPythonPip extends SuperCrawler implements ICrawl {
     public Set<String> getFirstLevelList() {
         Set<String> pipNames = new HashSet<String>();
         try{
-            String resource = "https://pypi.python.org/pypi?%3Aaction=index";
-            String xpath = "//table[@class=\"list\"]/tbody/tr/td/a";
+            String resource = "https://pypi.python.org/simple/";
+            String xpath = "//a";
+            System.out.println("Starting to collect links from page.");
             Object[] objects = httpUtils.getObjectsFromPage(resource, xpath);
+            System.out.println("Links found: " + objects.length);
             for (Object obj : objects){
                 TagNode node = (TagNode) obj;
                 String href = node.getAttributeByName("href");
