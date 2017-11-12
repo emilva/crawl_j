@@ -10,17 +10,17 @@ $(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
 echo "DB_PORT_27017_TCP_PORT=$DB_PORT_27017_TCP_PORT
 $(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
 
-echo "MONGO_RS_2_ADDR=$MONGO_RS_2_ADDR
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
-
-echo "MONGO_RS_2_PORT=$MONGO_RS_2_PORT
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
-
-echo "MONGO_RS_3_ADDR=$MONGO_RS_3_ADDR
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
-
-echo "MONGO_RS_3_PORT=$MONGO_RS_3_PORT
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
+#echo "MONGO_RS_2_ADDR=$MONGO_RS_2_ADDR
+#$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
+#
+#echo "MONGO_RS_2_PORT=$MONGO_RS_2_PORT
+#$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
+#
+#echo "MONGO_RS_3_ADDR=$MONGO_RS_3_ADDR
+#$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
+#
+#echo "MONGO_RS_3_PORT=$MONGO_RS_3_PORT
+#$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
 
 
 echo "RM_PORT_5672_TCP_ADDR=$RM_PORT_5672_TCP_ADDR

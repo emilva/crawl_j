@@ -92,6 +92,13 @@
           <scope>test</scope>
       </dependency>
 
+      <!--<dependency>-->
+        <!--<groupId>org.eclipse.m2e</groupId>-->
+        <!--<artifactId>lifecycle-mapping</artifactId>-->
+        <!--<version>1.0.0</version>-->
+        <!--<scope>compile</scope>-->
+      <!--</dependency>-->
+
       <dependency>
           <groupId>com.versioneye</groupId>
           <artifactId>versioneye-core-j</artifactId>
@@ -118,7 +125,7 @@
       <!--<dependency>-->
           <!--<groupId>commons-beanutils</groupId>-->
           <!--<artifactId>commons-beanutils</artifactId>-->
-          <!--<version>1.9.3</version>-->
+          <!--<version>1.9.0</version>-->
       <!--</dependency>-->
 
       <dependency>
@@ -142,9 +149,10 @@
                   <artifactId>versioneye-maven-plugin</artifactId>
                   <version>3.11.4</version>
                   <configuration>
-                      <organisation>versioneye</organisation>
+                      <organisation>veye_demo</organisation>
                       <team>Owners</team>
                       <skipScopes>test</skipScopes>
+                      <apiKey>87305b07c0867c219700</apiKey>
                   </configuration>
               </plugin>
           </plugins>
