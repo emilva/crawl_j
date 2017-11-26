@@ -37,13 +37,6 @@ echo "MC_PORT_11211_TCP_PORT=$MC_PORT_11211_TCP_PORT
 $(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
 
 
-echo "ES_PORT_9200_TCP_ADDR=$ES_PORT_9200_TCP_ADDR
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
-
-echo "ES_PORT_9200_TCP_PORT=$ES_PORT_9200_TCP_PORT
-$(/bin/cat /mnt/crawl_j/crontab_production)" > /mnt/crawl_j/crontab_production
-
-
 /usr/bin/crontab /mnt/crawl_j/crontab_production
 cron
 tail -f /var/log/cron.log
